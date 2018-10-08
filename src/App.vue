@@ -42,7 +42,7 @@
       if(cookie != ""){
         cookie = JSON.parse(cookie);
         sessionStorage.setItem("token",cookie.token);
-        _this.$router.push({ path: '/trackList'});
+        _this.$router.push({ path: '/robbingList'});
       }else{
         _this.$router.push({ path: '/login'});
       }
@@ -53,7 +53,7 @@
       _this.$nextTick(function () {
         _this.title = document.title;
         _this.html = location.href;
-        if(_this.html.indexOf("/login") != -1){
+        if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1){
           $("#appBox").hide();
         }else{
           $("#appBox").show();

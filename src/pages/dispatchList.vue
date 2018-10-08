@@ -17,7 +17,7 @@
         </li>
       </ul>
     </div>
-    <footComponent :idx='2'></footComponent>
+    <footComponent  ref="footcomponent" :idx='2'></footComponent>
   </div>
 </template>
 
@@ -39,6 +39,14 @@
     },
     mounted: function () {
       var _this = this;
+      sessionStorage.removeItem("weh");
+      sessionStorage.removeItem("nowOrderCartype");
+      sessionStorage.removeItem("dataStart");
+      sessionStorage.removeItem("dataEnd");
+      sessionStorage.removeItem("orderPk");
+      sessionStorage.removeItem("dispatchPK");
+      sessionStorage.removeItem("carPKlistGo");
+      sessionStorage.removeItem("driverPk");
       androidIos.bridge(_this);
     },
     methods: {
@@ -52,7 +60,7 @@
             empty:{
               warpId:'mescroll',
               icon:require('../images/nojilu.png'),
-              tip:"暂无司机申请"
+              tip:"暂无订单"
             }
           },
           down: {
@@ -88,6 +96,9 @@
   function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
     //延时一秒,模拟联网
     setTimeout(function () {
+      if(pageNum == 1){
+        thisThat.$refs.footcomponent.go();
+      }
       $.ajax({
         type: "POST",
         url: androidIos.ajaxHttp() + "/order/loadSchedule",

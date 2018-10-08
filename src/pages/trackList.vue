@@ -24,7 +24,7 @@
         </ul>
       </div>
     </div>
-    <footComponent :idx='1'></footComponent>
+    <footComponent  ref="footcomponent" :idx='1'></footComponent>
   </div>
 </template>
 
@@ -71,6 +71,8 @@
          sessionStorage.removeItem("dataEnd");
          sessionStorage.removeItem("orderPk");
          sessionStorage.removeItem("dispatchPK");
+         sessionStorage.removeItem("carPKlistGo");
+         sessionStorage.removeItem("driverPk");
          androidIos.bridge(_this);
        },
        methods:{
@@ -162,6 +164,9 @@
              function getListDataFromNet(curNavIndex,pageNum,pageSize,successCallback,errorCallback) {
                //延时一秒,模拟联网
                setTimeout(function () {
+                 if(pageNum == 1){
+                   _this.$refs.footcomponent.go();
+                 }
                  $.ajax({
                    type: "POST",
                    url: androidIos.ajaxHttp() + "/order/loadEntrust",
@@ -191,7 +196,7 @@
                      }
                    }
                  });
-               },200)
+               },100)
              }
            },
          lookTrackMore:function (pk) {

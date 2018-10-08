@@ -3,6 +3,7 @@ import forgetPassword from '@/components/loginBox/forgetPassword'
 import register from '@/components/loginBox/register'
 import robbing from '../pages/robbing'
 import dispatchList from '../pages/dispatchList'
+import robbingList from '../pages/robbingList'
 import track from '../pages/track'
 import site from '../pages/site'
 import car from '../pages/car'
@@ -121,6 +122,10 @@ export default new Router({
     path:'/dispatchList',
     name:'dispatchList',
     component:dispatchList,
+  },{
+    path:'/robbingList',
+    name:'robbingList',
+    component:robbingList,
   },
     {
       path:'/forgetPassword',
