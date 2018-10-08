@@ -121,7 +121,7 @@
             success: function (getUserInfo) {
               if (getUserInfo.success == "1") {
                 _this.message.photo =  getUserInfo.photo;
-                _this.message.name =   getUserInfo.corpName;
+                _this.message.name = getUserInfo.corpName == "" ? getUserInfo.name :getUserInfo.corpName;
                 _this.message.status =   getUserInfo.status;
                 sessionStorage.setItem("carrierMessage",JSON.stringify({
                   licType: getUserInfo.licType,
@@ -378,6 +378,8 @@
     background-repeat: no-repeat;
     background-position: 100% 50%;
     background-size:0.25rem;
+    text-align: right;
+    padding-right: 4%;
   }
   ul{
     width:100%;

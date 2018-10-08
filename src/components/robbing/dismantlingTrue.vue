@@ -74,33 +74,36 @@
               var goodpkBox = [];
               var numberBox = [];
               for(var i = 0 ; i<_this.productBox.productsList.length;i++){
-                 var list = [];
-                 var productsList = _this.productBox.productsList[i];
-                 for(var x = 0;x< productsList.list.length;x++){
-                     var weight = productsList.list[x].weightUnit == "吨"  ? productsList.list[x].weight*1000 :  productsList.list[x].weight*1;
-                     var volume = productsList.list[x].volumeUnit == "立方米"  ? productsList.list[x].volume*1 : productsList.list[x].volume/1000;
-                     var number = productsList.list[x].number;
-                     weightBox.push(weight);
-                     volumeBox.push(volume);
-                     numberBox.push(number);
-                     if(i == 0){
-                       var goodpk = productsList.list[x].productPk;
-                       goodpkBox.push(goodpk);
-                     }
-                     var json = {
-                       product:productsList.list[x].products,
-                       productCode:productsList.list[x].productsCode,
-                       num: productsList.list[x].number*1,
-                       weight:productsList.list[x].weightUnit == "吨"  ? productsList.list[x].weight*1000 :  productsList.list[x].weight*1,
-                       volume:productsList.list[x].volumeUnit == "立方米"  ? productsList.list[x].volume*1 : productsList.list[x].volume/1000,
-                     }
-                     list.push(json)
-                 }
-                 var data = {
-                     car:"车辆"+(i*1+1),
-                     list:list
-                 }
-                 listBox.push(data);
+                if(i == 0){
+                  var list = [];
+                  var productsList = _this.productBox.productsList[i];
+                  for(var x = 0;x< productsList.list.length;x++){
+                    var weight = productsList.list[x].weightUnit == "吨"  ? productsList.list[x].weight*1000 :  productsList.list[x].weight*1;
+                    var volume = productsList.list[x].volumeUnit == "立方米"  ? productsList.list[x].volume*1 : productsList.list[x].volume/1000;
+                    var number = productsList.list[x].number;
+                    weightBox.push(weight);
+                    volumeBox.push(volume);
+                    numberBox.push(number);
+                    if(i == 0){
+                      var goodpk = productsList.list[x].productPk;
+                      goodpkBox.push(goodpk);
+                    }
+                    var json = {
+                      product:productsList.list[x].products,
+                      productCode:productsList.list[x].productsCode,
+                      num: productsList.list[x].number*1,
+                      weight:productsList.list[x].weightUnit == "吨"  ? productsList.list[x].weight*1000 :  productsList.list[x].weight*1,
+                      volume:productsList.list[x].volumeUnit == "立方米"  ? productsList.list[x].volume*1 : productsList.list[x].volume/1000,
+                    }
+                    list.push(json)
+                  }
+                  var data = {
+                    car:"车辆"+(i*1+1),
+                    list:list
+                  }
+                  listBox.push(data);
+                }
+
               }
               var json = {
                 pk_segment:sessionStorage.getItem("dispatchPK"),

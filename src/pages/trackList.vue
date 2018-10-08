@@ -173,7 +173,7 @@
                    data:JSON.stringify({
                      page:pageNum,
                      size:pageSize,
-                     type:1,
+                     type:0,
                      state:curNavIndex,
                      userCode:sessionStorage.getItem("token"),
                      source:sessionStorage.getItem("source")
@@ -186,13 +186,16 @@
                        successCallback(loadEntrust.list);
                      }else{
                        androidIos.second(loadEntrust.message);
+                       successCallback([]);
                      }
                    },
                    complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
                      if (status == 'timeout') { //超时,status还有success,error等值的情况
                        androidIos.second("当前状况下网络状态差，请检查网络！");
+                       successCallback([]);
                      } else if (status == "error") {
                        androidIos.errorwife();
+                       successCallback([]);
                      }
                    }
                  });

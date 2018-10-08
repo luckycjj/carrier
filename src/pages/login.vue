@@ -87,7 +87,7 @@
                 }),80);
                 _this.$cjj("登录成功");
                 setTimeout(function () {
-                  _this.$router.push({ path: '/trackList'});
+                  _this.$router.push({ path: '/robbingList'});
                 },500)
               }else{
                 androidIos.second(login.message);
