@@ -282,7 +282,9 @@
     width:96%;
     margin:0.4rem auto;
     line-height: 1.2rem;
-    background: #dbdbdb;
+    background-image: url("../../images/backgroundJB.png");
+    background-repeat:repeat-y;
+    background-size:9.6rem;
     color:white;
     border-radius: 0.2rem;
     display: block;
@@ -290,7 +292,7 @@
     letter-spacing: 0.0625rem;
   }
   .colorfull{
-     background: #3399FF!important;
+     background-color: #3399FF;
   }
   .divBoth{
     border-radius: 0.2rem;

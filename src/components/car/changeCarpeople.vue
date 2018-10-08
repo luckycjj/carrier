@@ -367,7 +367,9 @@
     width:100%;
     height: 1.2rem;
     color:white;
-    background: #31b6e7;
+    background-image: url("../../images/backgroundJB.png");
+    background-repeat:repeat-y;
+    background-size:10rem;
     position: fixed;
     bottom:0;
     left:0;

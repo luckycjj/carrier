@@ -329,7 +329,9 @@
   button{
     width:96%;
     color:white;
-    background: #999;
+    background-image: url("../../images/backgroundJB.png");
+    background-repeat:repeat-y;
+    background-size:10rem;
     display: block;
     margin: 0.3rem auto;
     font-size: 0.4rem;
@@ -338,7 +340,7 @@
     letter-spacing: 0.03125rem;
   }
   .colorful{
-    background: #3399FF!important;
+    background-color: #3399FF;
   }
 </style>
 

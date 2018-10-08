@@ -38,6 +38,7 @@
       var _this = this;
       _this.title = document.title;
       var cookie = androidIos.getcookie("MESSAGECARRIER");
+      sessionStorage.setItem("source",2);
       if(cookie != ""){
         cookie = JSON.parse(cookie);
         sessionStorage.setItem("token",cookie.token);
@@ -57,7 +58,7 @@
         }else{
           $("#appBox").show();
         }
-        if(_this.html.indexOf("/robbingList") != -1 || _this.html.indexOf("/user") != -1 || _this.html.indexOf("/trackList") != -1  || _this.html.indexOf("/login") != -1){
+        if(_this.html.indexOf("/robbingList") != -1 || _this.html.indexOf("/dispatchList") != -1 || _this.html.indexOf("/user") != -1 || _this.html.indexOf("/trackList") != -1  || _this.html.indexOf("/login") != -1){
           $(".carTitleback").hide();
         }else{
           $(".carTitleback").show();

@@ -37,7 +37,7 @@
                 marginRight:0,
                 cls: "dispatch",
                 name: "调度",
-                push: "/dispatch"
+                push: "/dispatchList"
               },
               {
                 number:0,

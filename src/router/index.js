@@ -2,6 +2,7 @@
 import forgetPassword from '@/components/loginBox/forgetPassword'
 import register from '@/components/loginBox/register'
 import robbing from '../pages/robbing'
+import dispatchList from '../pages/dispatchList'
 import track from '../pages/track'
 import site from '../pages/site'
 import car from '../pages/car'
@@ -116,7 +117,11 @@ Vue.filter('orderTypeName', function(value) {
 });
 
 export default new Router({
-  routes: [
+  routes: [ {
+    path:'/dispatchList',
+    name:'dispatchList',
+    component:dispatchList,
+  },
     {
       path:'/forgetPassword',
       name:'forgetPassword',
