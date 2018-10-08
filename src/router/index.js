@@ -5,6 +5,9 @@ import site from '../pages/site'
 import car from '../pages/car'
 import uploadData from '../pages/uploadData'
 import agreeToRefuse from '../pages/agreeToRefuse'
+import trackList from '../pages/trackList'
+import message from '../pages/message'
+import user from '../pages/user'
 import Vue from 'vue'
 import Router from 'vue-router'
 import  robbingF from '@/components/robbing/robbingMore'
@@ -29,6 +32,12 @@ import uploadDataT from '@/components/uploadData/uploadDataT'
 import uploadDataFo from '@/components/uploadData/uploadDataFo'
 import  agreeList from  '@/components/agreeToRefuse/agreeList'
 import  agreeMore from  '@/components/agreeToRefuse/agreeMore'
+import listMessage from '@/components/message/messageList'
+import aboutUs from '@/components/myBox/aboutUs'
+import setup from '@/components/myBox/setup'
+import suggestion from '@/components/myBox/suggestion'
+import changePassword from '@/components/myBox/changePassword'
+import statusNow from '@/components/myBox/statusNow'
 Vue.use(Router);
 
 Vue.directive('title', {
@@ -105,6 +114,51 @@ Vue.filter('orderTypeName', function(value) {
 
 export default new Router({
   routes: [
+    {
+      path:'/changePassword',
+      name:'changePassword',
+      component:changePassword,
+    },
+    {
+      path:'/statusNow',
+      name:'statusNow',
+      component:statusNow,
+    },
+    {
+      path:'/aboutUs',
+      name:'aboutUs',
+      component:aboutUs,
+    },
+    {
+      path:'/setup',
+      name:'setup',
+      component:setup,
+    },
+    {
+      path:'/suggestion',
+      name:'suggestion',
+      component:suggestion,
+    },
+    {
+      path:'/trackList',
+      name:'trackList',
+      component:trackList,
+    },
+    {
+      path:'/listMessage',
+      name:'listMessage',
+      component:listMessage
+    },
+    {
+      path:'/message',
+      name:'message',
+      component:message,
+    },
+    {
+      path:'/user',
+      name:'user',
+      component:user,
+    },
     {
       path: '/uploadData',
       name: 'uploadData',

@@ -132,11 +132,11 @@
           </div>
           <div class="error" v-if="type > 1 && type < 8 && peopleType == 1">
             <div class="errorFirst" @click="errorFirst()">
-               异常反馈
+              异常反馈
             </div>
             <div class="errorLine"><div></div></div>
             <div class="errorSecond" @click="errorSecond()">
-               费用反馈
+              费用反馈
             </div>
             <div class="clearBoth"></div>
           </div>
@@ -179,25 +179,25 @@
       </div>
     </div>
     <div id="errorAbnormalBox" v-if="errorAbnormalBox">
-         <div id="errorAbnormal">
-            <div id="errorabnormalTitle">
-              <img src="../../images/closed.png" @click="errorAbnormalClosed()">
-              <p>选择异常事故</p>
-            </div>
-           <ul class="errorUl">
-             <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorAbnormalClick($event)">
-                {{item.displayName}}
-             </li>
-             <div class="clearBoth"></div>
-             <input type="text" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
-           </ul>
-           <!--<div id="errorAbnormalChange">
-             <span>是否需要更换运力</span>
-             <img src="../../images/checked.png" class="gray" id="errorAbnormalChangeImg" @click="errorAbnormalChangeImg()">
-             <div class="clearBoth"></div>
-           </div>-->
-           <button @click="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
-         </div>
+      <div id="errorAbnormal">
+        <div id="errorabnormalTitle">
+          <img src="../../images/closed.png" @click="errorAbnormalClosed()">
+          <p>选择异常事故</p>
+        </div>
+        <ul class="errorUl">
+          <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorAbnormalClick($event)">
+            {{item.displayName}}
+          </li>
+          <div class="clearBoth"></div>
+          <input type="text" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
+        </ul>
+        <!--<div id="errorAbnormalChange">
+          <span>是否需要更换运力</span>
+          <img src="../../images/checked.png" class="gray" id="errorAbnormalChangeImg" @click="errorAbnormalChangeImg()">
+          <div class="clearBoth"></div>
+        </div>-->
+        <button @click="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
+      </div>
     </div>
     <div id="errorPriceBox" v-if="errorPriceBox">
       <div id="errorPrice">
@@ -261,8 +261,8 @@
     watch:{
       errorPrice:{
         handler:function(val,oldval){
-             var _this = this;
-            _this.errorPrice=(_this.errorPrice.match(/\d+(\.\d{0,2})?/)||[''])[0];
+          var _this = this;
+          _this.errorPrice=(_this.errorPrice.match(/\d+(\.\d{0,2})?/)||[''])[0];
         },
         deep:true
       }
@@ -450,15 +450,15 @@
                     var lnglat = new AMap.LngLat(_this.carList[dd].endJ, _this.carList[dd].endW);
                     _this.compareDistanc(lnglat,dd);
                     driving.search([_this.carList[dd].startJ, _this.carList[dd].startW], [_this.carList[dd].endJ, _this.carList[dd].endW], function(status, result) {});
-                      /*if (marker) {
-                        marker.setMap(null);
-                        marker = null;
-                      }*/
-                      marker = new AMap.Marker({
-                        icon:require('../../images/start1.png'),
-                        position: [_this.carList[dd].peopleJ, _this.carList[dd].peopleW]
-                      });
-                      marker.setMap(map);
+                    /*if (marker) {
+                      marker.setMap(null);
+                      marker = null;
+                    }*/
+                    marker = new AMap.Marker({
+                      icon:require('../../images/start1.png'),
+                      position: [_this.carList[dd].peopleJ, _this.carList[dd].peopleW]
+                    });
+                    marker.setMap(map);
                   }else{
                     var lnglat = new AMap.LngLat(_this.carList[dd].startJ, _this.carList[dd].startW);
                     _this.compareDistanc(lnglat,dd);
@@ -523,7 +523,7 @@
         }
       },
       telphone:function(tel){
-        bridge.invoke('callTelephone',tel);
+        androidIos.telCall(tel);
       },
       logisticsBoxDown:function () {
         var _this = this;
@@ -541,33 +541,33 @@
         }
       },
       mapGo:function(order){
-         var _this = this;
-         androidIos.addPageList();
-         sessionStorage.setItem("carOrder",JSON.stringify(order));
+        var _this = this;
+        androidIos.addPageList();
+        sessionStorage.setItem("carOrder",JSON.stringify(order));
         _this.$router.push({ path: '/track/map'});
       },
       errorFirst:function () {
-         var _this = this;
-         _this.errorAbnormalBox = true;
-         if(_this.errorAbnormal.length == 0){
-           $.ajax({
-             type: "GET",
-             url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
-             data:{str:"exception_feedback",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
-             dataType: "json",
-             timeout: 10000,
-             success: function (getSysConfigList) {
-               _this.errorAbnormal = getSysConfigList;
-             },
-             complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-               if(status=='timeout'){//超时,status还有success,error等值的情况
-                 androidIos.second("网络请求超时");
-               }else if(status=='error'){
-                 androidIos.errorwife();
-               }
-             }
-           })
-         }
+        var _this = this;
+        _this.errorAbnormalBox = true;
+        if(_this.errorAbnormal.length == 0){
+          $.ajax({
+            type: "GET",
+            url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
+            data:{str:"exception_feedback",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
+            dataType: "json",
+            timeout: 10000,
+            success: function (getSysConfigList) {
+              _this.errorAbnormal = getSysConfigList;
+            },
+            complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+              if(status=='timeout'){//超时,status还有success,error等值的情况
+                androidIos.second("网络请求超时");
+              }else if(status=='error'){
+                androidIos.errorwife();
+              }
+            }
+          })
+        }
       },
       errorSecond:function () {
         var _this = this;
@@ -643,7 +643,7 @@
             }
           })
         }else{
-           bomb.first("请不要频繁点击");
+          bomb.first("请不要频繁点击");
         }
       },
       errorAbnormalClosed:function () {
@@ -759,9 +759,9 @@
         var _this = this;
         if(_this.pdlist[0].pkCarHang == ""){
           sessionStorage.setItem("LABELTOP",JSON.stringify({
-             number:_this.pdlist[0].pkTransType,
-             type:0,
-             serach:""
+            number:_this.pdlist[0].pkTransType,
+            type:0,
+            serach:""
           }))
           sessionStorage.setItem("carsure",JSON.stringify([{
             pkcar:_this.pdlist[0].pkCar,
@@ -1377,7 +1377,9 @@
   }
   #sure button{
     width:100%;
-    background:#3492ff;
+    background-image: url("../../images/backgroundJB.png");
+    background-repeat:repeat-y;
+    background-size:10rem;
     color:white;
     font-size: 0.4rem;
     letter-spacing: 0.0625rem;
@@ -1515,7 +1517,7 @@
     margin: 0.375rem auto;
   }
   #errorAbnormalBox,#errorPriceBox,#cancelReasonBox{
-     width:100%;
+    width:100%;
     height: 100%;
     position: fixed;
     top:0;
@@ -1585,7 +1587,7 @@
     line-height: 0.8rem;
   }
   #errorAbnormalChange img,#errorPriceChange img{
-     width:0.6rem;
+    width:0.6rem;
     float: right;
     margin-top: 0.1rem;
   }
