@@ -39,44 +39,70 @@
       _this.title = document.title;
       var cookie = androidIos.getcookie("MESSAGECARRIER");
       sessionStorage.setItem("source",2);
-      if(cookie != ""){
+      if(cookie != "" && sessionStorage.getItem("addPageList")*1 == 0){
         cookie = JSON.parse(cookie);
         sessionStorage.setItem("token",cookie.token);
         _this.$router.push({ path: '/robbingList'});
-      }else{
+      }else if(cookie == ""){
         _this.$router.push({ path: '/login'});
       }
       androidIos.bridge(_this);
     },
+    beforeUpdate:function () {
+      var _this = this;
+      _this.title = document.title;
+      _this.html = location.href;
+      if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1){
+        $("#appBox").hide();
+      }else{
+        $("#appBox").show();
+      }
+      if(_this.html.indexOf("/robbingList") != -1 || _this.html.indexOf("/dispatchList") != -1 || _this.html.indexOf("/user") != -1 || _this.html.indexOf("/trackList") != -1  || _this.html.indexOf("/login") != -1){
+        $(".carTitleback").hide();
+      }else{
+        $(".carTitleback").show();
+      }
+      if(_this.html.indexOf("chooseSite") != -1 || _this.html.indexOf("/car/changeCarpeople") != -1){
+        _this.doNow = 1;
+      }else if(_this.html.indexOf("robbingMore") != -1){
+        _this.doNow = 2;
+      }else if(_this.html.indexOf("/site/car") != -1){
+        _this.doNow = 3;
+      }else if( _this.html.indexOf("/track/trackMore") != -1){
+        _this.doNow = 4;
+      }else if( _this.html.indexOf("/user") != -1){
+        _this.doNow = 5;
+      }else{
+        _this.doNow = "";
+      }
+    },
     updated: function () {
       var _this = this;
-      _this.$nextTick(function () {
-        _this.title = document.title;
-        _this.html = location.href;
-        if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1){
-          $("#appBox").hide();
-        }else{
-          $("#appBox").show();
-        }
-        if(_this.html.indexOf("/robbingList") != -1 || _this.html.indexOf("/dispatchList") != -1 || _this.html.indexOf("/user") != -1 || _this.html.indexOf("/trackList") != -1  || _this.html.indexOf("/login") != -1){
-          $(".carTitleback").hide();
-        }else{
-          $(".carTitleback").show();
-        }
-        if(_this.html.indexOf("chooseSite") != -1 || _this.html.indexOf("/car/changeCarpeople") != -1){
-          _this.doNow = 1;
-        }else if(_this.html.indexOf("robbingMore") != -1){
-          _this.doNow = 2;
-        }else if(_this.html.indexOf("/site/car") != -1){
-          _this.doNow = 3;
-        }else if( _this.html.indexOf("/track/trackMore") != -1){
-          _this.doNow = 4;
-        }else if( _this.html.indexOf("/user") != -1){
-          _this.doNow = 5;
-        }else{
-          _this.doNow = "";
-        }
-      })
+      _this.title = document.title;
+      _this.html = location.href;
+      if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1){
+        $("#appBox").hide();
+      }else{
+        $("#appBox").show();
+      }
+      if(_this.html.indexOf("/robbingList") != -1 || _this.html.indexOf("/dispatchList") != -1 || _this.html.indexOf("/user") != -1 || _this.html.indexOf("/trackList") != -1  || _this.html.indexOf("/login") != -1){
+        $(".carTitleback").hide();
+      }else{
+        $(".carTitleback").show();
+      }
+      if(_this.html.indexOf("chooseSite") != -1 || _this.html.indexOf("/car/changeCarpeople") != -1){
+        _this.doNow = 1;
+      }else if(_this.html.indexOf("robbingMore") != -1){
+        _this.doNow = 2;
+      }else if(_this.html.indexOf("/site/car") != -1){
+        _this.doNow = 3;
+      }else if( _this.html.indexOf("/track/trackMore") != -1){
+        _this.doNow = 4;
+      }else if( _this.html.indexOf("/user") != -1){
+        _this.doNow = 5;
+      }else{
+        _this.doNow = "";
+      }
     },
     methods:{
       go:function () {
@@ -328,7 +354,7 @@
   #errorwifeBox{
     position: fixed;
     z-index: 999;
-    top:1.3rem;
+    top:0rem;
     width:100%;
     bottom:0;
     height: auto;
