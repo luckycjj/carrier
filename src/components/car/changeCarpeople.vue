@@ -350,6 +350,14 @@
 <style scoped>
   @import "../../css/mescroll.css";
   @import "../../css/scroll.css";
+  #changeCarpeople{
+    position:absolute;
+    top:0rem;
+    bottom:0;
+    height: auto;
+    width:100%;
+    background: #f6f6f6;
+  }
   #changeCarpeople ul{
     width:100%;
     background: white;

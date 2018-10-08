@@ -20,6 +20,7 @@
     bottom:0;
     position: absolute;
     margin-top: 0.03125rem;
+    background: #f6f6f6;
   }
   #carBox .set_image_all {
     cursor: pointer;

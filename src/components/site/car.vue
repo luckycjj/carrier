@@ -950,6 +950,7 @@
 <style>
   @import "../../css/mescroll.css";
   @import "../../css/scroll.css";
+
   #car #Allcar{
     position: fixed;
     top: 2.21875rem;
@@ -1191,6 +1192,14 @@
   }
 </style>
 <style scoped>
+  #car{
+    position:absolute;
+    top:0rem;
+    bottom:0;
+    height: auto;
+    width:100%;
+    background: #f6f6f6;
+  }
   #filterBox{
     position: fixed;
     top:0;

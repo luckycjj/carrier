@@ -242,6 +242,14 @@
 <style>
   @import "../../css/mescroll.css";
   @import "../../css/scroll.css";
+  #agreeList{
+    position:absolute;
+    top:0rem;
+    bottom:0;
+    height: auto;
+    width:100%;
+    background: #f6f6f6;
+  }
   #agreeList ul{
     width:100%;
     margin-top: 0.2rem;

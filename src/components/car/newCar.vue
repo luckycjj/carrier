@@ -630,6 +630,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  #newCar{
+    position:absolute;
+    top:0rem;
+    bottom:0;
+    height: auto;
+    width:100%;
+    background: #f6f6f6;
+  }
   .box{
     width:100%;
     background: white;

@@ -247,6 +247,14 @@
 </script>
 
 <style scoped>
+  #chooseStart{
+    position:absolute;
+    top:0rem;
+    bottom:0;
+    height: auto;
+    width:100%;
+    background: #f6f6f6;
+  }
   .chooseNormal{
     width:94%;
     padding: 0 3%;
