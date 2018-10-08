@@ -101,12 +101,12 @@
         },
       mounted:function () {
         var _this = this;
-        var driverMessage = sessionStorage.getItem("driverMessage");
-        if(driverMessage != null) {
-          driverMessage = JSON.parse(driverMessage);
-          _this.message.photo = driverMessage.photo;
-          _this.message.name = driverMessage.name;
-          _this.message.status = driverMessage.status;
+        var carrierMessage = sessionStorage.getItem("carrierMessage");
+        if(carrierMessage != null) {
+          carrierMessage = JSON.parse(carrierMessage);
+          _this.message.photo = carrierMessage.photo;
+          _this.message.name = carrierMessage.name;
+          _this.message.status = carrierMessage.status;
         }
           $.ajax({
             type: "POST",
@@ -123,7 +123,7 @@
                 _this.message.photo =  getUserInfo.photo;
                 _this.message.name =   getUserInfo.corpName;
                 _this.message.status =   getUserInfo.status;
-                sessionStorage.setItem("driverMessage",JSON.stringify({
+                sessionStorage.setItem("carrierMessage",JSON.stringify({
                   licType: getUserInfo.licType,
                   name:  getUserInfo.name,
                   photo:  getUserInfo.photo,
@@ -288,11 +288,11 @@
                   if (uploadAvatar.success == "1") {
                     _this.$cjj("上传成功");
                     _this.message.photo = _this.httpurl + photoUrl;
-                    var driverMessage = sessionStorage.getItem("driverMessage");
-                    if( driverMessage != null){
-                      driverMessage = JSON.parse(driverMessage);
-                      driverMessage.photo = _this.message.photo;
-                      sessionStorage.setItem("driverMessage",JSON.stringify(driverMessage));
+                    var carrierMessage = sessionStorage.getItem("carrierMessage");
+                    if( carrierMessage != null){
+                      carrierMessage = JSON.parse(carrierMessage);
+                      carrierMessage.photo = _this.message.photo;
+                      sessionStorage.setItem("carrierMessage",JSON.stringify(carrierMessage));
                     }
                   } else{
                     androidIos.second(uploadAvatar.message);

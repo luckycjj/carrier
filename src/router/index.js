@@ -1,8 +1,11 @@
 // 引入子路由
+import forgetPassword from '@/components/loginBox/forgetPassword'
+import register from '@/components/loginBox/register'
 import robbing from '../pages/robbing'
 import track from '../pages/track'
 import site from '../pages/site'
 import car from '../pages/car'
+import login from '../pages/login'
 import uploadData from '../pages/uploadData'
 import agreeToRefuse from '../pages/agreeToRefuse'
 import trackList from '../pages/trackList'
@@ -115,9 +118,24 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router({
   routes: [
     {
+      path:'/forgetPassword',
+      name:'forgetPassword',
+      component:forgetPassword,
+    },
+    {
+      path:'/register',
+      name:'register',
+      component:register,
+    },
+    {
       path:'/changePassword',
       name:'changePassword',
       component:changePassword,
+    },
+    {
+      path:'/login',
+      name:'login',
+      component:login,
     },
     {
       path:'/statusNow',

@@ -37,17 +37,14 @@
     mounted:function () {
       var _this = this;
       _this.title = document.title;
-      var cookie = androidIos.getcookie("MESSAGEDRIVER");
-      sessionStorage.setItem("token",13162095658);
-      sessionStorage.setItem("source",2);
-      /*if(cookie != ""){
+      var cookie = androidIos.getcookie("MESSAGECARRIER");
+      if(cookie != ""){
         cookie = JSON.parse(cookie);
         sessionStorage.setItem("token",cookie.token);
         _this.$router.push({ path: '/trackList'});
       }else{
         _this.$router.push({ path: '/login'});
-      }*/
-      _this.$router.push({ path: '/trackList'});
+      }
       androidIos.bridge(_this);
     },
     updated: function () {
