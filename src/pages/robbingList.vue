@@ -274,7 +274,7 @@
     width:5rem;
   }
   .wrapper .scroller li a{
-    color:#77B6F8;
+    color:#6DCFF8;
     display:block;
     font-size: 0.35rem;
     margin:0 0.1rem;
