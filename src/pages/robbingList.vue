@@ -22,7 +22,9 @@
         </div>
         <div class="screenDistance">
           <div class="distanceLine"></div>
-          <p v-html="searchList.distance == '' ? '运输距离' : searchList.distanceName " @click="checkdistance()"></p>
+          <div class="dist">
+            <p v-html="searchList.distance == '' ? '运输距离' : searchList.distanceName " @click="checkdistance()"></p>
+          </div>
         </div>
         <div class="clearBoth"></div>
       </div>
@@ -339,10 +341,10 @@
                 type:curNavIndex,
                 userCode:sessionStorage.getItem("token"),
                 source:sessionStorage.getItem("source"),
-                startCity:_this.searchList.startAdd,
-                endCity:_this.searchList.endAdd,
-                transType:_this.searchList.zeroload ? 1 : 0,
-                range:_this.searchList.distance, //不传
+                startCity:curNavIndex == 0 ? _this.searchList.startAdd : "",
+                endCity:curNavIndex == 0 ? _this.searchList.endAdd : "",
+                transType:curNavIndex == 0 ? (_this.searchList.zeroload ? 1 : 0) : "",
+                range:curNavIndex == 0 ?_this.searchList.distance : "", //不传
                 pkTransType:"",//不传
                 gta: "",
                 lta: "",
@@ -410,7 +412,7 @@
           if(_this.searchList.endAdd != "" && _this.searchList.searchEndPro == ""){
             for(var i = 0; i < _this.hotAddressList.length;i++){
               _this.hotAddressList[i].checked = false;
-              if(_this.hotAddressList[i].region == _this.searchList.startAdd){
+              if(_this.hotAddressList[i].region == _this.searchList.endAdd){
                 _this.hotAddressList[i].checked = true;
               }
             }
@@ -591,9 +593,27 @@
     position: relative;
   }
   .screenDistance p{
+    display: inline-block;
+    font-size:0.4rem ;
+    max-width: 2rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    background-image: url("../images/dropDown.png");
+    background-size:0.22rem ;
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    padding-right: 0.3rem;
+  }
+  .dist{
+    width:100%;
+    float: left;
+    line-height: 1.3rem;
+    position: relative;
     font-size:0.4rem ;
     color:#333;
     text-align: center;
+    display: inline-block;
   }
   .distanceLine{
     position: absolute;
@@ -601,7 +621,7 @@
     background-color: #333;
     height:0.82rem;
     left:0;
-    top:50%;
+    top:39%;
     margin-top: -0.41rem;
   }
   .startAddre{

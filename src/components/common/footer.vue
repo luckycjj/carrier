@@ -62,12 +62,23 @@
       methods:{
           go:function () {
             var _this = this;
+            var SCREENROBBING = localStorage.getItem("SCREENROBBING");
+            if(SCREENROBBING != null){
+              SCREENROBBING = JSON.parse(SCREENROBBING);
+            }else{
+              SCREENROBBING = "";
+            }
             $.ajax({
               type: "POST",
               url: androidIos.ajaxHttp() + "/carrier/bottomIcon",
               data:JSON.stringify({
                 userCode:sessionStorage.getItem("token"),
-                source:sessionStorage.getItem("source")
+                source:sessionStorage.getItem("source"),
+                startCity:SCREENROBBING != "" ? SCREENROBBING.startAdd : "",
+                endCity:SCREENROBBING != "" ? SCREENROBBING.endAdd : "",
+                range:SCREENROBBING != "" ? SCREENROBBING.distance : "",
+                pkTransType:SCREENROBBING.zeroload && SCREENROBBING != "" ? 1 :"",
+                transType:"",
               }),
               contentType: "application/json;charset=utf-8",
               dataType: "json",

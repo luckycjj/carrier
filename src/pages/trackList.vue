@@ -1,6 +1,6 @@
 <template>
   <div id="trackList">
-    <div id="title" v-title data-title="订单"></div>
+    <div id="title" v-title data-title="订单跟踪"></div>
     <div id="showBox">
       <div class="wrapper" id="trackTab">
         <div class="scroller">
