@@ -34,6 +34,8 @@
           sessionStorage.removeItem("token");
           androidIos.delCookie("MESSAGECARRIER");
           sessionStorage.removeItem("carrierMessage");
+          sessionStorage.removeItem("robbingTap");
+          localStorage.removeItem("SCREENROBBING");
           androidIos.bridge(_this);
       },
       methods:{

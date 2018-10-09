@@ -32,6 +32,7 @@
       return {
         title:"",
         doNow:"",
+        nouser:false,
       }
     },
     mounted:function () {
@@ -44,7 +45,7 @@
         sessionStorage.setItem("token",cookie.token);
         _this.$router.push({ path: '/robbingList'});
       }else if(cookie == ""){
-        _this.$router.push({ path: '/login'});
+        _this.$router.push({ path: '/robbingList'});
       }
       androidIos.bridge(_this);
     },
@@ -421,5 +422,17 @@
     background-size: 0.7rem;
     background-repeat: no-repeat;
     background-position: 100% 50%;
+  }
+</style>
+<style scoped>
+  #noUser{
+    position: fixed;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    width:auto;
+    height:auto;
+    z-index: 999;
   }
 </style>

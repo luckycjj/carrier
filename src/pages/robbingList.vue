@@ -375,63 +375,71 @@
       },
       checkAddress:function (type) {
         var _this = this;
-        _this.screenAddressTrue = true;
-        _this.addtype = type;
-        _this.normalCityList = [];
-        for(var i =0 ; i < _this.hotAddressList.length;i++){
-          _this.hotAddressList[i].checked = false;
-        }
-        for(var i =0 ; i < _this.normalCityList.length;i++){
-          _this.normalCityList[i].checked = false;
-        }
-        if(type == 0){
-          _this.searchStartPro =  _this.searchList.searchStartPro;
-          if(_this.searchList.startAdd != "" && _this.searchList.searchStartPro == ""){
-            for(var i = 0; i < _this.hotAddressList.length;i++){
-              _this.hotAddressList[i].checked = false;
-              if(_this.hotAddressList[i].region == _this.searchList.startAdd){
-                _this.hotAddressList[i].checked = true;
+        var cookie = androidIos.getcookie("MESSAGECARRIER");
+        if(cookie == ""){
+          androidIos.first("尚未登录,请登录!");
+          $(".tanBox-yes").unbind('click').click(function(){
+            $(".tanBox-bigBox").remove();
+            _this.$router.push({ path: '/login'});
+          });
+        }else{
+          _this.screenAddressTrue = true;
+          _this.addtype = type;
+          _this.normalCityList = [];
+          for(var i =0 ; i < _this.hotAddressList.length;i++){
+            _this.hotAddressList[i].checked = false;
+          }
+          for(var i =0 ; i < _this.normalCityList.length;i++){
+            _this.normalCityList[i].checked = false;
+          }
+          if(type == 0){
+            _this.searchStartPro =  _this.searchList.searchStartPro;
+            if(_this.searchList.startAdd != "" && _this.searchList.searchStartPro == ""){
+              for(var i = 0; i < _this.hotAddressList.length;i++){
+                _this.hotAddressList[i].checked = false;
+                if(_this.hotAddressList[i].region == _this.searchList.startAdd){
+                  _this.hotAddressList[i].checked = true;
+                }
+              }
+            }else if( _this.searchList.searchStartPro != ""){
+              for(var i = 0 ; i < _this.normalAddressList.length ; i++){
+                if(_this.searchList.searchStartPro == _this.normalAddressList[i].region){
+                  _this.normalCityList = _this.normalAddressList[i].child;
+                  break;
+                }
+              }
+              for(var i = 0 ; i < _this.normalCityList.length ; i++){
+                _this.normalCityList[i].checked = false;
+                if(_this.searchList.startAdd == _this.normalCityList[i].region){
+                  _this.normalCityList[i].checked = true;
+                }
               }
             }
-          }else if( _this.searchList.searchStartPro != ""){
-            for(var i = 0 ; i < _this.normalAddressList.length ; i++){
-              if(_this.searchList.searchStartPro == _this.normalAddressList[i].region){
-                 _this.normalCityList = _this.normalAddressList[i].child;
-                 break;
+          }else if(type == 1){
+            _this.searchEndPro =  _this.searchList.searchEndPro;
+            if(_this.searchList.endAdd != "" && _this.searchList.searchEndPro == ""){
+              for(var i = 0; i < _this.hotAddressList.length;i++){
+                _this.hotAddressList[i].checked = false;
+                if(_this.hotAddressList[i].region == _this.searchList.endAdd){
+                  _this.hotAddressList[i].checked = true;
+                }
               }
-            }
-            for(var i = 0 ; i < _this.normalCityList.length ; i++){
-              _this.normalCityList[i].checked = false;
-               if(_this.searchList.startAdd == _this.normalCityList[i].region){
-                 _this.normalCityList[i].checked = true;
-               }
+            }else if( _this.searchList.searchEndPro != ""){
+              for(var i = 0 ; i < _this.normalAddressList.length ; i++){
+                if(_this.searchList.searchEndPro == _this.normalAddressList[i].region){
+                  _this.normalCityList = _this.normalAddressList[i].child;
+                  break;
+                }
+              }
+              for(var i = 0 ; i < _this.normalCityList.length ; i++){
+                _this.normalCityList[i].checked = false;
+                if(_this.searchList.endAdd == _this.normalCityList[i].region){
+                  _this.normalCityList[i].checked = true;
+                }
+              }
             }
           }
-        }else if(type == 1){
-          _this.searchEndPro =  _this.searchList.searchEndPro;
-          if(_this.searchList.endAdd != "" && _this.searchList.searchEndPro == ""){
-            for(var i = 0; i < _this.hotAddressList.length;i++){
-              _this.hotAddressList[i].checked = false;
-              if(_this.hotAddressList[i].region == _this.searchList.endAdd){
-                _this.hotAddressList[i].checked = true;
-              }
-            }
-          }else if( _this.searchList.searchEndPro != ""){
-            for(var i = 0 ; i < _this.normalAddressList.length ; i++){
-              if(_this.searchList.searchEndPro == _this.normalAddressList[i].region){
-                _this.normalCityList = _this.normalAddressList[i].child;
-                break;
-              }
-            }
-            for(var i = 0 ; i < _this.normalCityList.length ; i++){
-              _this.normalCityList[i].checked = false;
-              if(_this.searchList.endAdd == _this.normalCityList[i].region){
-                _this.normalCityList[i].checked = true;
-              }
-            }
-          }
         }
-
       },
       hotAddressListno:function () {
         var _this = this;
@@ -546,8 +554,17 @@
       },
       lookTrackMore:function (item) {
         var _this = this;
-        androidIos.addPageList();
-        _this.$router.push({ path: '/robbing/robbingMore',query:{pk:item.pkSegment,type:_this.tabShow == 0 ? 1 : 2}});
+        var cookie = androidIos.getcookie("MESSAGECARRIER");
+        if(cookie == ""){
+          androidIos.first("尚未登录,请登录!");
+          $(".tanBox-yes").unbind('click').click(function(){
+            $(".tanBox-bigBox").remove();
+            _this.$router.push({ path: '/login'});
+          });
+        }else{
+          androidIos.addPageList();
+          _this.$router.push({ path: '/robbing/robbingMore',query:{pk:item.pkSegment,type:_this.tabShow == 0 ? 1 : 2}});
+        }
       },
     },
     beforeDestroy:function () {

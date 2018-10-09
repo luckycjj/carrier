@@ -1,7 +1,7 @@
 <template>
   <div id="footer">
     <ul>
-      <li v-for='(item,index) in items' :class='[{on:index === idx} ]' @click="$router.push(item.push)">
+      <li v-for='(item,index) in items' :class='[{on:index === idx} ]' @click="rout(item)">
         <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show=" item.number > 0">{{item.number}}</div></div>
         {{item.name}}
       </li>
@@ -105,6 +105,19 @@
               }
             });
           },
+        rout:function (item) {
+          var _this = this;
+          var cookie = androidIos.getcookie("MESSAGECARRIER");
+          if(cookie == ""){
+            androidIos.first("尚未登录,请登录!");
+            $(".tanBox-yes").unbind('click').click(function(){
+              $(".tanBox-bigBox").remove();
+              _this.$router.push({ path: '/login'});
+            });
+          }else{
+            _this.$router.push(item.push);
+          }
+        },
         marginWidth:function () {
           var _this = this;
           var corner = document.getElementsByClassName("corner");
