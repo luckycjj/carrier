@@ -9,7 +9,24 @@
           </ul>
         </div>
       </div>
-      <div v-for="(item,index) in list" :id="'mescroll' + index" :class="index != tabShow ? 'hide' :''" class="mescroll">
+      <div id="screen" v-if="tabShow == 0">
+        <div class="screenAddre">
+            <div class="startAddre">
+               <div class="addresscheck" @click="checkAddress()" v-html="searchList.startAdd == '' ? '全国' : searchList.startAdd "></div>
+            </div>
+            <img src="../images/arrow.png">
+            <div class="startAddre">
+              <div class="addresscheck" v-html="searchList.endAdd == '' ? '全国' : searchList.endAdd "></div>
+            </div>
+           <div class="clearBoth"></div>
+        </div>
+        <div class="screenDistance">
+          <div class="distanceLine"></div>
+          <p v-html="searchList.distance == '' ? '运输距离' : searchList.distanceName " @click="checkdistance()"></p>
+        </div>
+        <div class="clearBoth"></div>
+      </div>
+      <div v-for="(item,index) in list" :id="'mescroll' + index" :class="index != tabShow ? 'hide' :''" class="mescroll" :style="{top:index == 0 ? '2.8rem' : '1.3rem'}">
         <ul :id="'dataList' + index" class="data-list">
           <li v-for="(items,indexs) in item.prolist" @click="lookTrackMore(items)">
             <h3>￥{{items.price*1}}</h3>
@@ -27,6 +44,28 @@
       </div>
     </div>
     <footComponent ref="footcomponent" :idx='0'></footComponent>
+    <transition name="slide-fade">
+      <div id="screenDistanceBox" v-if="screenDistanceTrue">
+        <div id="screenDistanceBody">
+          <img src="../images/closed2.png" @click="screenDistanceTrueClick(false)">
+          <p>选择运输距离<span>（公里）</span></p>
+          <ul>
+            <li v-for="(item,index) in distanceList" @click="distanceListChecked(index)" :class="item.checked ? 'distanceListcheckTrue': ''" :style="{marginRight : index % 4 != 3 ? '0.25rem' : '0'}">{{item.name}}</li>
+            <div class="clearBoth"></div>
+          </ul>
+          <div class="screenDistanceCheck">
+            <h6>只看零担货源</h6>
+            <div class="screenDistanceCheckFalse" @click="screenDistanceCheckFalse()" :class="zeroload ? 'screenDistanceCheckTrue': ''"></div>
+            <div class="clearBoth"></div>
+          </div>
+           <div class="screenDistanceButton">
+             <button @click="screenDistanceReset()">重置</button>
+             <button @click="screenDistanceTrueClick(true)">确定</button>
+             <div class="clearBoth"></div>
+           </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -50,7 +89,38 @@
           number:0,
           prolist:[]
         }],
+        searchList:{
+          startAdd:"",
+          endAdd:"",
+          distance:"",
+          distanceName:"",
+          zeroload:false,
+        },
         tabShow:0,
+        mescrollArrList:null,
+        screenDistanceTrue:false,
+        zeroload:false,
+        distanceList:[{
+          name:"不限",
+          value:"0",
+          checked:false,
+        },{
+          name:"0-200",
+          value:"0-200",
+          checked:false,
+        },{
+          name:"200-500",
+          value:"200-500",
+          checked:false,
+        },{
+          name:"500-1000",
+          value:"500-1000",
+          checked:false,
+        },{
+          name:"1000以上",
+          value:"1000",
+          checked:false,
+        }]
       }
     },
     mounted:function () {
@@ -63,6 +133,10 @@
       sessionStorage.removeItem("dispatchPK");
       sessionStorage.removeItem("carPKlistGo");
       sessionStorage.removeItem("driverPk");
+      var SCREENROBBING = localStorage.getItem("SCREENROBBING");
+      if(SCREENROBBING != null){
+         _this.searchList = JSON.parse(SCREENROBBING);
+      }
       androidIos.bridge(_this);
     },
     methods:{
@@ -77,7 +151,7 @@
         var mescrollArr=new Array(_this.list.length);//4个菜单所对应的4个mescroll对象
         //初始化首页
         mescrollArr[_this.tabShow]=initMescroll("mescroll" + _this.tabShow, "dataList" + _this.tabShow);
-
+        _this.mescrollArrList = mescrollArr;
         /*初始化菜单*/
         $("#trackTab li").click(function(){
           var i=Number($(this).attr("i"));
@@ -93,6 +167,7 @@
             //取出菜单所对应的mescroll对象,如果未初始化则初始化
             if(mescrollArr[i]==null){
               mescrollArr[i]=initMescroll("mescroll"+i, "dataList"+i);
+              _this.mescrollArrList = mescrollArr;
             }else{
               //检查是否需要显示回到到顶按钮
               var curMescroll=mescrollArr[i];
@@ -166,13 +241,13 @@
                 type:curNavIndex,
                 userCode:sessionStorage.getItem("token"),
                 source:sessionStorage.getItem("source"),
-                startCity:"",
-                endCity:"",
-                transType:"",
-                range:"", //不传
+                startCity:_this.searchList.startAdd,
+                endCity:_this.searchList.endAdd,
+                transType:_this.searchList.zeroload ? 1 : 0,
+                range:_this.searchList.distance, //不传
                 pkTransType:"",//不传
-                gta:"",
-                lta:"",
+                gta: "",
+                lta: "",
               }),
               contentType: "application/json;charset=utf-8",
               dataType: "json",
@@ -196,6 +271,56 @@
               }
             });
           },100)
+        }
+      },
+      checkdistance:function () {
+        var _this = this;
+        _this.screenDistanceTrue = true;
+        for(var i = 0;i < _this.distanceList.length ; i++){
+          if(_this.distanceList[i].value == _this.searchList.distance){
+            _this.distanceList[i].checked = true;
+          }
+        }
+        _this.zeroload = _this.searchList.zeroload;
+       /* _this.mescrollArrList[0].resetUpScroll();*/
+      },
+      distanceListChecked:function (number) {
+         var _this = this;
+        for(var i = 0;i < _this.distanceList.length ; i++){
+          _this.distanceList[i].checked = false;
+        }
+        _this.distanceList[number].checked = true;
+      },
+      screenDistanceReset:function () {
+        var _this = this;
+        for(var i = 0;i < _this.distanceList.length ; i++){
+          _this.distanceList[i].checked = false;
+        }
+        _this.zeroload = false;
+      },
+      screenDistanceCheckFalse:function () {
+        var _this = this;
+        _this.zeroload = !_this.zeroload;
+      },
+      screenDistanceTrueClick:function (type) {
+        var _this = this;
+        _this.screenDistanceTrue = false;
+        var list = [];
+        var listName = [];
+        for(var i = 0;i < _this.distanceList.length ; i++){
+          if(_this.distanceList[i].checked){
+            list.push(_this.distanceList[i].value);
+            listName.push(_this.distanceList[i].name);
+            _this.distanceList[i].checked = false;
+          }
+        }
+        if(type){
+          _this.searchList.distance = list.join(",");
+          _this.searchList.distanceName = listName.join(",");
+          _this.searchList.zeroload = _this.zeroload;
+          _this.zeroload = false;
+          _this.mescrollArrList[0].resetUpScroll();
+          localStorage.setItem("SCREENROBBING",JSON.stringify(_this.searchList))
         }
       },
       lookTrackMore:function (item) {
@@ -230,6 +355,64 @@
   }
 </style>
 <style scoped>
+  #screen{
+    width:100%;
+    height:1.35rem;
+    background-color: white;
+    border-bottom: 0.15rem solid #f6f6f6;
+  }
+  .screenAddre{
+    float: left;
+    width:6.7rem;
+  }
+  .screenDistance{
+    float: left;
+    width:3.3rem;
+    line-height: 1.3rem;
+    position: relative;
+  }
+  .screenDistance p{
+    font-size:0.4rem ;
+    color:#333;
+    text-align: center;
+  }
+  .distanceLine{
+    position: absolute;
+    width:1px;
+    background-color: #333;
+    height:0.82rem;
+    left:0;
+    top:50%;
+    margin-top: -0.41rem;
+  }
+  .startAddre{
+     width:46.6%;
+     float: left;
+    line-height: 1.3rem;
+    position: relative;
+    font-size:0.4rem ;
+    color:#333;
+    text-align: center;
+    display: inline-block;
+  }
+  .addresscheck{
+    display: inline-block;
+    font-size:0.4rem ;
+    max-width: 2rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    background-image: url("../images/dropDown.png");
+    background-size:0.22rem ;
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    padding-right: 0.3rem;
+  }
+  .screenAddre img{
+    width:6.8%;
+    float: left;
+    margin-top: 0.573rem;
+  }
   #robbingList{
     position:absolute;
     top:0rem;
@@ -253,7 +436,7 @@
   }
   .wrapper {
     position:relative;
-    height: 1.2rem;
+    height: 1.3rem;
     width: 100%;
     margin:0 auto;
     background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
@@ -265,10 +448,10 @@
     position:absolute;
   }
   .wrapper .scroller li {
-    height: 1.2rem;
+    height: 1.3rem;
     color:#373737;
     float: left;
-    line-height: 1.2rem;
+    line-height: 1.3rem;
     font-size: .4rem;
     text-align: center;
     width:5rem;
@@ -387,5 +570,130 @@
     font-size:0.35rem ;
     margin-top: 0.1rem;
     max-width: 6rem;
+  }
+  #screenDistanceBox{
+    position: fixed;
+    top:0;
+    bottom: 0;
+    left:0;
+    right:0;
+    height:auto;
+    width:auto;
+    background-color: rgba(0,0,0,0.3);
+  }
+  #screenDistanceBody{
+    position: absolute;
+    top:2.6rem;
+    width:98%;
+    left:1%;
+    border-radius:0.4rem ;
+    min-height: 2rem;
+    background: white;
+  }
+  #screenDistanceBody img{
+    position: absolute;
+    width:0.3rem;
+    top:0.4rem;
+    right:0.4rem;
+  }
+  #screenDistanceBody p{
+    text-align: center;
+    font-size: 0.43rem;
+    color:#333;
+    margin-top:0.15rem ;
+  }
+  #screenDistanceBody p span{
+    font-size: 0.43rem;
+    color:#999;
+  }
+  #screenDistanceBody ul{
+    width:9rem;
+    margin: 0.5rem  auto 0 auto;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  #screenDistanceBody li{
+    float: left;
+    width:2rem;
+    border: 1px solid #e6e6e6;
+    text-align: center;
+    line-height: 0.7rem;
+    border-radius: 0.1rem;
+    color:#333;
+    font-size: 0.35rem;
+    margin-bottom: 0.35rem;
+  }
+  .marginRight{
+    margin-right: 0.25rem;
+  }
+  .screenDistanceCheck{
+    width:9rem;
+    margin: 0.4rem  auto 0 auto;
+    border-top: 1px solid white;
+  }
+  .screenDistanceCheck h6{
+     float: left;
+     font-size: 0.375rem;
+     color:#333;
+    line-height: 0.375rem;
+  }
+  .distanceListcheckTrue{
+    border:1px solid #2c9cff!important;
+    background-image: url("../images/checkdistance.png");
+    background-position: 102% 102%;
+    background-size: 0.4rem;
+    background-repeat: no-repeat;
+  }
+  .screenDistanceCheckFalse{
+      width:0.42rem;
+      height: 0.42rem;
+      border-radius: 0.22rem;
+      border:1px solid #999;
+      margin-top: -0.06rem;
+      float: right;
+  }
+  .screenDistanceButton{
+    width:9rem;
+    margin: 0.96rem  auto 0.3334rem auto;
+  }
+  .screenDistanceButton button:nth-child(1){
+    width:2.32rem;
+    height:1.1rem;
+    border: 1px solid #2c9cff;
+    color:#2c9cff;
+    border-radius: 0.15rem;
+    background-color: transparent;
+    font-size: 0.45rem;
+    float: left;
+  }
+  .screenDistanceButton button:nth-child(2){
+    width:6.46rem;
+    height:1.1rem;
+    border: 1px solid #2c9cff;
+    color:#fff;
+    border-radius: 0.15rem;
+    background-color: #2c9cff;
+    font-size: 0.45rem;
+    float: right;
+  }
+  .screenDistanceCheckTrue{
+     border: 1px solid #2c9cff!important;
+    background-image: url("../images/screenDistanceCheckFalse.png");
+    background-repeat: no-repeat;
+    background-size:0.25rem;
+    background-position: 50% 50%;
+    background-color: #2c9cff;
+  }
+    /* 可以设置不同的进入和离开动画 */
+  /* 设置持续时间和动画函数 */
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateY(0.13rem);
+    opacity: 0;
   }
 </style>
