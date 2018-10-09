@@ -12,11 +12,11 @@
       <div id="screen" v-if="tabShow == 0">
         <div class="screenAddre">
             <div class="startAddre">
-               <div class="addresscheck" @click="checkAddress()" v-html="searchList.startAdd == '' ? '全国' : searchList.startAdd "></div>
+               <div class="addresscheck" @click="checkAddress(0)" v-html="searchList.startAdd == '' ? '全国' : searchList.startAdd "></div>
             </div>
             <img src="../images/arrow.png">
             <div class="startAddre">
-              <div class="addresscheck" v-html="searchList.endAdd == '' ? '全国' : searchList.endAdd "></div>
+              <div class="addresscheck" @click="checkAddress(1)" v-html="searchList.endAdd == '' ? '全国' : searchList.endAdd "></div>
             </div>
            <div class="clearBoth"></div>
         </div>
@@ -65,6 +65,41 @@
            </div>
         </div>
       </div>
+      <div id="screenAddressBox" v-if="screenAddressTrue">
+        <div id="screenAddressBody">
+          <img src="../images/closed2.png"  @click="hotAddressListno()">
+          <p>选择地址</p>
+           <h6 v-if="normalCityList.length > 0" @click="normalCityGoback()">返回</h6>
+           <div class="checkedAddress" v-if="normalCityList.length > 0">
+            <h1>已选择</h1>
+            <ul>
+              <li v-html="addtype == 0 ? searchList.searchStartPro : searchList.searchEndPro"></li>
+              <div class="clearBoth"></div>
+            </ul>
+          </div>
+          <div class="hotAddress" v-if="normalCityList.length == 0">
+            <h1>热门城市</h1>
+            <ul>
+              <li v-for="(item ,index) in hotAddressList"  :class="item.checked ? 'addCheckTrue' : ''" @click="hotAddressListChoose(item,0)">{{item.name}}</li>
+              <div class="clearBoth"></div>
+            </ul>
+          </div>
+          <div class="hotAddress" v-if="normalCityList.length == 0">
+            <h1>选择省</h1>
+            <ul>
+              <li v-for="(item ,index) in normalAddressList" @click="chooseProvince(item,index)">{{item.region}}</li>
+              <div class="clearBoth"></div>
+            </ul>
+          </div>
+          <div class="hotAddress" v-if="normalCityList.length > 0">
+            <h1>选择市</h1>
+            <ul>
+              <li v-for="(item ,index) in normalCityList" :class="item.checked ? 'addCheckTrue' : ''" @click="hotAddressListChoose(item,1)">{{item.region}}</li>
+              <div class="clearBoth"></div>
+            </ul>
+          </div>
+        </div>
+      </div>
     </transition>
   </div>
 </template>
@@ -76,6 +111,7 @@
   import bridge from '../js/bridge';
   import MeScroll from '../js/mescroll'
   import {iscroll} from '../js/iscroll'
+  import {provinceCityArea} from "../js/provinceCityArea";
   export default {
     name: "robbingList",
     data(){
@@ -95,10 +131,13 @@
           distance:"",
           distanceName:"",
           zeroload:false,
+          searchStartPro:"",
+          searchEndPro:"",
         },
         tabShow:0,
         mescrollArrList:null,
         screenDistanceTrue:false,
+        screenAddressTrue:false,
         zeroload:false,
         distanceList:[{
           name:"不限",
@@ -120,7 +159,65 @@
           name:"1000以上",
           value:"1000",
           checked:false,
-        }]
+        }],
+        hotAddressList:[{
+          name:"北京市",
+          region:"北京市",
+          chescked:false,
+        },{
+          name:"上海市",
+          region:"上海市",
+          chescked:false,
+        },{
+          name:"广州市",
+          region:"广州市",
+          chescked:false,
+        },{
+          name:"深圳市",
+          region:"深圳市",
+          chescked:false,
+        },{
+          name:"杭州市",
+          region:"杭州市",
+          chescked:false,
+        },{
+          name:"南京市",
+          region:"南京市",
+          chescked:false,
+        },{
+          name:"苏州市",
+          region:"苏州市",
+          chescked:false,
+        },{
+          name:"天津市",
+          region:"天津市",
+          chescked:false,
+        },{
+          name:"武汉市",
+          region:"武汉市",
+          chescked:false,
+        },{
+          name:"长沙市",
+          region:"长沙市",
+          chescked:false,
+        },{
+          name:"重庆市",
+          region:"重庆市",
+          chescked:false,
+        },{
+          name:"成都市",
+          region:"成都市",
+          chescked:false,
+        },{
+          name:"全国",
+          region:"",
+          chescked:false,
+        }],
+        normalAddressList:[],
+        normalCityList:[],
+        searchStartPro:"",
+        searchEndPro:"",
+        addtype:0,
       }
     },
     mounted:function () {
@@ -137,6 +234,7 @@
       if(SCREENROBBING != null){
          _this.searchList = JSON.parse(SCREENROBBING);
       }
+      _this.normalAddressList = provinceCityArea;
       androidIos.bridge(_this);
     },
     methods:{
@@ -272,6 +370,127 @@
             });
           },100)
         }
+      },
+      checkAddress:function (type) {
+        var _this = this;
+        _this.screenAddressTrue = true;
+        _this.addtype = type;
+        _this.normalCityList = [];
+        for(var i =0 ; i < _this.hotAddressList.length;i++){
+          _this.hotAddressList[i].checked = false;
+        }
+        for(var i =0 ; i < _this.normalCityList.length;i++){
+          _this.normalCityList[i].checked = false;
+        }
+        if(type == 0){
+          _this.searchStartPro =  _this.searchList.searchStartPro;
+          if(_this.searchList.startAdd != "" && _this.searchList.searchStartPro == ""){
+            for(var i = 0; i < _this.hotAddressList.length;i++){
+              _this.hotAddressList[i].checked = false;
+              if(_this.hotAddressList[i].region == _this.searchList.startAdd){
+                _this.hotAddressList[i].checked = true;
+              }
+            }
+          }else if( _this.searchList.searchStartPro != ""){
+            for(var i = 0 ; i < _this.normalAddressList.length ; i++){
+              if(_this.searchList.searchStartPro == _this.normalAddressList[i].region){
+                 _this.normalCityList = _this.normalAddressList[i].child;
+                 break;
+              }
+            }
+            for(var i = 0 ; i < _this.normalCityList.length ; i++){
+              _this.normalCityList[i].checked = false;
+               if(_this.searchList.startAdd == _this.normalCityList[i].region){
+                 _this.normalCityList[i].checked = true;
+               }
+            }
+          }
+        }else if(type == 1){
+          _this.searchEndPro =  _this.searchList.searchEndPro;
+          if(_this.searchList.endAdd != "" && _this.searchList.searchEndPro == ""){
+            for(var i = 0; i < _this.hotAddressList.length;i++){
+              _this.hotAddressList[i].checked = false;
+              if(_this.hotAddressList[i].region == _this.searchList.startAdd){
+                _this.hotAddressList[i].checked = true;
+              }
+            }
+          }else if( _this.searchList.searchEndPro != ""){
+            for(var i = 0 ; i < _this.normalAddressList.length ; i++){
+              if(_this.searchList.searchEndPro == _this.normalAddressList[i].region){
+                _this.normalCityList = _this.normalAddressList[i].child;
+                break;
+              }
+            }
+            for(var i = 0 ; i < _this.normalCityList.length ; i++){
+              _this.normalCityList[i].checked = false;
+              if(_this.searchList.endAdd == _this.normalCityList[i].region){
+                _this.normalCityList[i].checked = true;
+              }
+            }
+          }
+        }
+
+      },
+      hotAddressListno:function () {
+        var _this = this;
+        _this.screenAddressTrue = false;
+        if(_this.addtype == 0){
+          _this.searchList.searchStartPro = _this.searchStartPro;
+        }else if(_this.addtype == 1){
+          _this.searchList.searchEndPro = _this.searchEndPro;
+        }
+      },
+      chooseProvince:function (item,index) {
+        var _this = this;
+        for(var i = 0; i < _this.normalAddressList.length; i++){
+          _this.normalAddressList[i].checked = false;
+        }
+        _this.normalAddressList[index].checked = true;
+        _this.normalCityList = item.child;
+        for(var i =0 ; i < _this.normalCityList.length;i++){
+          _this.normalCityList[i].checked = false;
+        }
+        if(_this.addtype == 0){
+          _this.searchList.searchStartPro = item.region;
+        }else if(_this.addtype == 1){
+          _this.searchList.searchEndPro = item.region;
+        }
+      },
+      normalCityGoback:function () {
+        var _this = this;
+        for(var i = 0; i < _this.normalAddressList.length; i++){
+          _this.normalAddressList[i].checked = false;
+        }
+        _this.normalCityList = [];
+        if(_this.addtype == 0){
+          _this.searchList.searchStartPro = "";
+        }else if(_this.addtype == 1){
+          _this.searchList.searchEndPro = "";
+        }
+      },
+      hotAddressListChoose:function (item,type) {
+        var _this = this;
+        if(_this.addtype == 0){
+          _this.searchList.startAdd = item.region;
+          if(type == 0){
+            _this.searchList.searchStartPro = "";
+          }
+        }else if(_this.addtype == 1){
+          _this.searchList.endAdd = item.region;
+          if(type == 0){
+            _this.searchList.searchEndPro = "";
+          }
+        }
+        for(var i =0 ; i < _this.hotAddressList.length;i++){
+          _this.hotAddressList[i].checked = false;
+        }
+        for(var i =0 ; i < _this.normalCityList.length;i++){
+          _this.normalCityList[i].checked = false;
+        }
+        item.checked = true;
+        _this.screenAddressTrue = false;
+        _this.mescrollArrList[0].resetUpScroll();
+        localStorage.setItem("SCREENROBBING",JSON.stringify(_this.searchList))
       },
       checkdistance:function () {
         var _this = this;
@@ -571,7 +790,7 @@
     margin-top: 0.1rem;
     max-width: 6rem;
   }
-  #screenDistanceBox{
+  #screenDistanceBox,#screenAddressBox{
     position: fixed;
     top:0;
     bottom: 0;
@@ -590,19 +809,36 @@
     min-height: 2rem;
     background: white;
   }
-  #screenDistanceBody img{
+  #screenAddressBody{
+    position: absolute;
+    bottom:0rem;
+    width:98%;
+    left:1%;
+    border-top-left-radius:0.4rem ;
+    border-top-right-radius:0.4rem ;
+    min-height: 2rem;
+    background: white;
+  }
+  #screenDistanceBody img,#screenAddressBody img{
     position: absolute;
     width:0.3rem;
     top:0.4rem;
     right:0.4rem;
   }
-  #screenDistanceBody p{
+  #screenAddressBody h6{
+    position: absolute;
+    font-size: 0.35rem;
+    top:0.25rem;
+    left:0.4rem;
+    color:#999;
+  }
+  #screenDistanceBody p,#screenAddressBody p{
     text-align: center;
     font-size: 0.43rem;
     color:#333;
     margin-top:0.15rem ;
   }
-  #screenDistanceBody p span{
+  #screenDistanceBody p span, #screenAddressBody p span{
     font-size: 0.43rem;
     color:#999;
   }
@@ -665,6 +901,9 @@
     font-size: 0.45rem;
     float: left;
   }
+  .addCheckTrue{
+    color:#2c9cff!important;
+  }
   .screenDistanceButton button:nth-child(2){
     width:6.46rem;
     height:1.1rem;
@@ -682,6 +921,45 @@
     background-size:0.25rem;
     background-position: 50% 50%;
     background-color: #2c9cff;
+  }
+  .hotAddress,.checkedAddress{
+    width:9rem;
+    margin: 0.3rem  auto 0.3334rem auto;
+  }
+  .hotAddress h1,.checkedAddress h1{
+     font-size: 0.35rem;
+     color:#999;
+    margin-bottom: 0.15rem;
+  }
+  .hotAddress ul{
+    width:100%;
+    max-height: 7.5rem;
+    overflow: scroll;
+  }
+  .checkedAddress ul{
+    width:100%;
+    max-height: 7.5rem;
+    overflow: scroll;
+    background-color: #FAFAFA;
+  }
+  .checkedAddress li{
+    min-width:20%;
+    margin-left:2.5%;
+    float: left;
+    text-align: left;
+    font-size: 0.35rem;
+    line-height: 0.8rem;
+  }
+  .hotAddress li{
+     float: left;
+     width:20%;
+    margin: 0 2.5%;
+    text-align: center;
+    font-size: 0.35rem;
+    line-height: 0.8rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
   }
     /* 可以设置不同的进入和离开动画 */
   /* 设置持续时间和动画函数 */
