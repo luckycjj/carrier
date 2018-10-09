@@ -317,6 +317,10 @@
 </script>
 
 <style scoped>
+  #userBox{
+    overflow: scroll;
+    margin-bottom: 1.4rem;
+  }
 #user{
   position:absolute;
   top:1.3rem;
@@ -324,7 +328,6 @@
   height: auto;
   width:100%;
   background: #f6f6f6;
-  overflow: scroll;
 }
 .imgBox img{
   width:1.6rem;
