@@ -827,6 +827,10 @@
     margin-top: 0.1rem;
     max-width: 6rem;
   }
+  .proBoxList span{
+    color:#999;
+    font-size:0.35rem ;
+  }
   #screenDistanceBox,#screenAddressBox{
     position: fixed;
     top:0;
