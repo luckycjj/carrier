@@ -319,7 +319,11 @@
 <style scoped>
   #userBox{
     overflow: scroll;
-    margin-bottom: 1.4rem;
+    position: absolute;
+    top:0rem;
+    bottom:1.3rem;
+    height: auto;
+    width:100%;
   }
 #user{
   position:absolute;
