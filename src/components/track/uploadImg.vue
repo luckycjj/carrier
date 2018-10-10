@@ -412,7 +412,7 @@
               pk: _this.$route.query.pk,
               userCode:sessionStorage.getItem("token"),
               source:sessionStorage.getItem("source"),
-              remark: _this.errorSignRemark,
+              remark:androidIos.checkText( _this.errorSignRemark),
               abnormalPicture: listImg.join(","),
             }
           }
