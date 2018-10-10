@@ -37,7 +37,7 @@
         <h1><h5>证件信息</h5>
           <div class="clearBoth"></div>
           <div class="imgBoxBig">
-            <div class="imgBox">
+            <!--<div class="imgBox">
               <div @click="cleanIDcode(0)" v-if="water.Licensepic != ''" style="position:absolute;right:0rem;top:0rem;font-size: 0.3125rem;border-radius: 50%;color:white;width:0.5rem;height: 0.5rem;text-align: center;line-height: 0.45rem;z-index: 3;background: rgba(0,0,0,0.5);">x</div>
               <img id="Licensepic" :src="httpurl + water.Licensepic"  :onerror="errorlogo"  v-if="water.Licensepic != ''">
               <div id="box" @click="recognition(0)" style=" width: 4rem; height: 2.6rem; "  class="imgUpload" v-show="water.Licensepic == ''">
@@ -45,6 +45,9 @@
                   <h1 class="h5u_options_hiddenP">{{water.Licensepic}}</h1>
                 </div>
               </div>
+            </div>-->
+            <div class="imgBox">
+              <div id="box" class="imgUpload"></div>
             </div>
             <h4><span style="font-size: 0.3125rem;color:#ff803c;">*</span>营业执照</h4>
           </div>
@@ -216,6 +219,7 @@
               var UPMESSA = localStorage.getItem("UPMESSA");
               if(UPMESSA != undefined || UPMESSA != null){
                 UPMESSA = JSON.parse(UPMESSA);
+                _this.water.Licensepic = UPMESSA.Licensepic;
                 _this.water.IDpic = UPMESSA.IDpic;
                 _this.water.IDpicfan = UPMESSA.IDpicfan;
                 _this.water.authorization = UPMESSA.authorization;
@@ -228,6 +232,7 @@
               var DRIVERMESSA = localStorage.getItem("DRIVERMESSA");
               if(DRIVERMESSA != undefined || DRIVERMESSA != null){
                 DRIVERMESSA = JSON.parse(DRIVERMESSA);
+                _this.water.Licensepic = DRIVERMESSA.Licensepic;
                 _this.water.IDpic = DRIVERMESSA.IDpic;
                 _this.water.IDpicfan = DRIVERMESSA.IDpicfan;
                 _this.water.authorization = DRIVERMESSA.authorization;
@@ -470,6 +475,20 @@
         }
         _this.$nextTick(function() {
           if(_this.type == 1 && _this.letterType == 2  && _this.companyType != 2 && _this.creator == 0 ){
+            $("#box").aiiUpload({
+              action: androidIos.ajaxHttp() + "/uploadFile",
+              max_w: 1000,
+              max_h: 1000
+            });
+            if (_this.water.Licensepic != null && _this.water.Licensepic != "") {
+              $("#box img").attr("src", _this.httpurl + _this.water.Licensepic);
+              $("#box img").show();
+              $("#box .closed").show();
+              $("#box .cjjimgbox").css("display", "none");
+              $("#box .cjjimgbox").html(
+                "<p class='h5u_options_hiddenP'>" + _this.water.Licensepic + "</p>"
+              );
+            }
             $("#box1").aiiUpload({
               action: androidIos.ajaxHttp() + "/uploadFile",
               max_w: 1000,
