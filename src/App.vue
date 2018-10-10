@@ -10,6 +10,7 @@
           <h3  id="search" class="asd"  v-if="doNow==3" ><h5 id="searchSpan"></h5></h3>
           <img id="erweimaLook"  src="./images/erweima.png" v-if="doNow==4" style="display: none">
           <div id="setUp"  v-if="doNow == 5" @click="setUpgo()"></div>
+          <div id="orderScreenTitle"  v-if="doNow == 6" @click="orderScreen()"></div>
         </div>
         <div id="table"></div>
       </div>
@@ -73,6 +74,8 @@
         _this.doNow = 4;
       }else if( _this.html.indexOf("/user") != -1){
         _this.doNow = 5;
+      }else if( _this.html.indexOf("/trackList") != -1){
+        _this.doNow = 6;
       }else{
         _this.doNow = "";
       }
@@ -101,6 +104,8 @@
         _this.doNow = 4;
       }else if( _this.html.indexOf("/user") != -1){
         _this.doNow = 5;
+      }else if( _this.html.indexOf("/trackList") != -1){
+        _this.doNow = 6;
       }else{
         _this.doNow = "";
       }
@@ -117,7 +122,12 @@
         var _this = this;
         androidIos.addPageList();
         _this.$router.push({ path: "/setUp"});
-      }
+      },
+      orderScreen:function () {
+        var _this = this;
+        androidIos.addPageList();
+        _this.$router.push({ path: "/orderScreen"});
+      },
     }
   }
 </script>
@@ -434,5 +444,16 @@
     width:auto;
     height:auto;
     z-index: 999;
+  }
+  #orderScreenTitle{
+    position: absolute;
+    right:0.3rem;
+    width:1rem;
+    top:0rem;
+    height: 100%;
+    background-image: url("./images/orderScreen.png");
+    background-position: 100% 50%;
+    background-size: 0.4rem;
+    background-repeat: no-repeat;
   }
 </style>

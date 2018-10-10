@@ -27,6 +27,7 @@ import  siteEg from '@/components/site/car'
 import  siteNi from '@/components/site/carHanger'
 import  trackF from '@/components/track/trackMore'
 import  trackS from '@/components/track/map'
+import  orderScreen from '@/components/track/orderScreen'
 import  carF from '@/components/car/carMessage'
 import  carS from '@/components/car/map'
 import  carT from '@/components/car/changeCarpeople'
@@ -119,6 +120,10 @@ Vue.filter('orderTypeName', function(value) {
 
 export default new Router({
   routes: [ {
+    path:'/orderScreen',
+    name:'orderScreen',
+    component:orderScreen,
+  },{
     path:'/dispatchList',
     name:'dispatchList',
     component:dispatchList,
