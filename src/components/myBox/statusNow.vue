@@ -86,40 +86,6 @@
         var _this = this;
         $.ajax({
           type: "POST",
-          url: androidIos.ajaxHttp() + "/getCarrAndCompanyInfo",
-          data: JSON.stringify({
-            userCode:sessionStorage.getItem("token"),
-            source:sessionStorage.getItem("source")
-          }),
-          contentType: "application/json;charset=utf-8",
-          dataType: "json",
-          timeout:10000,
-          success: function(findDriverInfo){
-            if(findDriverInfo.success == "1"){
-                _this.letterType = findDriverInfo.type == 3 ? 1: 2;
-                _this.name = findDriverInfo.userName.replace(/[0-9]/g,'');
-                _this.certification = findDriverInfo.ftpUrl + findDriverInfo.certification;
-                _this.IDpic = findDriverInfo.ftpUrl + findDriverInfo.idCardPos;
-                _this.IDpicfan = findDriverInfo.ftpUrl + findDriverInfo.idCardNeg;
-                _this.driverLicense = findDriverInfo.ftpUrl + findDriverInfo.drivingLicence;
-                _this.drivingLicence = findDriverInfo.ftpUrl + findDriverInfo.driverLicense;
-                _this.roadTransLicense = findDriverInfo.ftpUrl + findDriverInfo.roadTransLicense;
-                _this.corpName = findDriverInfo.corpName;
-                _this.ftp = findDriverInfo.ftpUrl;
-            }else{
-              androidIos.second(findDriverInfo.message);
-            }
-          },
-          complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-            if(status=='timeout'){//超时,status还有success,error等值的情况
-              androidIos.second("当前状况下网络状态差，请检查网络！")
-            }else if(status=="error"){
-              androidIos.errorwife();
-            }
-          }
-        })
-        $.ajax({
-          type: "POST",
           url: androidIos.ajaxHttp() + "/getUserInfo",
           data:JSON.stringify({
             userCode:sessionStorage.getItem("token"),
@@ -153,6 +119,42 @@
             }
           }
         });
+        if(_this.status != 0){
+          $.ajax({
+            type: "POST",
+            url: androidIos.ajaxHttp() + "/getCarrAndCompanyInfo",
+            data: JSON.stringify({
+              userCode:sessionStorage.getItem("token"),
+              source:sessionStorage.getItem("source")
+            }),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            timeout:10000,
+            success: function(findDriverInfo){
+              if(findDriverInfo.success == "1"){
+                _this.letterType = findDriverInfo.type == 3 ? 1: 2;
+                _this.name = findDriverInfo.userName.replace(/[0-9]/g,'');
+                _this.certification = findDriverInfo.ftpUrl + findDriverInfo.certification;
+                _this.IDpic = findDriverInfo.ftpUrl + findDriverInfo.idCardPos;
+                _this.IDpicfan = findDriverInfo.ftpUrl + findDriverInfo.idCardNeg;
+                _this.driverLicense = findDriverInfo.ftpUrl + findDriverInfo.drivingLicence;
+                _this.drivingLicence = findDriverInfo.ftpUrl + findDriverInfo.driverLicense;
+                _this.roadTransLicense = findDriverInfo.ftpUrl + findDriverInfo.roadTransLicense;
+                _this.corpName = findDriverInfo.corpName;
+                _this.ftp = findDriverInfo.ftpUrl;
+              }else{
+                androidIos.second(findDriverInfo.message);
+              }
+            },
+            complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+              if(status=='timeout'){//超时,status还有success,error等值的情况
+                androidIos.second("当前状况下网络状态差，请检查网络！")
+              }else if(status=="error"){
+                androidIos.errorwife();
+              }
+            }
+          });
+        }
         androidIos.bridge(_this);
       },
       methods:{

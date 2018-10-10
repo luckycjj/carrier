@@ -12,10 +12,10 @@
         <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
         <div class="clearBoth"></div>
       </div>
-      <div class="modelView">
+      <!--<div class="modelView">
         <span class="w3">邀请码</span>
         <input type="text" v-model="invitation" placeholder="请输入邀请码" maxlength="6"/>
-      </div>
+      </div>-->
       <div class="modelView" style="border:none">
         <span class="w3">验证码</span>
         <input type="tel" v-model="verification" placeholder="请输入验证码" maxlength="6"/>
@@ -116,10 +116,10 @@
             bomb.first("请输入密码");
             return false;
           }
-          if(_this.invitation.length <4){
+         /* if(_this.invitation.length <4){
             bomb.first("请输入正确的邀请码");
             return false;
-          }
+          }*/
           if(_this.verification.length < 4){
             bomb.first("请输入正确的验证码");
             return false;
@@ -136,7 +136,7 @@
               userPhone : _this.mobile,
               password : _this.password,
               checkCode : _this.verification,
-              inviteCode : _this.invitation,
+              inviteCode : "",
               source:sessionStorage.getItem("source")
             }),
             contentType: "application/json;charset=utf-8",
