@@ -37,7 +37,8 @@
        // 0 交接二维码 1签收二维码 2订单二维码
        var json = {
          pk:this.QueryDetail,
-         type:this.$route.query.ty
+         type:this.$route.query.ty,
+         time:(new Date()).getTime()
        };
        json = JSON.stringify(json);
        var canvas = document.getElementById('canvas');
