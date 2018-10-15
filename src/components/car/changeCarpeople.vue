@@ -147,7 +147,7 @@
         });
       },
       telPhone:function(tel){
-        bridge.invoke('callTelephone',tel);
+        androidIos.telCall(tel);
       },
       change:function (item,type) {
         var _this = this;

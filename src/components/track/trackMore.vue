@@ -917,7 +917,7 @@
                 $(".tanBox-yes").html("联系");
                 $(".tanBox-yes").unbind('click').click(function(){
                   $(".tanBox-bigBox").remove();
-                  bridge.invoke("callTelephone",_this.carList[i].tel);
+                  androidIos.telCall(_this.carList[i].tel)
                 });
                 return false;
               }

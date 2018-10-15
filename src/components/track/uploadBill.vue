@@ -300,7 +300,7 @@ export default {
         }
       },
       phonecall:function (phone) {
-        bridge.invoke('callTelephone',phone);
+        androidIos.telCall(phone);
       },
       okGo:function () {
         var _this = this;

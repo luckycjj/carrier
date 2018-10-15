@@ -330,7 +330,7 @@
 
       },
       tel:function(tel){
-        bridge.invoke('callTelephone',tel);
+        androidIos.telCall(tel);
       },
       addClass:function(obj,cls){//增加class
         var idJson = obj.className.split(" ");

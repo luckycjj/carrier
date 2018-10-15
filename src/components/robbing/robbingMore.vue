@@ -344,7 +344,7 @@
         }
       },
       telphone:function(tel){
-        bridge.invoke('callTelephone',tel);
+        androidIos.telCall(tel);
       },
       qD:function(){
         var _this = this;
