@@ -10,9 +10,23 @@
         </div>
       </div>
       <div v-for="(item,index) in list" :id="'mescroll' + index" :class="index != tabShow ? 'hide' :''" class="mescroll">
-        <ul :id="'dataList' + index" class="data-list">
+        <ul :id="'dataList' + index" class="data-list" v-if="index == 1">
+          <li v-for="(items,indexs) in item.prolist"  @click="lookagresRefuseMore(items)">
+            <h4>￥<span>{{items.price*1}}</span></h4>
+            <h6 class="deliDateTime">{{items.deliDate}}</h6>
+            <h6 class="arriDateTime">{{items.arriDate}}</h6>
+            <div class="proBox">
+              <h5>待调度</h5>
+              <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
+              <div class="proBoxList transType">{{items.transType}}/{{items.goodCode}}</div>
+              <div class="proBoxList wvolume"><span>{{items.num}}件</span><span  v-if="items.weight*1 > 0">/{{items.weight*1}}吨</span><span v-if="items.volume*1 > 0">/{{items.volume*1}}立方米</span></div>
+            </div>
+            <h1>{{items.customer}}</h1>
+          </li>
+        </ul>
+        <ul :id="'dataList' + index" class="data-list" v-else>
           <li v-for="(items,indexs) in item.prolist" @click="lookTrackMore(items.pkInvoice)">
-            <h3 v-html="items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '装货完毕': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': ''"></h3>
+            <h3 v-html="items.status == null ? '待调度':items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '装货完毕': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': ''"></h3>
             <h6 class="deliDateTime">{{items.deliDate}}</h6>
             <h6 class="arriDateTime">{{items.arriDate}}</h6>
             <div class="proBox">
@@ -43,6 +57,10 @@
                 name:"全部",
                 number:0,
                 prolist:[]
+             },{
+               name:"待调度",
+               number:0,
+               prolist:[]
              },{
                name:"未运输",
                number:0,
@@ -168,38 +186,72 @@
                  if(pageNum == 1){
                    _this.$refs.footcomponent.go();
                  }
-                 $.ajax({
-                   type: "POST",
-                   url: androidIos.ajaxHttp() + "/order/loadEntrust",
-                   data:JSON.stringify({
-                     page:pageNum,
-                     size:pageSize,
-                     type:0,
-                     state:curNavIndex,
-                     userCode:sessionStorage.getItem("token"),
-                     source:sessionStorage.getItem("source")
-                   }),
-                   contentType: "application/json;charset=utf-8",
-                   dataType: "json",
-                   timeout: 30000,
-                   success: function (loadEntrust) {
-                     if (loadEntrust.success == "1") {
-                       successCallback(loadEntrust.list);
-                     }else{
-                       androidIos.second(loadEntrust.message);
-                       successCallback([]);
+                 if(curNavIndex == 1){
+                   $.ajax({
+                     type: "POST",
+                     url: androidIos.ajaxHttp() + "/order/loadSchedule",
+                     data: JSON.stringify({
+                       userCode:sessionStorage.getItem("token"),
+                       source:sessionStorage.getItem("source"),
+                       page:pageNum,
+                       size:pageSize
+                     }),
+                     contentType: "application/json;charset=utf-8",
+                     dataType: "json",
+                     timeout: 10000,
+                     success: function (getDriverApplication) {
+                       if(getDriverApplication.success == "1"){
+                         successCallback(getDriverApplication.list);
+                       }else{
+                         androidIos.second(getDriverApplication.message);
+                         successCallback([]);
+                       }
+                     },
+                     complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                       if(status=='timeout'){//超时,status还有success,error等值的情况
+                         androidIos.second("当前状况下网络状态差，请检查网络！");
+                         successCallback([]);
+                       }else if(status=="error"){
+                         androidIos.errorwife();
+                         successCallback([]);
+                       }
                      }
-                   },
-                   complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-                     if (status == 'timeout') { //超时,status还有success,error等值的情况
-                       androidIos.second("当前状况下网络状态差，请检查网络！");
-                       successCallback([]);
-                     } else if (status == "error") {
-                       androidIos.errorwife();
-                       successCallback([]);
+                   })
+                 }else{
+                   $.ajax({
+                     type: "POST",
+                     url: androidIos.ajaxHttp() + "/order/loadEntrust",
+                     data:JSON.stringify({
+                       page:pageNum,
+                       size:pageSize,
+                       type:0,
+                       state:curNavIndex,
+                       userCode:sessionStorage.getItem("token"),
+                       source:sessionStorage.getItem("source")
+                     }),
+                     contentType: "application/json;charset=utf-8",
+                     dataType: "json",
+                     timeout: 30000,
+                     success: function (loadEntrust) {
+                       if (loadEntrust.success == "1") {
+                         successCallback(loadEntrust.list);
+                       }else{
+                         androidIos.second(loadEntrust.message);
+                         successCallback([]);
+                       }
+                     },
+                     complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                       if (status == 'timeout') { //超时,status还有success,error等值的情况
+                         androidIos.second("当前状况下网络状态差，请检查网络！");
+                         successCallback([]);
+                       } else if (status == "error") {
+                         androidIos.errorwife();
+                         successCallback([]);
+                       }
                      }
-                   }
-                 });
+                   });
+                 }
+
                },100)
              }
            },
@@ -223,11 +275,12 @@
              timeout: 30000,
              success: function (carrOrderListHeaderIcon) {
                if (carrOrderListHeaderIcon.success == "1") {
-                 _this.list[0].number = carrOrderListHeaderIcon.notTransportedCount*1 + carrOrderListHeaderIcon.onTheWayCount*1 + carrOrderListHeaderIcon.arrivedCount*1 + carrOrderListHeaderIcon.completedCount*1;
-                 _this.list[1].number = carrOrderListHeaderIcon.notTransportedCount*1;
-                 _this.list[2].number = carrOrderListHeaderIcon.onTheWayCount*1;
-                 _this.list[3].number = carrOrderListHeaderIcon.arrivedCount*1;
-                 _this.list[4].number = carrOrderListHeaderIcon.completedCount*1;
+                 _this.list[0].number = carrOrderListHeaderIcon.notTransportedCount*1 + carrOrderListHeaderIcon.schedulingCount*1 + carrOrderListHeaderIcon.onTheWayCount*1 + carrOrderListHeaderIcon.arrivedCount*1 + carrOrderListHeaderIcon.completedCount*1;
+                 _this.list[1].number = carrOrderListHeaderIcon.schedulingCount*1;
+                 _this.list[2].number = carrOrderListHeaderIcon.notTransportedCount*1;
+                 _this.list[3].number = carrOrderListHeaderIcon.onTheWayCount*1;
+                 _this.list[4].number = carrOrderListHeaderIcon.arrivedCount*1;
+                 _this.list[5].number = carrOrderListHeaderIcon.completedCount*1;
                }else{
                  androidIos.second(carrOrderListHeaderIcon.message);
                }
@@ -241,6 +294,11 @@
              }
            });
          },
+          lookagresRefuseMore:function (item) {
+            var _this = this;
+            androidIos.addPageList();
+            _this.$router.push({ path: '/robbing/robbingMore',query:{"type":3,"pk":item.pkSegment}});
+          }
        },
       beforeDestroy:function () {
         var _this = this;
@@ -268,6 +326,41 @@
   }
 </style>
 <style scoped>
+  .data-list li h4{
+    position: absolute;
+    color:#333;
+    min-width: 2rem;
+    font-size: 0.375rem;
+    text-align: right;
+    right:0.5rem;
+    top:0.6rem;
+  }
+  .proBox h5{
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    font-size: 0.5rem;
+    color: #999;
+    margin-top: -0.25rem;
+  }
+  .transType{
+    background-image: url("../images/product.png");
+    background-size: 0.5rem;
+    background-repeat: no-repeat;
+    background-position: 0 0.02rem;
+    padding-left: 0.65rem;
+  }
+  .wvolume{
+    background-image: url("../images/weight.png");
+    background-size: 0.5rem;
+    background-repeat: no-repeat;
+    background-position :0 0.02rem;
+    padding-left: 0.65rem;
+  }
+  .data-list li h4 span{
+    font-size: 0.375rem;
+    color:#f4a131;
+  }
   #trackList{
      position:absolute;
     top:1.3rem;
@@ -370,6 +463,7 @@
     border-radius: 0.1rem;
     box-shadow: 0 0 0.13rem #e2e2e2;
     border: 1px solid white;
+    position: relative;
   }
   .startEndSpan{
     float: left;
@@ -389,5 +483,9 @@
      color:#999;
     font-size:0.35rem ;
     margin-top: 0.1rem;
+  }
+  .proBoxList span{
+    color:#999;
+    font-size:0.35rem ;
   }
 </style>

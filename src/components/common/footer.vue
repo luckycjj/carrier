@@ -35,13 +35,6 @@
               {
                 number:0,
                 marginRight:0,
-                cls: "dispatch",
-                name: "调度",
-                push: "/dispatchList"
-              },
-              {
-                number:0,
-                marginRight:0,
                 cls: "user",
                 name: "我的",
                 push: "/user"
@@ -86,8 +79,7 @@
               success: function (driverBottomIcon) {
                 if (driverBottomIcon.success == "1") {
                   _this.items[0].number = driverBottomIcon.grabOrderCount*1;
-                  _this.items[1].number = driverBottomIcon.orderCount*1;
-                  _this.items[2].number = driverBottomIcon.schedulingCount*1;
+                  _this.items[1].number = driverBottomIcon.orderCount*1 + driverBottomIcon.schedulingCount*1;
                   _this.$nextTick(function () {
                     _this.marginWidth();
                     sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
@@ -184,7 +176,7 @@
      }
     #footer ul li {
       float: left;
-      width:25%;
+      width:33.333333%;
       text-align: center;
       height: 1.3rem;
       color:#666;
