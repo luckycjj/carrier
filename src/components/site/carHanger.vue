@@ -126,6 +126,34 @@
           _this.carSure.push(JSON.parse(_this.$route.query.memo));
           sessionStorage.setItem("carsureListS",_this.$route.query.memo);
         }
+        $.ajax({
+          type: "GET",
+          url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
+          data:{str:"car_status",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
+          dataType: "json",
+          timeout: 10000,
+          async:false,
+          success: function (getSysConfigList) {
+            if(sessionStorage.getItem("nowOrderCartype").indexOf("整") != -1){
+              _this.search.tranState = "0";
+            }
+            for(var i = 0;i<getSysConfigList.length;i++){
+              if(getSysConfigList[i].value.indexOf(_this.search.tranState) != -1 && _this.search.tranState!=""){
+                getSysConfigList[i].choose = true;
+              }else{
+                getSysConfigList[i].choose = false;
+              }
+            }
+            _this.tranState = getSysConfigList;
+          },
+          complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+            if(status=='timeout'){//超时,status还有success,error等值的情况
+              androidIos.second("网络请求超时");
+            }else if(status=='error'){
+              androidIos.errorwife();
+            }
+          }
+        })
         _this.orderPk = sessionStorage.getItem("dispatchPK") == undefined ? "" :sessionStorage.getItem("dispatchPK");
         var GUALABELTOP = sessionStorage.getItem("GUALABELTOP");
         if(GUALABELTOP != undefined){
