@@ -43,6 +43,11 @@
       </div>
       <div class="clearBoth"></div>
     </div>
+    <div class="box" style="margin-top: 0px;height: auto;">
+      <span>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</span>
+      <div class="clearBoth"></div>
+      <textarea placeholder="请输入特殊要求" v-model="message.remark"></textarea>
+    </div>
     <button id="ok" class="okgo gogogo" @click="ok()">确定</button>
     <div v-if="carList" id="carListBox" @click="carListHideAgain($event)">
       <div id="carList">
@@ -95,6 +100,7 @@
           driverPk:"",*/
           carpk:"",
           Travelpic:"",
+          remark:""
         },
         carTypeList:[],
         minWeight:"",
@@ -564,6 +570,7 @@
             loadWeight:_this.message.carmodelNumber == "5de1912471af4c2d839a27f268cd8ca7" || _this.message.carmodelNumber == "41efd612fc2e4067a1debc30a1c36383" ? _this.message.weight*1000 : "",
             pkDriver:_this.message.driverPk,
             pkCar:_this.message.carpk,
+            remark:_this.message.remark,
             drivingLicense:_this.message.carmodelNumber == "5de1912471af4c2d839a27f268cd8ca7" || _this.message.carmodelNumber == "2ba6da2fd9cd4689965afe5abc8f9df4" ? _this.message.Travelpic : "",
             length :_this.message.carmodelNumber == "5de1912471af4c2d839a27f268cd8ca7" || _this.message.carmodelNumber == "41efd612fc2e4067a1debc30a1c36383" ? androidIos.checkText(_this.message.carlengthCode) : "",
             transType :_this.message.carmodelNumber == "5de1912471af4c2d839a27f268cd8ca7" || _this.message.carmodelNumber == "41efd612fc2e4067a1debc30a1c36383" ? androidIos.checkText(_this.message.cartrantypeCode) : "",
@@ -630,6 +637,17 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  textarea{
+    width:84%;
+    padding: 3%;
+    margin: 0rem auto 0.5rem auto;
+    display: block;
+    height: 4rem;
+    border: 1px solid #dadada;
+    font-size: 0.375rem;
+    color:#666;
+    resize:none;
+  }
   #newCar{
     position:absolute;
     top:0rem;
