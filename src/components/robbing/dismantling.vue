@@ -202,17 +202,17 @@
           if(_this.productBox.productsList.length > 1){
               if(type == "w"){
                 _this.productBox.productsList[item].list[items].weight = _this.productBox.productsList[0].list[items].weightBoth - _this.productBox.productsList[item].list[items].weight > 0 ?  _this.productBox.productsList[item].list[items].weight*1 : _this.productBox.productsList[0].list[items].weightBoth*1;
-                _this.productBox.productsList[1-item].list[items].weight = _this.productBox.productsList[0].list[items].weightBoth - _this.productBox.productsList[item].list[items].weight;
+                _this.productBox.productsList[1-item].list[items].weight = androidIos.numSub(_this.productBox.productsList[0].list[items].weightBoth , _this.productBox.productsList[item].list[items].weight);
                 if(_this.productBox.productsList[0].list[items].density != null){
                   _this.productBox.productsList[item].list[items].volume =   (_this.productBox.productsList[item].list[items].weight / _this.productBox.productsList[0].list[items].density).toFixed(2)*1;
-                  _this.productBox.productsList[1-item].list[items].volume = _this.productBox.productsList[0].list[items].volumeBoth - _this.productBox.productsList[item].list[items].volume;
+                  _this.productBox.productsList[1-item].list[items].volume = androidIos.numSub(_this.productBox.productsList[0].list[items].volumeBoth , _this.productBox.productsList[item].list[items].volume);
                 }
               }else if(type == "v"){
                 _this.productBox.productsList[item].list[items].volume = _this.productBox.productsList[0].list[items].volumeBoth - _this.productBox.productsList[item].list[items].volume > 0 ?  _this.productBox.productsList[item].list[items].volume*1 : _this.productBox.productsList[0].list[items].volumeBoth*1;
-                _this.productBox.productsList[1-item].list[items].volume = _this.productBox.productsList[0].list[items].volumeBoth - _this.productBox.productsList[item].list[items].volume;
+                _this.productBox.productsList[1-item].list[items].volume = androidIos.numSub(_this.productBox.productsList[0].list[items].volumeBoth , _this.productBox.productsList[item].list[items].volume);
                 if(_this.productBox.productsList[0].list[items].density != null){
                   _this.productBox.productsList[item].list[items].weight =   (_this.productBox.productsList[item].list[items].volume * _this.productBox.productsList[0].list[items].density).toFixed(2)*1;
-                  _this.productBox.productsList[1-item].list[items].weight = _this.productBox.productsList[0].list[items].weightBoth - _this.productBox.productsList[item].list[items].weight;
+                  _this.productBox.productsList[1-item].list[items].weight = androidIos.numSub(_this.productBox.productsList[0].list[items].weightBoth , _this.productBox.productsList[item].list[items].weight);
                 }
               }
           }
