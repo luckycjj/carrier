@@ -367,7 +367,9 @@
                 if(grabSingle.success =="" || grabSingle.success == "1"){
                   _this.$cjj("抢单成功");
                   setTimeout(function () {
-                    androidIos.gobackFrom(_this);
+                    sessionStorage.removeItem("addPageList");
+                    sessionStorage.setItem("trackTap",1);
+                    _this.$router.push({path:'/trackList'});
                   },1000)
                 }else{
                   androidIos.second(grabSingle.message);
@@ -446,7 +448,9 @@
                 if(grabSingle.success =="" || grabSingle.success == "1"){
                   _this.$cjj("接收成功");
                   setTimeout(function () {
-                    androidIos.gobackFrom(_this);
+                    sessionStorage.removeItem("addPageList");
+                    sessionStorage.setItem("trackTap",1);
+                    _this.$router.push({path:'/trackList'});
                   },500);
                 }else{
                   androidIos.second(grabSingle.message);
