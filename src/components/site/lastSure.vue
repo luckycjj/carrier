@@ -147,7 +147,8 @@
               setTimeout(function () {
                 sessionStorage.removeItem("lastSure");
                 sessionStorage.removeItem("siteSure");
-                bridge.invoke('gobackfrom');
+                sessionStorage.removeItem("addPageList");
+                _this.$router.push({path:"/trackList"});
               },500)
             }else{
               androidIos.second(demolitionSegment.message);

@@ -534,7 +534,8 @@
               if(closeOrder.success == "1"){
                 _this.$cjj("取消成功");
                 setTimeout(function () {
-                  bridge.invoke('gobackfrom');
+                  sessionStorage.removeItem("addPageList");
+                  _this.$router.push({path:"/trackList"});
                 },500)
               }else{
                 androidIos.second(closeOrder.message);

@@ -263,7 +263,8 @@
                   _this.success = true;
                   setTimeout(function () {
                     _this.success = false;
-                    bridge.invoke('gobackfrom');
+                    sessionStorage.removeItem("addPageList");
+                    _this.$router.push({path:"/trackList"});
                   },1000)
                 }else{
                   androidIos.second(arrangeVehicle.message)

@@ -130,7 +130,8 @@
                     if(disassembledAmount.success == "1"){
                         _this.$cjj("拆量成功");
                         setTimeout(function () {
-                          bridge.invoke('gobackfrom');
+                          sessionStorage.removeItem("addPageList");
+                         _this.$router.push({path:"/trackList"});
                         },500)
                     }else{
                      androidIos.second(disassembledAmount.message);

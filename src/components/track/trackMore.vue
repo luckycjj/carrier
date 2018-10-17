@@ -949,7 +949,6 @@
               if(arriveOrDelivery.success=="1" ||arriveOrDelivery.success == ""){
                 _this.$cjj(message);
                 setTimeout(function () {
-                  /*bridge.invoke('gobackfrom');*/
                   _this.mescroll.resetUpScroll();
                 },500)
               }else{
