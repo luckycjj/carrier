@@ -24,6 +24,7 @@ export default {
     companyName:{
       handler:function(val,oldval){
         var _this = this;
+        _this.companyName = _this.companyName.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
         if(sessionStorage.getItem("source") == 2){
           var UPMESSA = localStorage.getItem("UPMESSA");
           if(UPMESSA != undefined || UPMESSA != null){
