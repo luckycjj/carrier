@@ -52,6 +52,8 @@
           sessionStorage.removeItem("driverBottomIcon");
           localStorage.removeItem("SCREENROBBING");
           localStorage.removeItem("UPMESSA");
+          localStorage.removeItem("getPageScroll0");
+          localStorage.removeItem("getPageScroll1");
           androidIos.bridge(_this);
       },
       methods:{

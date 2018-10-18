@@ -76,6 +76,7 @@
             <h1>已选择</h1>
             <ul>
               <li v-html="addtype == 0 ? searchList.searchStartPro : searchList.searchEndPro"></li>
+              <li><span style="color: #2c9cff;border-bottom: 1px solid #2c9cff;font-size:0.35rem;">请选择</span></li>
               <div class="clearBoth"></div>
             </ul>
           </div>
@@ -86,17 +87,17 @@
               <div class="clearBoth"></div>
             </ul>
           </div>
-          <div class="hotAddress" v-if="normalCityList.length == 0">
-            <h1>选择省</h1>
+          <div class="selectAddress" v-if="normalCityList.length == 0">
+            <h1>选择省份/地区</h1>
             <ul>
-              <li v-for="(item ,index) in normalAddressList" @click="chooseProvince(item,index)">{{item.region}}</li>
+              <li v-for="(item ,index) in normalAddressList" @click="chooseProvince(item,index)"><div class="shouzimu">{{item.PinyinFirst}}</div>{{item.region}}<div class="clearBoth"></div></li>
               <div class="clearBoth"></div>
             </ul>
           </div>
-          <div class="hotAddress" v-if="normalCityList.length > 0">
-            <h1>选择市</h1>
-            <ul>
-              <li v-for="(item ,index) in normalCityList" :class="item.checked ? 'addCheckTrue' : ''" @click="hotAddressListChoose(item,1)">{{item.region}}</li>
+          <div class="selectcity" v-if="normalCityList.length > 0">
+            <h1>选择城市</h1>
+            <ul id="selectcityUl">
+              <li v-for="(item ,index) in normalCityList" :class="item.checked ? 'addCheckTrue' : ''" @click="hotAddressListChoose(item,1)"><div class="shouzimu">{{item.PinyinFirst}}</div>{{item.region}}</li>
               <div class="clearBoth"></div>
             </ul>
           </div>
@@ -114,6 +115,7 @@
   import MeScroll from '../js/mescroll'
   import {iscroll} from '../js/iscroll'
   import {provinceCityArea} from "../js/provinceCityArea";
+  import  {ConvertPinyin}  from "../js/PINYING"
   export default {
     name: "robbingList",
     data(){
@@ -237,6 +239,11 @@
          _this.searchList = JSON.parse(SCREENROBBING);
       }
       _this.normalAddressList = provinceCityArea;
+      for(var i = 0 ; i < _this.normalAddressList.length ;i++){
+          _this.normalAddressList[i].PinyinFirst = ConvertPinyin(_this.normalAddressList[i].region).substring(0,1).toUpperCase();
+      }
+      _this.normalAddressList.sort(_this.compare("PinyinFirst"));
+      _this.unique1(_this.normalAddressList);
       androidIos.bridge(_this);
     },
     methods:{
@@ -373,6 +380,23 @@
           },100)
         }
       },
+      compare : function(name){
+        return function(a,b){
+          var s1 = a[name];
+          var s2 = b[name];
+          return s1.localeCompare(s2);
+        }
+      },
+      unique1:function(arr){
+        for (var i = 0; i < arr.length; i++) {
+         for(var j = i+1 ; j < arr.length;j++){
+           if(arr[i].PinyinFirst == arr[j].PinyinFirst){
+             arr[j].PinyinFirst = "";
+           }
+         }
+        }
+        return arr;
+      },
       checkAddress:function (type) {
         var _this = this;
         var cookie = androidIos.getcookie("MESSAGECARRIER");
@@ -405,6 +429,16 @@
               for(var i = 0 ; i < _this.normalAddressList.length ; i++){
                 if(_this.searchList.searchStartPro == _this.normalAddressList[i].region){
                   _this.normalCityList = _this.normalAddressList[i].child;
+                  for(var i = 0 ; i < _this.normalCityList.length ;i++){
+                    _this.normalCityList[i].PinyinFirst = ConvertPinyin(_this.normalCityList[i].region).substring(0,1).toUpperCase();
+                  }
+                  _this.normalCityList.sort(_this.compare("PinyinFirst"));
+                  _this.unique1(_this.normalCityList);
+                  _this.$nextTick(function () {
+                     var scrolltopGo = localStorage.getItem("getPageScroll0");
+                     scrolltopGo = scrolltopGo == null ? 0 : scrolltopGo;
+                     $("#selectcityUl").animate({scrollTop: scrolltopGo}, 0);
+                  });
                   break;
                 }
               }
@@ -428,6 +462,16 @@
               for(var i = 0 ; i < _this.normalAddressList.length ; i++){
                 if(_this.searchList.searchEndPro == _this.normalAddressList[i].region){
                   _this.normalCityList = _this.normalAddressList[i].child;
+                  for(var i = 0 ; i < _this.normalCityList.length ;i++){
+                    _this.normalCityList[i].PinyinFirst = ConvertPinyin(_this.normalCityList[i].region).substring(0,1).toUpperCase();
+                  }
+                  _this.normalCityList.sort(_this.compare("PinyinFirst"));
+                  _this.unique1(_this.normalCityList);
+                  _this.$nextTick(function () {
+                    var scrolltopGo = localStorage.getItem("getPageScroll1");
+                    scrolltopGo = scrolltopGo == null ? 0 : scrolltopGo;
+                    $("#selectcityUl").animate({scrollTop: scrolltopGo}, 0);
+                  });
                   break;
                 }
               }
@@ -450,6 +494,11 @@
           _this.searchList.searchEndPro = _this.searchEndPro;
         }
       },
+      getPageScroll:function() {
+        var  yScroll;
+        yScroll = document.getElementById("selectcityUl").scrollTop;
+        return yScroll;
+      },
       chooseProvince:function (item,index) {
         var _this = this;
         for(var i = 0; i < _this.normalAddressList.length; i++){
@@ -457,6 +506,11 @@
         }
         _this.normalAddressList[index].checked = true;
         _this.normalCityList = item.child;
+        for(var i = 0 ; i < _this.normalCityList.length ;i++){
+          _this.normalCityList[i].PinyinFirst = ConvertPinyin(_this.normalCityList[i].region).substring(0,1).toUpperCase();
+        }
+        _this.normalCityList.sort(_this.compare("PinyinFirst"));
+        _this.unique1(_this.normalCityList);
         for(var i =0 ; i < _this.normalCityList.length;i++){
           _this.normalCityList[i].checked = false;
         }
@@ -491,6 +545,11 @@
             _this.searchList.searchEndPro = "";
           }
         }
+        if(_this.addtype == 0 && type == 1 ){
+           localStorage.setItem("getPageScroll0",_this.getPageScroll());
+        }else if(_this.addtype == 1 && type == 1){
+          localStorage.setItem("getPageScroll1",_this.getPageScroll());
+        }
         for(var i =0 ; i < _this.hotAddressList.length;i++){
           _this.hotAddressList[i].checked = false;
         }
@@ -511,7 +570,6 @@
           }
         }
         _this.zeroload = _this.searchList.zeroload;
-       /* _this.mescrollArrList[0].resetUpScroll();*/
       },
       distanceListChecked:function (number) {
          var _this = this;
@@ -977,16 +1035,21 @@
     background-position: 50% 50%;
     background-color: #2c9cff;
   }
-  .hotAddress,.checkedAddress{
+  .hotAddress,.checkedAddress,.selectAddress,.selectcity{
     width:9rem;
     margin: 0.3rem  auto 0.3334rem auto;
   }
-  .hotAddress h1,.checkedAddress h1{
-     font-size: 0.35rem;
+  .hotAddress h1,.checkedAddress h1,.selectAddress h1,.selectcity h1{
+     font-size: 0.3125rem;
      color:#999;
     margin-bottom: 0.15rem;
   }
   .hotAddress ul{
+    width:100%;
+    max-height: 7.5rem;
+    overflow: scroll;
+  }
+  .selectAddress ul,.selectcity ul{
     width:100%;
     max-height: 7.5rem;
     overflow: scroll;
@@ -1003,7 +1066,7 @@
     float: left;
     text-align: left;
     font-size: 0.35rem;
-    line-height: 0.8rem;
+    line-height: 1.2rem;
   }
   .hotAddress li{
      float: left;
@@ -1012,6 +1075,26 @@
     text-align: center;
     font-size: 0.35rem;
     line-height: 0.8rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+  }
+  .shouzimu{
+    font-size: 0.375rem;
+    color:#999;
+    display: block;
+    float: left;
+    margin-right:0.5rem;
+    width:0.375rem;
+    min-width: 0.375rem;
+    height:1.2rem;
+  }
+  .selectAddress li,.selectcity li{
+    width:100%;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 0.375rem;
+    line-height: 1.2rem;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
