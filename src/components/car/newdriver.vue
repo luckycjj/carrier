@@ -3,13 +3,13 @@
     <div id="title" v-title data-title="司机信息"></div>
     <div id="inputKeyup">
       <div class="company inputUp">
-        <input type="text" maxlength="20" placeholder="请输入姓名" v-model="start.name"/>
+        <input type="text" maxlength="20" @keyup="filterInput()" placeholder="请输入姓名" v-model="start.name"/>
       </div>
       <div class="company inputUp">
-        <input type="tel" maxlength="11" placeholder="请输入手机号码" v-model="start.phone"/>
+        <input type="tel" maxlength="11" @keyup="filterInput()" placeholder="请输入手机号码" v-model="start.phone"/>
       </div>
       <div class="company inputUp" v-if="start.driverPk == ''">
-        <input :type="lookPassWord ? 'text' : 'password' " maxlength="25"  placeholder="请输入司机密码" v-model="start.password"/>
+        <input @keyup="filterInput()" :type="lookPassWord ? 'text' : 'password' " maxlength="25"  placeholder="请输入司机密码" v-model="start.password"/>
         <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
       </div>
       <div class="company inputUp">
@@ -171,6 +171,13 @@
           _this.start.time = name.firstVal;
           _this.start.timeValue = name.firstCode;
         }
+      },
+      filterInput:function () {
+        var _this = this;
+        _this.start.name =  _this.start.name.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
+        _this.start.phone =  _this.start.phone.replace(/[^\0-9]/g,'');
+        _this.start.password =  _this.start.password.replace(/[\u4E00-\u9FA5]/g,'');
+        _this.start.password =   _this.start.password.replace(/<script>/g,'');
       },
       lookpass:function () {
         var _this = this;
