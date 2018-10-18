@@ -227,7 +227,7 @@
                        page:pageNum,
                        size:pageSize,
                        type:0,
-                       state:curNavIndex,
+                       state:curNavIndex == 0 ? 0 : curNavIndex - 1 ,
                        userCode:sessionStorage.getItem("token"),
                        source:sessionStorage.getItem("source")
                      }),
