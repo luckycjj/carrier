@@ -9,7 +9,7 @@
         <input type="tel" maxlength="11" placeholder="请输入手机号码" v-model="start.phone"/>
       </div>
       <div class="company inputUp" v-if="start.driverPk == ''">
-        <input :type="lookPassWord ? 'text' : 'password' " maxlength="40"  placeholder="请输入司机密码" v-model="start.password"/>
+        <input :type="lookPassWord ? 'text' : 'password' " maxlength="25"  placeholder="请输入司机密码" v-model="start.password"/>
         <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
       </div>
       <div class="company inputUp">
@@ -329,9 +329,10 @@
   button{
     width:96%;
     color:white;
-    background-image: url("../../images/backgroundJB.png");
-    background-repeat:repeat-y;
-    background-size:10rem;
+    background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
     display: block;
     margin: 0.3rem auto;
     font-size: 0.4rem;

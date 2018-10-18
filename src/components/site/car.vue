@@ -1313,9 +1313,10 @@
     text-align: center;
     line-height: 1.2rem;
     font-size: 0.4rem;
-    background-image: url("../../images/backgroundJB.png");
-    background-repeat:repeat-y;
-    background-size:10rem;
+    background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
   }
   .mesrollTop{
     top: 1.3rem!important;
