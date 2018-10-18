@@ -1074,7 +1074,7 @@
     margin: 0 2.5%;
     text-align: center;
     font-size: 0.35rem;
-    line-height: 0.8rem;
+    line-height: 1.2rem;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
