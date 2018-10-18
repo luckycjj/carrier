@@ -123,6 +123,7 @@
         handler:function(val,oldval){
           var _this = this;
           _this.message.weight=(_this.message.weight.match(/\d+(\.\d{0,2})?/)||[''])[0];
+          _this.message.remark = _this.message.remark.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
         },
         deep:true
       }

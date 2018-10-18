@@ -3,22 +3,22 @@
     <div id="title" v-title data-title="车辆信息"></div>
     <div class="nav" v-if="orderPk == ''">
       <div class="classBoxP">
-        <p class="active" i="0" @click="navClick(0)">整车<span>{{jiaobiao.zhengCount}}</span></p>
+        <p class="active" i="0" @click="navClick(0)">整车<span v-if="jiaobiao.zhengCount > 0">{{jiaobiao.zhengCount}}</span></p>
       </div>
       <div class="classBoxP">
-      <p i="1" @click="navClick(1)">车头<span>{{jiaobiao.carHeadCount}}</span></p>
+      <p i="1" @click="navClick(1)">车头<span v-if="jiaobiao.carHeadCount > 0">{{jiaobiao.carHeadCount}}</span></p>
       </div>
       <div class="classBoxP">
-      <p i="2" @click="navClick(2)">车挂<span>{{jiaobiao.carHangCount}}</span></p>
+      <p i="2" @click="navClick(2)">车挂<span v-if="jiaobiao.carHangCount > 0">{{jiaobiao.carHangCount}}</span></p>
       </div>
       <div class="clearBoth"></div>
     </div>
     <div class="nav" v-if="orderPk != ''">
       <div style="width:50%" class="classBoxP">
-        <p class="active" i="0" @click="navClick(0)">整车<span>{{jiaobiao.zhengCount}}</span></p>
+        <p class="active" i="0" @click="navClick(0)">整车<span v-if="jiaobiao.zhengCount > 0 ">{{jiaobiao.zhengCount}}</span></p>
       </div>
       <div style="width:50%" class="classBoxP">
-        <p i="1"  @click="navClick(1)">车头<span>{{jiaobiao.carHeadCount}}</span></p>
+        <p i="1"  @click="navClick(1)">车头<span v-if="jiaobiao.carHeadCount > 0 ">{{jiaobiao.carHeadCount}}</span></p>
       </div>
       <div class="clearBoth"></div>
     </div>
