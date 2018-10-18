@@ -293,7 +293,7 @@
           var nnnn = 0;
           for (var i = 0; i < curPageData.length; i++) {
             var pd=curPageData[i];
-            var type =pd.now == 0 ? '审核中' :pd.now == 2 ? '已驳回' : pd.now == 3 ? '已禁用' : (pd.type == 1 ? '使用中': pd.type == 2 ?  '在途中' : pd.type == 3 ? '维修中' : pd.type == 4 ? '保养中' : '空闲中');
+            var type =pd.now == 0 ? '审核中' :pd.now == 2 ? '已驳回' : pd.now == 3 ? '已禁用' : (pd.type == 1 ?  '使用中': pd.type == 2 ?  '在途中' : pd.type == 3 ? '维修中' : pd.type == 4 ? '保养中' : '空闲中');
             var types = '<span class="nowtype">'+type+'</span>';
             var display = $("#search").find("h5").text() == "取消" ? "block":"none";
             var length = pd.length == "" ? "" : pd.length+ "米" ;
@@ -639,7 +639,7 @@
             var nnnn = 0;
             for (var i = 0; i < curPageData.length; i++) {
               var pd=curPageData[i];
-              var type =pd.now == 0 ? '审核中' :pd.now == 2 ? '已驳回' : pd.now == 3 ? '已禁用' : (pd.type == 1 ? '使用中': pd.type == 2 ?  '在途中' : pd.type == 3 ? '维修中' : pd.type == 4 ? '保养中' : '空闲中');
+              var type =pd.now == 0 ? '审核中' :pd.now == 2 ? '已驳回' : pd.now == 3 ? '已禁用' : (pd.type == 1 ? ( sessionStorage.getItem("nowOrderCartype").indexOf("零担") != -1 ? '可使用' : '使用中'): pd.type == 2 ?  '在途中' : pd.type == 3 ? '维修中' : pd.type == 4 ? '保养中' : '空闲中');
               var types = '<span class="nowtype">'+type+'</span>';
               var display = $("#search").find("h5").text() == "取消" ? "block":"none";
               var length = pd.length == "" ? "" : pd.length+ "米" ;
