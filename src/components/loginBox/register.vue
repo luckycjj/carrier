@@ -4,21 +4,17 @@
     <div id="registerBody">
       <div class="modelView">
         <span class="w3">手机号</span>
-        <input type="tel" v-model="mobile" placeholder="请输入手机号" maxlength="11"/>
+        <input type="tel" v-model="mobile" @keyup="filterInput()" placeholder="请输入手机号" maxlength="11"/>
       </div>
       <div class="modelView">
         <span class="w2">密码</span>
-        <input :type="lookPassWord ? 'text' : 'password' " maxlength="25"  v-model="password" placeholder="请输入密码"/>
+        <input @keyup="filterInput()" :type="lookPassWord ? 'text' : 'password' " maxlength="25"  v-model="password" placeholder="请输入密码"/>
         <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
         <div class="clearBoth"></div>
       </div>
-      <!--<div class="modelView">
-        <span class="w3">邀请码</span>
-        <input type="text" v-model="invitation" placeholder="请输入邀请码" maxlength="6"/>
-      </div>-->
       <div class="modelView" style="border:none">
         <span class="w3">验证码</span>
-        <input type="tel" v-model="verification" placeholder="请输入验证码" maxlength="6"/>
+        <input @keyup="filterInput()" type="tel" v-model="verification" placeholder="请输入验证码" maxlength="6"/>
         <span class="verificationCome" @click="verificationCome()">{{name}}</span>
         <div class="clearBoth"></div>
       </div>
@@ -58,6 +54,13 @@
           go:function () {
 
           },
+        filterInput:function () {
+          var _this = this;
+          _this.mobile =  _this.mobile.replace(/[^\0-9]/g,'');
+          _this.verification =  _this.verification.replace(/[^\0-9]/g,'');
+          _this.password =  _this.password.replace(/[\u4E00-\u9FA5]/g,'');
+          _this.password =  _this.password.replace(/<script>/g,'');
+        },
           lookpass:function () {
             var _this = this;
             _this.lookPassWord = !_this.lookPassWord;
@@ -218,10 +221,9 @@
    width:9.2rem;
    margin:0.74rem auto 0 auto ;
    display: block;
-   background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
-   background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
-   background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
-   background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+   background-image: url("../../images/backgroundJB.png");
+   background-repeat:repeat-y;
+   background-size:9.2rem;
    color:white;
    font-size: 0.42rem;
    letter-spacing: 2px;

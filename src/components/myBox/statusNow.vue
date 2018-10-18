@@ -100,7 +100,7 @@
               _this.status =  getUserInfo.status;
               _this.inviteCode = getUserInfo.inviteCode;
               _this.creditCode = getUserInfo.creditCode;
-              sessionStorage.setItem("driverMessage",JSON.stringify({
+              sessionStorage.setItem("carrierMessage",JSON.stringify({
                 licType: getUserInfo.licType,
                 name:  getUserInfo.name,
                 photo:  getUserInfo.photo,

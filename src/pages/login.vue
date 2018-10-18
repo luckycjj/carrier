@@ -4,12 +4,12 @@
     <img src="../images/logo.png" id="logo">
     <div class="modelView">
       <span class="w3">手机号</span>
-      <input type="tel" v-model="mobile" placeholder="请输入手机号" maxlength="11"/>
+      <input type="tel" v-model="message.mobile" placeholder="请输入手机号" maxlength="11"/>
     </div>
     <div class="modelView">
       <span class="w2">密码</span>
-      <input :type="lookPassWord ? 'text' : 'password' "  v-model="password" placeholder="请输入密码"/>
-      <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
+      <input :type="message.lookPassWord ? 'text' : 'password' "  v-model="message.password" placeholder="请输入密码"/>
+      <div id="lookPassWord" :class="message.lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
     </div>
     <button @click="loginOn()">登录</button>
     <p class="newOwner"><span @click="registerGo(1)">新用户注册</span><span @click="registerGo(2)" class="fRight">忘记密码?</span><div class="clearBoth"></div></p>
@@ -24,10 +24,23 @@
       name: "login",
       data(){
           return{
-             mobile:"",
-             password:"",
-             lookPassWord:false,
+            message:{
+              mobile:"",
+              password:"",
+              lookPassWord:false,
+            }
           }
+      },
+      watch:{
+        message:{
+          handler:function(val,oldval){
+            var _this = this;
+            _this.message.mobile =  _this.message.mobile.replace(/[^\0-9]/g,'');
+            _this.message.password =  _this.message.password.replace(/[\u4E00-\u9FA5]/g,'');
+            _this.message.password =  _this.message.password.replace(/<script>/g,'');
+          },
+          deep:true
+        }
       },
       mounted:function () {
           var _this = this;
@@ -36,7 +49,9 @@
           sessionStorage.removeItem("carrierMessage");
           sessionStorage.removeItem("robbingTap");
           sessionStorage.removeItem("trackTap");
+          sessionStorage.removeItem("driverBottomIcon");
           localStorage.removeItem("SCREENROBBING");
+          localStorage.removeItem("UPMESSA");
           androidIos.bridge(_this);
       },
       methods:{
@@ -61,12 +76,12 @@
         },
         loginOn:function () {
           var _this = this;
-          if(_this.mobile == "" || _this.password == ""){
+          if(_this.message.mobile == "" || _this.message.password == ""){
              bomb.first("请输入手机号或密码!");
              return false;
           }
-          var check = androidIos.telCheck(_this.mobile);
-          if(!check || _this.mobile.length < 11){
+          var check = androidIos.telCheck(_this.message.mobile);
+          if(!check || _this.message.mobile.length < 11){
             bomb.first("请输入正确的手机号!");
             return false;
           };
@@ -75,8 +90,8 @@
             type: "POST",
             url: androidIos.ajaxHttp() + "/login",
             data:JSON.stringify({
-                loginId : _this.mobile,
-                userPassword : _this.password
+                loginId : _this.message.mobile,
+                userPassword : _this.message.password
             }),
             contentType: "application/json;charset=utf-8",
             dataType: "json",
@@ -108,7 +123,7 @@
         },
         lookpass:function () {
           var _this = this;
-          _this.lookPassWord = !_this.lookPassWord;
+          _this.message.lookPassWord = !_this.message.lookPassWord;
         },
       },
       beforeDestroy:function () {

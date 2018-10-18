@@ -555,6 +555,7 @@
       lookTrackMore:function (item) {
         var _this = this;
         var cookie = androidIos.getcookie("MESSAGECARRIER");
+        var carrierMessage = sessionStorage.getItem("carrierMessage");
         if(cookie == ""){
           androidIos.first("尚未登录,请登录!");
           $(".tanBox-yes").unbind('click').click(function(){
@@ -562,8 +563,21 @@
             _this.$router.push({ path: '/login'});
           });
         }else{
-          androidIos.addPageList();
-          _this.$router.push({ path: '/robbing/robbingMore',query:{pk:item.pkSegment,type:_this.tabShow == 0 ? 1 : 2}});
+          if(carrierMessage != null){
+            var status = JSON.parse(carrierMessage);
+            if(status.status == 1){
+              androidIos.second("正在审核中，请耐心等待！");
+            }else if(status.status == 0){
+              androidIos.second("尚未认证，请认证上传资料！");
+            }else if(status.status == 3){
+              androidIos.second("资料已驳回，请重新上传资料！");
+            }else if(status.status == 4){
+              androidIos.second("账户已禁用！");
+            }else if(status.status == 2){
+              androidIos.addPageList();
+              _this.$router.push({ path: '/robbing/robbingMore',query:{pk:item.pkSegment,type:_this.tabShow == 0 ? 1 : 2}});
+            }
+          }
         }
       },
     },
