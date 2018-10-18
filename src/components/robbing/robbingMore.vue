@@ -117,7 +117,7 @@
             {{item.displayName}}
           </li>
           <div class="clearBoth"></div>
-          <input type="text" placeholder="其他原因" v-model="cancelreason" maxlength="50">
+          <input type="text"   @keyup="filterInput()"  placeholder="其他原因" v-model="cancelreason" maxlength="50">
         </ul>
         <button @click="cancelReasonChange()" class="gogogo" id="gogogo1">提交</button>
       </div>
@@ -133,7 +133,7 @@
             {{item.displayName}}
           </li>
           <div class="clearBoth"></div>
-          <input type="text" placeholder="其他原因" maxlength="40" v-model="closedOrderReason">
+          <input type="text"   @keyup="filterInput()" placeholder="其他原因" maxlength="40" v-model="closedOrderReason">
         </ul>
         <button @click="orderClosedChange()" id="gogogo3" class="gogogo">提交</button>
       </div>
@@ -222,6 +222,11 @@
             offset: 2.1 * $("html").css("font-size").replace("px", "")
           }
         });
+      },
+      filterInput:function () {
+        var _this = this;
+        _this.closedOrderReason =  _this.closedOrderReason.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
+        _this.cancelreason =  _this.cancelreason.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
       },
       upCallback: function(page) {
         //联网加载数据
