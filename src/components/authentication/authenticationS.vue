@@ -19,7 +19,7 @@
           <div class="fileup3">
             <img src="../../images/addImg.png" v-if="message.first.people.bendi == ''">
             <input type="file" @change="fileImgUp($event,1)"  accept="firstimage/*"  capture = "user">
-            <img class="fileImg3" :src="message.first.people.bendi" v-if="message.first.people.bendi != ''">
+            <img :onerror="errorlogo" class="fileImg3" :src="message.first.people.bendi" v-if="message.first.people.bendi != ''">
             <h6 v-if="message.first.people.bendi == ''">点击拍照</h6>
           </div>
           <div class="SFZLook">
@@ -33,7 +33,7 @@
           <div class="fileup2">
             <img src="../../images/addImg.png" v-if="message.first.idCardZ.bendi == ''">
             <input type="file" @change="fileImgUp($event,2)"  accept="image/*"  capture = "camera">
-            <img class="fileImg2" :src="message.first.idCardZ.bendi" v-if="message.first.idCardZ.bendi != ''">
+            <img :onerror="errorlogo" class="fileImg2" :src="message.first.idCardZ.bendi" v-if="message.first.idCardZ.bendi != ''">
             <h6 v-if="message.first.idCardZ.bendi == ''">点击拍照</h6>
           </div>
           <div class="SFZFLook">
@@ -47,7 +47,7 @@
           <div class="fileup2">
             <img src="../../images/addImg.png" v-if="message.first.idCardF.bendi == ''">
             <input type="file" @change="fileImgUp($event,3)"  accept="image/*"  capture = "camera">
-            <img class="fileImg2" :src="message.first.idCardF.bendi" v-if="message.first.idCardF.bendi != ''">
+            <img :onerror="errorlogo" class="fileImg2" :src="message.first.idCardF.bendi" v-if="message.first.idCardF.bendi != ''">
             <h6 v-if="message.first.idCardF.bendi == ''">点击拍照</h6>
           </div>
           <div class="SFZFLook">
@@ -77,7 +77,7 @@
           <div class="fileup2">
             <img src="../../images/addImg.png" v-if="message.second.driverLicense.bendi == ''">
             <input type="file" @change="fileImgUp($event,4)"  accept="image/*"  capture = "camera">
-            <img class="fileImg2" :src="message.second.driverLicense.bendi" v-if="message.second.driverLicense.bendi != ''">
+            <img :onerror="errorlogo" class="fileImg2" :src="message.second.driverLicense.bendi" v-if="message.second.driverLicense.bendi != ''">
             <h6 v-if="message.second.driverLicense.bendi == ''">点击拍照</h6>
           </div>
           <div class="SFZFLook">
@@ -91,7 +91,7 @@
           <div class="fileup2">
             <img src="../../images/addImg.png" v-if="message.second.drivingLicence.bendi == ''">
             <input type="file" @change="fileImgUp($event,5)"  accept="image/*"  capture = "camera">
-            <img class="fileImg2" :src="message.second.drivingLicence.bendi" v-if="message.second.drivingLicence.bendi != ''">
+            <img :onerror="errorlogo" class="fileImg2" :src="message.second.drivingLicence.bendi" v-if="message.second.drivingLicence.bendi != ''">
             <h6 v-if="message.second.drivingLicence.bendi == ''">点击拍照</h6>
           </div>
           <div class="SFZFLook">
@@ -105,7 +105,7 @@
           <div class="fileup2">
             <img src="../../images/addImg.png" v-if="message.second.roadtransport.bendi == ''">
             <input type="file" @change="fileImgUp($event,6)"  accept="image/*"  capture = "camera">
-            <img class="fileImg2" :src="message.second.roadtransport.bendi" v-if="message.second.roadtransport.bendi != ''">
+            <img :onerror="errorlogo" class="fileImg2" :src="message.second.roadtransport.bendi" v-if="message.second.roadtransport.bendi != ''">
             <h6 v-if="message.second.roadtransport.bendi == ''">点击拍照</h6>
           </div>
           <div class="SFZFLook">
