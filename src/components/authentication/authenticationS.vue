@@ -162,7 +162,8 @@
                roadtransport:{
                  bendi:"",
                  http:"",
-               },           second:{
+               },
+               second:{
                  driverLicense:{
                    bendi:"",
                    http:"",
@@ -219,8 +220,8 @@
                _this.message = {
                  first:{
                    people: {
-                     bendi: getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.idCardPos,
-                     http:getCarrAndCompanyInfo.idCardPos,
+                     bendi: getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.photo,
+                     http:getCarrAndCompanyInfo.photo,
                    },
                    idCardZ: {
                      bendi: getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.idCardPos,
@@ -438,7 +439,8 @@
                drivingLicence : _this.message.second.drivingLicence.http,
                idCardNum:_this.message.first.idCode,
                source :sessionStorage.getItem("source"),
-               userCode:sessionStorage.getItem("token")
+               userCode:sessionStorage.getItem("token"),
+               photo:_this.message.first.people.http
              };
              $.ajax({
                type: "POST",

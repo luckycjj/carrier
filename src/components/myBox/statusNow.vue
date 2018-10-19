@@ -169,7 +169,7 @@
           }else{
             androidIos.addPageList();
             if(_this.letterType == 2){
-              _this.$router.push({ path: '/authentication'});
+              _this.$router.push({ path: '/authenticationF'});
             }else{
               _this.$router.push({ path: '/authenticationS'});
             }

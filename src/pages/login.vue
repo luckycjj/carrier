@@ -55,7 +55,7 @@
           localStorage.removeItem("getPageScroll0");
           localStorage.removeItem("getPageScroll1");
           localStorage.removeItem("CARRIERSSETMESSAGE");
-        localStorage.removeItem("CARRIERSFETMESSAGE");
+          localStorage.removeItem("CARRIERSFETMESSAGE");
           androidIos.bridge(_this);
       },
       methods:{

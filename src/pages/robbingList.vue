@@ -867,8 +867,7 @@
   }
   .startEndSpan{
     float: left;
-    font-size: 0.44rem;
-    font-weight:bold;
+    font-size: 0.42rem;
     line-height: 0.56rem;
     color:#333;
     margin-bottom: 0.25rem;

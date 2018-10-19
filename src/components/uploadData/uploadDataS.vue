@@ -40,7 +40,7 @@ export default {
         if(type == 1){
           _this.$router.push({ path: '/authenticationS',query:{type:type}  })
         }else if(type == 2){
-          _this.$router.push({ path: '/authentication',query:{type:type}  })
+          _this.$router.push({ path: '/authenticationF',query:{type:type}  })
         }
 
     }

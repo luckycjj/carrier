@@ -31,7 +31,7 @@
             <h6 class="arriDateTime">{{items.arriDate}}</h6>
             <div class="proBox">
               <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
-              <div class="proBoxList" v-for="(pro,proIndex) in items.itemDaos">{{pro.goodsCode}}/{{pro.goodsName}}/{{pro.num}}件/{{pro.weight*1}}吨/{{pro.volume*1}}立方米</div>
+              <div class="proBoxList" v-for="(pro,proIndex) in items.itemDaos">{{pro.goodsCode}}/{{pro.goodsName}}/{{pro.num}}件<span v-if="pro.weight*1 > 0">/{{pro.weight*1}}吨</span><span v-if="pro.volume*1 > 0">/{{pro.volume*1}}立方米</span></div>
             </div>
             <h1>订单编号：{{items.vbillno}}</h1>
           </li>
@@ -469,8 +469,7 @@
   }
   .startEndSpan{
     float: left;
-    font-size: 0.44rem;
-    font-weight:bold;
+    font-size: 0.442rem;
     line-height: 0.56rem;
     color:#333;
     margin-bottom: 0.25rem;

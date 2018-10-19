@@ -311,8 +311,8 @@
                  },
                  third: {
                    people: {
-                     bendi: getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.businessLicense,
-                     http:getCarrAndCompanyInfo.businessLicense,
+                     bendi: getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.photo,
+                     http:getCarrAndCompanyInfo.photo,
                    },
                    idCardZ: {
                      bendi: getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.idCardPos,
@@ -575,7 +575,8 @@
                isYourSelf:_this.message.first.creator,
                idCardNum:_this.message.third.idCode,
                source :sessionStorage.getItem("source"),
-               userCode:sessionStorage.getItem("token")
+               userCode:sessionStorage.getItem("token"),
+               photo:_this.message.third.people.http
              };
              $.ajax({
                type: "POST",
