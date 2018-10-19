@@ -38,9 +38,9 @@ export default {
       var _this = this;
       androidIos.addPageList();
         if(type == 1){
-           _this.$router.push({ path: '/uploadData/uploadDataT',query:{type: _this.type,letterType:type} })
+          _this.$router.push({ path: '/authenticationS',query:{type:type}  })
         }else if(type == 2){
-           _this.$router.push({ path: '/uploadData/uploadDataFo',query:{type: _this.type,letterType:type}  })
+          _this.$router.push({ path: '/authentication',query:{type:type}  })
         }
 
     }

@@ -1,5 +1,7 @@
 // 引入子路由
 import forgetPassword from '@/components/loginBox/forgetPassword'
+import authentication from '@/components/authentication/authentication'
+import authenticationS from '@/components/authentication/authenticationS'
 import register from '@/components/loginBox/register'
 import robbing from '../pages/robbing'
 import dispatchList from '../pages/dispatchList'
@@ -120,6 +122,14 @@ Vue.filter('orderTypeName', function(value) {
 
 export default new Router({
   routes: [ {
+    path:'/authentication',
+    name:'authentication',
+    component:authentication,
+  },{
+    path:'/authenticationS',
+    name:'authenticationS',
+    component:authenticationS,
+  },{
     path:'/orderScreen',
     name:'orderScreen',
     component:orderScreen,

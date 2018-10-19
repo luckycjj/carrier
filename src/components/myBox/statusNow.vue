@@ -168,7 +168,12 @@
             _this.$router.push({path:'/uploadData/uploadDataS',query:{type:1}})
           }else{
             androidIos.addPageList();
-            _this.$router.push({path:'/uploadData/uploadDataT'});
+            if(_this.letterType == 2){
+              _this.$router.push({ path: '/authentication'});
+            }else{
+              _this.$router.push({ path: '/authenticationS'});
+            }
+
           }
         },
         imgLook:function (img) {

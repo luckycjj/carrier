@@ -54,6 +54,8 @@
           localStorage.removeItem("UPMESSA");
           localStorage.removeItem("getPageScroll0");
           localStorage.removeItem("getPageScroll1");
+          localStorage.removeItem("CARRIERSSETMESSAGE");
+        localStorage.removeItem("CARRIERSFETMESSAGE");
           androidIos.bridge(_this);
       },
       methods:{
@@ -105,6 +107,40 @@
                 androidIos.setcookie("MESSAGECARRIER",JSON.stringify({
                    token:login.data.userCode,
                 }),80);
+                $.ajax({
+                  type: "POST",
+                  url: androidIos.ajaxHttp() + "/getUserInfo",
+                  data:JSON.stringify({
+                    userCode:sessionStorage.getItem("token"),
+                    source:sessionStorage.getItem("source")
+                  }),
+                  contentType: "application/json;charset=utf-8",
+                  dataType: "json",
+                  timeout: 30000,
+                  success: function (getUserInfo) {
+                    if (getUserInfo.success == "1") {
+                      _this.message.photo =  getUserInfo.photo;
+                      _this.message.name = getUserInfo.corpName == "" ? getUserInfo.name :getUserInfo.corpName;
+                      _this.message.status =   getUserInfo.status;
+                      sessionStorage.setItem("carrierMessage",JSON.stringify({
+                        licType: getUserInfo.licType,
+                        name:  getUserInfo.name,
+                        photo:  getUserInfo.photo,
+                        status:  getUserInfo.status,
+                        corpName:  getUserInfo.corpName,
+                      }));
+                    }else{
+                      androidIos.second(getUserInfo.message);
+                    }
+                  },
+                  complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                    if (status == 'timeout') { //超时,status还有success,error等值的情况
+                      androidIos.second("当前状况下网络状态差，请检查网络！");
+                    } else if (status == "error") {
+                      androidIos.errorwife();
+                    }
+                  }
+                });
                 _this.$cjj("登录成功");
                 setTimeout(function () {
                   _this.$router.push({ path: '/robbingList'});
