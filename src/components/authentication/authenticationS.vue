@@ -151,18 +151,6 @@
                  name:"",
                  idCode:""
                },
-               driverLicense:{
-                 bendi:"",
-                 http:"",
-               },
-               drivingLicence:{
-                 bendi:"",
-                 http:"",
-               },
-               roadtransport:{
-                 bendi:"",
-                 http:"",
-               },
                second:{
                  driverLicense:{
                    bendi:"",
