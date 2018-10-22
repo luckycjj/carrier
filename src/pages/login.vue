@@ -46,6 +46,7 @@
           var _this = this;
           sessionStorage.removeItem("token");
           androidIos.delCookie("MESSAGECARRIER");
+          androidIos.delCookie("BAIDUTOKEN");
           sessionStorage.removeItem("carrierMessage");
           sessionStorage.removeItem("robbingTap");
           sessionStorage.removeItem("trackTap");
