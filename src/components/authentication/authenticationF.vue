@@ -1460,4 +1460,8 @@
   width:1rem;
   margin:0.3rem auto 0 auto
 }
+#baiduduma h1 span{
+  font-size: 0.37312rem;
+  color: #666;
+}
 </style>
