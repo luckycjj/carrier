@@ -63,46 +63,49 @@
             }else{
               SCREENROBBING = "";
             }
-            $.ajax({
-              type: "POST",
-              url: androidIos.ajaxHttp() + "/carrier/bottomIcon",
-              data:JSON.stringify({
-                userCode:sessionStorage.getItem("token"),
-                source:sessionStorage.getItem("source"),
-                startCity:SCREENROBBING != "" ? SCREENROBBING.startAdd : "",
-                endCity:SCREENROBBING != "" ? SCREENROBBING.endAdd : "",
-                range:SCREENROBBING != "" ? SCREENROBBING.distance : "",
-                pkTransType:SCREENROBBING.zeroload && SCREENROBBING != "" ? 1 :"",
-                transType:"",
-              }),
-              contentType: "application/json;charset=utf-8",
-              dataType: "json",
-              timeout: 30000,
-              success: function (driverBottomIcon) {
-                if (driverBottomIcon.success == "1") {
-                  _this.items[0].number = driverBottomIcon.grabOrderCount*1;
-                  _this.items[1].number = driverBottomIcon.orderCount*1 + driverBottomIcon.schedulingCount*1;
-                  if(driverBottomIcon.myFlag == 1){
-                    _this.items[2].show = true;
+            if(sessionStorage.getItem("token") != undefined){
+              $.ajax({
+                type: "POST",
+                url: androidIos.ajaxHttp() + "/carrier/bottomIcon",
+                data:JSON.stringify({
+                  userCode:sessionStorage.getItem("token"),
+                  source:sessionStorage.getItem("source"),
+                  startCity:SCREENROBBING != "" ? SCREENROBBING.startAdd : "",
+                  endCity:SCREENROBBING != "" ? SCREENROBBING.endAdd : "",
+                  range:SCREENROBBING != "" ? SCREENROBBING.distance : "",
+                  pkTransType:SCREENROBBING.zeroload && SCREENROBBING != "" ? 1 :"",
+                  transType:"",
+                }),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                timeout: 30000,
+                success: function (driverBottomIcon) {
+                  if (driverBottomIcon.success == "1") {
+                    _this.items[0].number = driverBottomIcon.grabOrderCount*1;
+                    _this.items[1].number = driverBottomIcon.orderCount*1 + driverBottomIcon.schedulingCount*1;
+                    if(driverBottomIcon.myFlag == 1){
+                      _this.items[2].show = true;
+                    }else{
+                      _this.items[2].show = false;
+                    }
+                    _this.$nextTick(function () {
+                      _this.marginWidth();
+                      sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
+                    })
                   }else{
-                    _this.items[2].show = false;
+                    androidIos.second(driverBottomIcon.message);
                   }
-                  _this.$nextTick(function () {
-                    _this.marginWidth();
-                    sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
-                  })
-                }else{
-                  androidIos.second(driverBottomIcon.message);
+                },
+                complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                  if (status == 'timeout') { //超时,status还有success,error等值的情况
+                    androidIos.second("当前状况下网络状态差，请检查网络！");
+                  } else if (status == "error") {
+                    androidIos.errorwife();
+                  }
                 }
-              },
-              complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-                if (status == 'timeout') { //超时,status还有success,error等值的情况
-                  androidIos.second("当前状况下网络状态差，请检查网络！");
-                } else if (status == "error") {
-                  androidIos.errorwife();
-                }
-              }
-            });
+              });
+            }
+
           },
         rout:function (item) {
           var _this = this;
