@@ -3,6 +3,7 @@
     <ul>
       <li v-for='(item,index) in items' :class='[{on:index === idx} ]' @click="rout(item)">
         <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show=" item.number > 0">{{item.number}}</div></div>
+        <div id="footerUserTX" v-if="index == 2" :style="{display: item.show ? 'block' : 'none'}"></div>
         {{item.name}}
       </li>
       <div class="clearBoth"></div>
@@ -36,6 +37,7 @@
                 number:0,
                 marginRight:0,
                 cls: "user",
+                show:false,
                 name: "我的",
                 push: "/user"
               }
@@ -80,6 +82,11 @@
                 if (driverBottomIcon.success == "1") {
                   _this.items[0].number = driverBottomIcon.grabOrderCount*1;
                   _this.items[1].number = driverBottomIcon.orderCount*1 + driverBottomIcon.schedulingCount*1;
+                  if(driverBottomIcon.myFlag == 1){
+                    _this.items[2].show = true;
+                  }else{
+                    _this.items[2].show = false;
+                  }
                   _this.$nextTick(function () {
                     _this.marginWidth();
                     sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
@@ -182,5 +189,15 @@
       color:#666;
       font-size: 0.3125rem;
       background: white;
+      position: relative;
     }
+     #footerUserTX{
+       position: absolute;
+       width:0.18rem;
+       height: 0.18rem;
+       border-radius: 50%;
+       background: #E1473C;
+       top:0.2rem;
+       right:40%;
+     }
 </style>
