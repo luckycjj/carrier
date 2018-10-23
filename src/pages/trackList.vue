@@ -188,70 +188,74 @@
                  if(pageNum == 1){
                    _this.$refs.footcomponent.go();
                  }
-                 if(curNavIndex == 1){
-                   $.ajax({
-                     type: "POST",
-                     url: androidIos.ajaxHttp() + "/order/loadSchedule",
-                     data: JSON.stringify({
-                       userCode:sessionStorage.getItem("token"),
-                       source:sessionStorage.getItem("source"),
-                       page:pageNum,
-                       size:pageSize
-                     }),
-                     contentType: "application/json;charset=utf-8",
-                     dataType: "json",
-                     timeout: 10000,
-                     success: function (getDriverApplication) {
-                       if(getDriverApplication.success == "1"){
-                         successCallback(getDriverApplication.list);
-                       }else{
-                         androidIos.second(getDriverApplication.message);
-                         successCallback([]);
+                 if(JSON.parse(sessionStorage.getItem("carrierMessage")).status == 2){
+                   if(curNavIndex == 1){
+                     $.ajax({
+                       type: "POST",
+                       url: androidIos.ajaxHttp() + "/order/loadSchedule",
+                       data: JSON.stringify({
+                         userCode:sessionStorage.getItem("token"),
+                         source:sessionStorage.getItem("source"),
+                         page:pageNum,
+                         size:pageSize
+                       }),
+                       contentType: "application/json;charset=utf-8",
+                       dataType: "json",
+                       timeout: 10000,
+                       success: function (getDriverApplication) {
+                         if(getDriverApplication.success == "1"){
+                           successCallback(getDriverApplication.list);
+                         }else{
+                           androidIos.second(getDriverApplication.message);
+                           successCallback([]);
+                         }
+                       },
+                       complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                         if(status=='timeout'){//超时,status还有success,error等值的情况
+                           androidIos.second("当前状况下网络状态差，请检查网络！");
+                           successCallback([]);
+                         }else if(status=="error"){
+                           androidIos.errorwife();
+                           successCallback([]);
+                         }
                        }
-                     },
-                     complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-                       if(status=='timeout'){//超时,status还有success,error等值的情况
-                         androidIos.second("当前状况下网络状态差，请检查网络！");
-                         successCallback([]);
-                       }else if(status=="error"){
-                         androidIos.errorwife();
-                         successCallback([]);
+                     })
+                   }else{
+                     $.ajax({
+                       type: "POST",
+                       url: androidIos.ajaxHttp() + "/order/loadEntrust",
+                       data:JSON.stringify({
+                         page:pageNum,
+                         size:pageSize,
+                         type:0,
+                         state:curNavIndex == 0 ? 0 : curNavIndex - 1 ,
+                         userCode:sessionStorage.getItem("token"),
+                         source:sessionStorage.getItem("source")
+                       }),
+                       contentType: "application/json;charset=utf-8",
+                       dataType: "json",
+                       timeout: 30000,
+                       success: function (loadEntrust) {
+                         if (loadEntrust.success == "1") {
+                           successCallback(loadEntrust.list);
+                         }else{
+                           androidIos.second(loadEntrust.message);
+                           successCallback([]);
+                         }
+                       },
+                       complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                         if (status == 'timeout') { //超时,status还有success,error等值的情况
+                           androidIos.second("当前状况下网络状态差，请检查网络！");
+                           successCallback([]);
+                         } else if (status == "error") {
+                           androidIos.errorwife();
+                           successCallback([]);
+                         }
                        }
-                     }
-                   })
+                     });
+                   }
                  }else{
-                   $.ajax({
-                     type: "POST",
-                     url: androidIos.ajaxHttp() + "/order/loadEntrust",
-                     data:JSON.stringify({
-                       page:pageNum,
-                       size:pageSize,
-                       type:0,
-                       state:curNavIndex == 0 ? 0 : curNavIndex - 1 ,
-                       userCode:sessionStorage.getItem("token"),
-                       source:sessionStorage.getItem("source")
-                     }),
-                     contentType: "application/json;charset=utf-8",
-                     dataType: "json",
-                     timeout: 30000,
-                     success: function (loadEntrust) {
-                       if (loadEntrust.success == "1") {
-                         successCallback(loadEntrust.list);
-                       }else{
-                         androidIos.second(loadEntrust.message);
-                         successCallback([]);
-                       }
-                     },
-                     complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-                       if (status == 'timeout') { //超时,status还有success,error等值的情况
-                         androidIos.second("当前状况下网络状态差，请检查网络！");
-                         successCallback([]);
-                       } else if (status == "error") {
-                         androidIos.errorwife();
-                         successCallback([]);
-                       }
-                     }
-                   });
+                   successCallback([]);
                  }
 
                },100)
