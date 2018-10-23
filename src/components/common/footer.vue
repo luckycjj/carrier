@@ -63,6 +63,7 @@
             }else{
               SCREENROBBING = "";
             }
+            androidIos.judgeIphoneX("footer");
             if(sessionStorage.getItem("token") != undefined){
               $.ajax({
                 type: "POST",
@@ -143,6 +144,7 @@
        bottom: 0;
        left:0;
        width:100%;
+       background: white;
      }
      #footer ul{
        width:100%;

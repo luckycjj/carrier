@@ -148,6 +148,7 @@
       methods:{
         go:function () {
           var _this = this;
+          androidIos.judgeIphoneX("userBox");
           $.ajax({
             type: "POST",
             url: androidIos.ajaxHttp() + "/settings/findParamValueByName ",

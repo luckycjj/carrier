@@ -573,6 +573,23 @@ var androidIos = {
   checkText:function (text) {
     return text.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'')
   },
+  judgeIphoneX:function (id) {
+     var padding = 0 + "px";
+     try{
+       padding = api.safeArea.bottom + 'px';
+     }
+     catch (e){
+        padding = 0 + "px";
+     }
+     var docuId = document.getElementById(id);
+     if(docuId == null){
+       for(var i = 0 ; i < document.getElementsByClassName(id).length;i++){
+         document.getElementsByClassName(id)[i].style.paddingBottom = padding;
+       }
+     }else{
+       document.getElementById(id).style.paddingBottom = padding;
+     }
+  },
 };
 export {
   androidIos

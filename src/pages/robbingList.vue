@@ -234,6 +234,7 @@
       sessionStorage.removeItem("dispatchPK");
       sessionStorage.removeItem("carPKlistGo");
       sessionStorage.removeItem("driverPk");
+      androidIos.judgeIphoneX("mescroll");
       var SCREENROBBING = localStorage.getItem("SCREENROBBING");
       if(SCREENROBBING != null){
          _this.searchList = JSON.parse(SCREENROBBING);

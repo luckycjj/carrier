@@ -16,7 +16,14 @@
   <title></title>
   <script>
     window.onload = function () {
-      document.getElementsByTagName("html")[0].style.paddingTop =  api.safeArea.top + 'px';
+      var safeAreaTop = 0;
+      try{
+        safeAreaTop =  api.safeArea.top + 'px';
+      }
+      catch (e){
+        safeAreaTop = 0 + 'px';
+      }
+      document.getElementsByTagName("html")[0].style.paddingTop =  safeAreaTop;
     }
   </script>
 </head>

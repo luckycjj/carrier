@@ -99,6 +99,7 @@
        methods:{
          go:function () {
              var _this = this;
+             androidIos.judgeIphoneX("mescroll");
              _this.corner();
              var trackTap = sessionStorage.getItem("trackTap");
              if(trackTap != undefined){
