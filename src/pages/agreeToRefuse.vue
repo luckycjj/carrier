@@ -1,12 +1,17 @@
 <template>
-  <div id="agreeToRefuse">
+  <div id="agreeToRefuse" style="top:1.3rem">
      <router-view/>
   </div>
 </template>
 
 <script>
-    export default {
-        name: "agree-to-refuse"
+  import {androidIos} from "../js/app";
+  export default {
+        name: "agree-to-refuse",
+    mounted:function () {
+      var _this = this;
+      androidIos.judgeIphoneX("agreeToRefuse",2);
+    }
     }
 </script>
 

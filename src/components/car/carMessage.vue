@@ -501,8 +501,8 @@
     position: absolute;
   }
   #carMessage .mescroll{
-    position: fixed;
-    top:1.21875rem;
+    position: absolute;
+    top:0rem;
     bottom: 1.2rem;
     height: auto;
   }

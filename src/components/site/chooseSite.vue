@@ -362,8 +362,8 @@
     line-height: 0.6rem;
   }
   #chooseSite .mescroll{
-    position: fixed;
-    top:1.3rem;
+    position: absolute;
+    top:0;
     bottom: 1.2rem;
     height: auto;
   }

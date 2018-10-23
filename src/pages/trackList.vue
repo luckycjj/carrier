@@ -1,5 +1,5 @@
 <template>
-  <div id="trackList">
+  <div id="trackList" style="top:1.3rem">
     <div id="title" v-title data-title="订单跟踪"></div>
     <div id="showBox">
       <div class="wrapper" id="trackTab">
@@ -99,7 +99,8 @@
        methods:{
          go:function () {
              var _this = this;
-             androidIos.judgeIphoneX("mescroll");
+             androidIos.judgeIphoneX("mescroll",1);
+             androidIos.judgeIphoneX("trackList",2);
              _this.corner();
              var trackTap = sessionStorage.getItem("trackTap");
              if(trackTap != undefined){
@@ -384,7 +385,7 @@
   }
   #showBox{
     position: absolute;
-    top:0;
+    top:0rem;
     bottom: 1.3rem;
     height: auto;
     width:100%;

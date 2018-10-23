@@ -1,16 +1,21 @@
 <template>
-  <div id="robbing">
+  <div id="robbing" style="top:1.3rem;">
     <router-view/>
   </div>
 </template>
 
 <script>
-    export default {
+  import {androidIos} from "../js/app";
+  export default {
         name: "robbing",
       data(){
           return{
              cjj:1
           }
+      },
+      mounted:function () {
+        var _this = this;
+        androidIos.judgeIphoneX("robbing",2);
       }
     }
 </script>

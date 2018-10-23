@@ -826,8 +826,8 @@
     margin-top: 0.4rem;
   }
   #robbingMore .mescroll{
-    position: fixed;
-    top:1.3rem;
+    position: absolute;
+    top:0rem;
     bottom: 1.2rem;
     height: auto;
   }

@@ -1217,8 +1217,8 @@
     margin-left: 0.2rem;
   }
   #car .mescroll{
-    position: fixed;
-    top:2.21875rem;
+    position: absolute;
+    top:0.91875rem;
     bottom: 0;
     height: auto;
   }

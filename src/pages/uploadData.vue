@@ -1,14 +1,18 @@
 <template>
-  <div id="uploadData">
+  <div id="uploadData" style="top:1.3rem">
     <router-view></router-view>
   </div>
 </template>
 <script>
+  import {androidIos} from "../js/app";
   export default {
     name: 'uploadData',
     data () {
       return {
       }
+    },
+    mounted:function () {
+      androidIos.judgeIphoneX("uploadData",2);
     }
   }
 </script>

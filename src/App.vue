@@ -150,6 +150,7 @@
     methods:{
       go:function () {
         var _this = this;
+        androidIos.judgeIphoneX("carTitleBox",0);
       },
       goback:function () {
         var _this = this;
@@ -310,6 +311,7 @@
     /*    position: absolute;*/
     z-index: 100;
     top:0;
+    background: white;
   }
   #appBox .carTitleBox{
     width: 100%;

@@ -63,7 +63,7 @@
             }else{
               SCREENROBBING = "";
             }
-            androidIos.judgeIphoneX("footer");
+            androidIos.judgeIphoneX("footer",1);
             if(sessionStorage.getItem("token") != undefined){
               $.ajax({
                 type: "POST",

@@ -1,12 +1,21 @@
 <template>
-  <div id="carBox">
+  <div id="carBox" style="top:1.3rem;">
     <router-view/>
   </div>
 </template>
 
 <script>
-    export default {
+  import {androidIos} from "../js/app";
+
+  export default {
         name: "car",
+      data(){
+        return {}
+      },
+      mounted:function () {
+        var _this = this;
+        androidIos.judgeIphoneX("carBox",2);
+      }
     }
 </script>
 

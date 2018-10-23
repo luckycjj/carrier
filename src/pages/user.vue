@@ -1,5 +1,5 @@
 <template>
-  <div id="user">
+  <div id="user" style="top:1.3rem;">
     <div id="title" v-title data-title="个人中心"></div>
     <div id="userBox">
        <div id="head">
@@ -102,6 +102,8 @@
       mounted:function () {
         var _this = this;
         var carrierMessage = sessionStorage.getItem("carrierMessage");
+        androidIos.judgeIphoneX("userBox",1);
+        androidIos.judgeIphoneX("user",2);
         if(carrierMessage != null) {
           carrierMessage = JSON.parse(carrierMessage);
           _this.message.photo = carrierMessage.photo;
@@ -148,7 +150,6 @@
       methods:{
         go:function () {
           var _this = this;
-          androidIos.judgeIphoneX("userBox");
           $.ajax({
             type: "POST",
             url: androidIos.ajaxHttp() + "/settings/findParamValueByName ",

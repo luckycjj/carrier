@@ -413,8 +413,8 @@
     width:0.6rem;
   }
   #changeCarpeople .mescroll{
-    position: fixed;
-    top:1.3rem;
+    position: absolute;
+    top:0rem;
     bottom: 0;
     height: auto;
   }

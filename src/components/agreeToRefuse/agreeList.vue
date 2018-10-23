@@ -293,8 +293,8 @@
     background: #2c9cff;
   }
   #agreeList .mescroll{
-    position: fixed;
-    top:1.3rem;
+    position: absolute;
+    top:0rem;
     bottom: 0;
     height: auto;
     background-color: rgb(245, 245, 249)!important;
