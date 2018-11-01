@@ -33,6 +33,11 @@
       <input type="tel" maxlength="10" @keyup="weightKey()" v-model="message.weight" placeholder="请输入载量" />
       <div class="clearBoth"></div>
     </div>
+    <div class="box" style="margin-top: 0px;"  v-show="message.carmodelNumber == '5de1912471af4c2d839a27f268cd8ca7' || message.carmodelNumber == '2ba6da2fd9cd4689965afe5abc8f9df4' || message.carmodelNumber == ''">
+      <span>司&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机</span>
+      <p id="Z01" :class="message.driver=='请选择司机'?'carnumber':''">{{message.driver}}</p>
+      <div class="clearBoth"></div>
+    </div>
     <div class="box" style="margin-top: 0px;height: auto"  v-show="message.carmodelNumber == '5de1912471af4c2d839a27f268cd8ca7' || message.carmodelNumber == '2ba6da2fd9cd4689965afe5abc8f9df4' || message.carmodelNumber == ''">
       <span>行驶证</span>
       <div class="clearBoth"></div>
@@ -96,8 +101,8 @@
           carNumber:"请输入车牌号",
           plateName:"沪",
           weight:"",
-          /*driver:"请选择司机",
-          driverPk:"",*/
+          driver:"请选择司机",
+          driverPk:"",
           carpk:"",
           Travelpic:"",
           remark:""
@@ -334,6 +339,60 @@
         });
         $.ajax({
           type: "POST",
+          url: androidIos.ajaxHttp()+"/driver/getDriverPage",
+          data:JSON.stringify({
+            pk: "",
+            page:1,
+            size:10000000,
+            userCode: sessionStorage.getItem("token"),
+            source:sessionStorage.getItem("source")
+          }),
+          contentType: "application/json;charset=utf-8",
+          dataType: "json",
+          timeout: 30000,
+          success: function (getDriverPage) {
+            var list = [];
+            for(var i = 0; i<getDriverPage.list.length;i++){
+              var json = {
+                "code":getDriverPage.list[i].pkDriver,
+                "region":getDriverPage.list[i].driverName + "(" + getDriverPage.list[i].mobile +")",
+              }
+              list.push(json)
+            }
+            var x = 0;
+            for(var i = 0;i<list.length;i++){
+              if(list[i].code == _this.message.driverPk){
+                x = i;
+              }
+            }
+            var area = new LArea();
+            area.init({
+              'trigger': '#Z01',
+              'valueTo': '#Z01',
+              'keys': {
+                id: 'id',
+                name: 'name'
+              },
+              'type': 1,
+              'data': list
+            });
+            area.value = [x];
+            area.addPointer = function (name) {
+              name = JSON.parse(name);
+              _this.message.driver =  name.firstVal.split("(")[0];
+              _this.message.driverPk = name.firstCode;
+            }
+          },
+          complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+            if(status=='timeout'){//超时,status还有success,error等值的情况
+              androidIos.second("网络请求超时");
+            }else if(status=='error'){
+              androidIos.errorwife();
+            }
+          }
+        });
+        $.ajax({
+          type: "POST",
           url: androidIos.ajaxHttp()+"/settings/getCarType",
           contentType: "application/json;charset=utf-8",
           dataType: "json",
@@ -554,6 +613,10 @@
           }
           if(this.message.weight == "" && (_this.message.carmodelNumber == "5de1912471af4c2d839a27f268cd8ca7" || _this.message.carmodelNumber == "41efd612fc2e4067a1debc30a1c36383") ){
             bomb.first("请输入载量");
+            return false;
+          }
+          if(_this.message.driverPk == "" && (_this.message.carmodelNumber == "5de1912471af4c2d839a27f268cd8ca7" || _this.message.carmodelNumber == "2ba6da2fd9cd4689965afe5abc8f9df4")){
+            bomb.first("请选择司机");
             return false;
           }
           var idFi = $("#box4 .cjjimgbox .h5u_options_hiddenP");

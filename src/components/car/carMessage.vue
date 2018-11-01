@@ -153,16 +153,6 @@
           self.pdlist = self.pdlist.concat(curPageData);
           self.mescroll.endSuccess(curPageData.length);
           sessionStorage.setItem("driverPk",self.pkCar);
-          var changeCarpeople = sessionStorage.getItem("changeCarpeople");
-          if(changeCarpeople!=undefined){
-            changeCarpeople = JSON.parse(changeCarpeople);
-            self.pdlist[0].carMessage.carPeople = changeCarpeople;
-          }
-          var changeCarFupeople = sessionStorage.getItem("changeCarFupeople");
-          if(changeCarFupeople!=undefined){
-            changeCarFupeople = JSON.parse(changeCarFupeople);
-            self.pdlist[0].carMessage.carPeopleFu = changeCarFupeople;
-          }
           if(self.nowCartype == 1){
             $.ajax({
               type: "POST",
@@ -197,6 +187,18 @@
                 }
               }
             })
+          }else if(self.nowCartype == 0){
+            self.pdlist[0].carMessage.carPeople = curPageData[0].carYmessage
+          }
+          var changeCarpeople = sessionStorage.getItem("changeCarpeople");
+          if(changeCarpeople!=undefined){
+            changeCarpeople = JSON.parse(changeCarpeople);
+            self.pdlist[0].carMessage.carPeople = changeCarpeople;
+          }
+          var changeCarFupeople = sessionStorage.getItem("changeCarFupeople");
+          if(changeCarFupeople!=undefined){
+            changeCarFupeople = JSON.parse(changeCarFupeople);
+            self.pdlist[0].carMessage.carPeopleFu = changeCarFupeople;
           }
           self.type = self.pdlist[0].carMessage.carPeople.carPeoplePk != "" ? 1 : 2 ;
         }, function() {
@@ -371,7 +373,14 @@
               carPeoplePk:""
             },
           },
-          list:[]
+          list:[],
+          carYmessage:{
+            tel:"",
+            name:"",
+            year:"",
+            pic:"",
+            carPeoplePk:""
+          }
         }];
         for(var z = 0 ; z < (thisThat.$route.query.pkCar.split(",")).length ; z++){
           $.ajax({
@@ -424,7 +433,14 @@
                   weight:getCarDetail.loadWeight*1/1000,
                   nowWeight:getCarDetail.weight*1/1000,
                   tranModel:tranModel,
-                })
+                });
+                data[0].carYmessage = {
+                    tel:getCarDetail.driverDto.length > 0 ? getCarDetail.driverDto[0].carrierName :"",
+                    name:getCarDetail.driverDto.length > 0 ? getCarDetail.driverDto[0].driverName :"",
+                    year:getCarDetail.driverDto.length > 0 ? getCarDetail.driverDto[0].driverAge :"",
+                    pic:getCarDetail.driverDto.length > 0 ? getCarDetail.driverDto[0].driverImg :"",
+                    carPeoplePk:getCarDetail.driverDto.length > 0 ? getCarDetail.driverDto[0].pkDriver :"",
+                }
                 var listData=data;//模拟分页数据
                 successCallback&&successCallback(listData);
               }else{

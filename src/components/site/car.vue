@@ -312,11 +312,15 @@
             }
             pd.mome = pd.mome == undefined ? "" :  pd.mome;
             var img2 = _this.orderPk != "" ?"<div class='checkImg' style='display: "+display3+"'></div>":"";
-            var str = '<div class="top" data-pdType="' + pd.type+ '" data-sWeight="'+androidIos.numSub(pd.zongweight ,pd.nowweight)+'" data-remark="'+pd.mome+'" data-userNow="'+pd.userNow+'" data-driverLicense="'+pd.driverLicense+'" data-pkCar="'+pd.pkCar+'" data-carType="'+pd.carType+'">'+
+            var str = '<div class="top" data-driverPk="'+pd.driverPk+'" data-driver="'+pd.driver+'" data-pdType="' + pd.type+ '" data-sWeight="'+androidIos.numSub(pd.zongweight ,pd.nowweight)+'" data-remark="'+pd.mome+'" data-userNow="'+pd.userNow+'" data-driverLicense="'+pd.driverLicense+'" data-pkCar="'+pd.pkCar+'" data-carType="'+pd.carType+'">'+
                 '<h1 style="width:80%;margin-top: 0.2rem;margin-bottom: 0.1rem;"><span class="carnumber">'+pd.carNumber+'</span><span class="cartype">'+pd.sportType+'</span><span  class="transtype">'+pd.transType+'</span><span class="carlength">' + length + '</span><span class="carModel">'+pd.carModel+'</span></h1>'+types+'<div class="clearBoth"></div>'+
                 '<p style="min-height: ' + minheight + ';" class="weight"><span style="font-size: 0.34rem;display: ' + display2+ '">满载：<span style="font-size: 0.34rem;">'+pd.zongweight+'</span>吨&nbsp;&nbsp;已承载：'+pd.nowweight+'吨</span></p>'+
                 img + img2 +
                 '<div class="clearBoth"></div></div>';
+            if(pd.driverPk != ""){
+              str +='<div class="bottom">'
+                    +'<div class="firstBox"><img src="'+pd.driverphoto+'" onerror=src="' + require("../../images/carpeople.png") + '" ></div><div class="secondBox"><p>'+pd.driver+'</p><h2>驾龄<span>'+pd.driverAge+'</span></h2></div><div class="thirdBox"></div><div class="clearBoth"></div></div>';
+            }
             var liDom=document.createElement("li");
             liDom.classList.add("liDom");
             liDom.dataset.nowtype = pd.now;
@@ -387,7 +391,9 @@
                 weight:that.find(".weight span").text(),
                 carpk:that.find(".top").attr("data-pkCar"),
                 remark:that.find(".top").attr("data-remark"),
-                Travelpic:that.find(".top").attr("data-driverLicense")
+                Travelpic:that.find(".top").attr("data-driverLicense"),
+                driver:that.find(".top").attr("data-driver"),
+                driverPk:that.find(".top").attr("data-driverPk"),
               }
               sessionStorage.setItem("carchange",JSON.stringify(json));
               for(var i = 0 ;i < $(".nav .classBoxP").length ; i ++){
@@ -527,13 +533,13 @@
                   type:0,
                   page:pageNum,
                   size:pageSize,
-                  status:_this.search.tranState,
+                  status: _this.search.tranState,
                   transType:_this.search.tranType,
                   carType: pdType == "0" ? "5de1912471af4c2d839a27f268cd8ca7" :_this.orderPk == "" && pdType == "2" ? "41efd612fc2e4067a1debc30a1c36383": pdType == "1" ? "2ba6da2fd9cd4689965afe5abc8f9df4":"",
                   userCode:sessionStorage.getItem("token"),
                   source:sessionStorage.getItem("source"),
                   checkStatus:_this.orderPk == "" ? "" : 2,
-                  weight:sessionStorage.getItem("weh") == null ? '' : sessionStorage.getItem("weh"),
+                  weight: '',
                 }),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
@@ -558,6 +564,10 @@
                         sportType:tt.carType,
                         length:tt.length,
                         driverLicense:tt.driverLicense,
+                        driver:tt.driverDto.driverName,
+                        driverphoto:tt.driverDto.driverImg,
+                        driverPk:tt.driverDto.pkDriver,
+                        driverAge:tt.driverDto.driverAge < 1 ? "不到1年" : tt.driverDto.driverAge + "年",
                         zongweight:tt.loadWeight*1/1000,
                         nowweight:tt.weight*1 / 1000,
                         type:tt.carStatus,
@@ -662,6 +672,10 @@
                 '<p style="min-height: ' + minheight + ';" class="weight"><span style="font-size: 0.34rem;display: ' + display2+ '">满载：<span style="font-size: 0.34rem;">'+pd.zongweight+'</span>吨&nbsp;&nbsp;已承载：'+pd.nowweight+'吨</span></p>'+
                 img + img2 +
                 '<div class="clearBoth"></div></div>';
+              if(pd.driverPk != ""){
+                str +='<div class="bottom">'
+                  +'<div class="firstBox"><img src="'+pd.driverphoto+'" onerror=src="' + require("../../images/carpeople.png") + '" ></div><div class="secondBox"><p>'+pd.driver+'</p><h2>驾龄<span>'+pd.driverAge+'</span></h2></div><div class="thirdBox"></div><div class="clearBoth"></div></div>';
+              }
               var liDom=document.createElement("li");
               liDom.classList.add("liDom");
               liDom.dataset.nowtype = pd.now;
@@ -785,6 +799,10 @@
                         sportType:tt.carType,
                         length:tt.length,
                         driverLicense:tt.driverLicense,
+                        driver:tt.driverDto.driverName,
+                        driverphoto:tt.driverDto.driverImg,
+                        driverPk:tt.driverDto.pkDriver,
+                        driverAge:tt.driverDto.driverAge < 1 ? "不到1年" : tt.driverDto.driverAge + "年",
                         zongweight:tt.loadWeight*1 / 1000,
                         nowweight:tt.weight*1 / 1000,
                         type:tt.carStatus,
@@ -1175,9 +1193,7 @@
     width:1rem;height:1rem;overflow: hidden;border-radius: 50%;line-height: 1rem
   }
   #car .firstBox img{
-    width:100%;
-    display: inline-block;
-    vertical-align: middle;
+    width:1rem;height:1rem;
   }
   #car .secondBox{
     width:40%;

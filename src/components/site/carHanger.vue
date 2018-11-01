@@ -68,7 +68,7 @@
         tranState:[],
         tranType:[],
         search:{
-          tranState:"",
+          tranState:0,
           tranType:"",
           carType:""
         },
@@ -167,7 +167,7 @@
           sessionStorage.removeItem("GUALABELTOP");
         }
         _this.jiaobiaoAjax();
-        $("#search").find("h5").text("筛选");//筛选
+        $("#search").find("h5").text("");//筛选
         $("#search").unbind("click").click(function () {
             _this.show = true;
             if(_this.tranState.length == 0){
@@ -320,13 +320,13 @@
                   type:0,
                   page:pageNum,
                   size:pageSize,
-                  status:_this.search.tranState,
+                  status:0,
                   transType:Zongtype,
                   carType: "41efd612fc2e4067a1debc30a1c36383",
                   userCode:sessionStorage.getItem("token"),
                   source:sessionStorage.getItem("source"),
                   checkStatus:_this.orderPk == "" ? "" : 2,
-                  weight:sessionStorage.getItem("weh") == null ? '' : sessionStorage.getItem("weh"),
+                  weight: ''
                 }),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
@@ -336,7 +336,7 @@
                     if(_this.orderPk == ""){
                       $("#search").find("h5").text("编辑");
                     }else if(_this.orderPk != ""){
-                      $("#search").find("h5").text("筛选");//筛选
+                      $("#search").find("h5").text("");//筛选
                     }
                     _this.listType = pdType;
                     _this.pageNum = pageNum;
