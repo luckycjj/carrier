@@ -698,7 +698,7 @@
                 var listJson = {
                   pkInvPackB:loadSegmentDetail.invPackDao[i].pkInvPackB,
                   goodsCode:loadSegmentDetail.invPackDao[i].goodsCode+"-"+loadSegmentDetail.invPackDao[i].goodsType,
-                  goods:loadSegmentDetail.invPackDao[i].goodsName+"-"+loadSegmentDetail.invPackDao[i].goodsTypeName,
+                  goods:loadSegmentDetail.invPackDao[i].goodsName/*+"-"+loadSegmentDetail.invPackDao[i].goodsTypeName*/,
                   number:loadSegmentDetail.invPackDao[i].num,
                   weight: weight/1000 - 1 <0 ? weight + "千克" : weight/1000 + "吨",
                   volume:loadSegmentDetail.invPackDao[i].volume*1 - 1 < 0 ? loadSegmentDetail.invPackDao[i].volume*1000 + "升" : loadSegmentDetail.invPackDao[i].volume*1 + "立方米",

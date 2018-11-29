@@ -26,12 +26,12 @@
         </ul>
         <ul :id="'dataList' + index" class="data-list" v-else>
           <li v-for="(items,indexs) in item.prolist" @click="lookTrackMore(items.pkInvoice)">
-            <h3 v-html="items.status == null ? '待调度':items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '装货完毕': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': ''"></h3>
+            <h3 v-html="items.status == null ? '待调度':items.status == 0 ? '待确认':items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '装货完毕': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': ''"></h3>
             <h6 class="deliDateTime">{{items.deliDate}}</h6>
             <h6 class="arriDateTime">{{items.arriDate}}</h6>
             <div class="proBox">
               <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
-              <div class="proBoxList" v-for="(pro,proIndex) in items.itemDaos">{{pro.goodsCode}}/{{pro.goodsName}}/{{pro.num}}件<span v-if="pro.weight*1 > 0">/{{pro.weight*1}}吨</span><span v-if="pro.volume*1 > 0">/{{pro.volume*1}}立方米</span></div>
+              <div class="proBoxList" v-for="(pro,proIndex) in items.itemDaos">{{items.transType}}/{{pro.goodsName}}/{{pro.num}}件<span v-if="pro.weight*1 > 0">/{{pro.weight*1}}吨</span><span v-if="pro.volume*1 > 0">/{{pro.volume*1}}立方米</span></div>
             </div>
             <h1>订单编号：{{items.vbillno}}</h1>
           </li>
@@ -266,7 +266,7 @@
          lookTrackMore:function (pk) {
             var _this = this;
            androidIos.addPageList();
-           _this.$router.push({ path: '/track/trackMore',query:{pk:pk,pt:2}});
+           _this.$router.push({ path: '/track/trackMore2',query:{pk:pk,pt:2}});
          },
          corner:function () {
            var _this = this;

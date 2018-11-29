@@ -99,9 +99,9 @@
       }
       if(_this.html.indexOf("chooseSite") != -1 || _this.html.indexOf("/car/changeCarpeople") != -1){
         _this.doNow = 1;
-      }else if(_this.html.indexOf("robbingMore") != -1){
+      }/*else if(_this.html.indexOf("robbingMore") != -1){
         _this.doNow = 2;
-      }else if(_this.html.indexOf("/site/car") != -1){
+      }*/else if(_this.html.indexOf("/site/car") != -1){
         _this.doNow = 3;
       }else if( _this.html.indexOf("/track/trackMore") != -1){
         _this.doNow = 4;
@@ -131,9 +131,9 @@
       }
       if(_this.html.indexOf("chooseSite") != -1 || _this.html.indexOf("/car/changeCarpeople") != -1){
         _this.doNow = 1;
-      }else if(_this.html.indexOf("robbingMore") != -1){
+      }/*else if(_this.html.indexOf("robbingMore") != -1){
         _this.doNow = 2;
-      }else if(_this.html.indexOf("/site/car") != -1){
+      }*/else if(_this.html.indexOf("/site/car") != -1){
         _this.doNow = 3;
       }else if( _this.html.indexOf("/track/trackMore") != -1){
         _this.doNow = 4;

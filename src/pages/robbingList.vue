@@ -36,7 +36,7 @@
             <h6 class="arriDateTime">{{items.arriDate}}</h6>
             <div class="proBox">
               <div class="qiangRobbing">抢单</div>
-              <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
+              <div class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></div>
               <div class="proBoxList transType">{{items.transType}}/{{items.goodCode}}</div>
               <div class="proBoxList wvolume"><span>{{items.num}}件</span><span  v-if="items.weight*1 > 0">/{{items.weight*1}}吨</span><span v-if="items.volume*1 > 0">/{{items.volume*1}}立方米</span></div>
             </div>
@@ -342,44 +342,49 @@
             if(pageNum == 1){
               _this.$refs.footcomponent.go();
             }
-            $.ajax({
-              type: "POST",
-              url: androidIos.ajaxHttp() + "/order/loadSegment",
-              data:JSON.stringify({
-                page:pageNum,
-                size:pageSize,
-                type:curNavIndex,
-                userCode:sessionStorage.getItem("token"),
-                source:sessionStorage.getItem("source"),
-                startCity:curNavIndex == 0 ? _this.searchList.startAdd : "",
-                endCity:curNavIndex == 0 ? _this.searchList.endAdd : "",
-                transType:curNavIndex == 0 ? (_this.searchList.zeroload ? 1 : 0) : "",
-                range:curNavIndex == 0 ?_this.searchList.distance : "", //不传
-                pkTransType:"",//不传
-                gta: "",
-                lta: "",
-              }),
-              contentType: "application/json;charset=utf-8",
-              dataType: "json",
-              timeout: 30000,
-              success: function (loadEntrust) {
-                if (loadEntrust.success == "1") {
-                  successCallback(loadEntrust.list);
-                }else{
-                  androidIos.second(loadEntrust.message);
-                  successCallback([]);
+            if(sessionStorage.getItem("token") != null){
+              $.ajax({
+                type: "POST",
+                url: androidIos.ajaxHttp() + "/order/loadSegment",
+                data:JSON.stringify({
+                  page:pageNum,
+                  size:pageSize,
+                  type:curNavIndex,
+                  userCode:sessionStorage.getItem("token"),
+                  source:sessionStorage.getItem("source"),
+                  startCity:curNavIndex == 0 ? _this.searchList.startAdd : "",
+                  endCity:curNavIndex == 0 ? _this.searchList.endAdd : "",
+                  transType:curNavIndex == 0 ? (_this.searchList.zeroload ? 1 : 0) : "",
+                  range:curNavIndex == 0 ?_this.searchList.distance : "", //不传
+                  pkTransType:"",//不传
+                  gta: "",
+                  lta: "",
+                }),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                timeout: 30000,
+                success: function (loadEntrust) {
+                  if (loadEntrust.success == "1") {
+                    successCallback(loadEntrust.list);
+                  }else{
+                    androidIos.second(loadEntrust.message);
+                    successCallback([]);
+                  }
+                },
+                complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                  if (status == 'timeout') { //超时,status还有success,error等值的情况
+                    androidIos.second("当前状况下网络状态差，请检查网络！");
+                    successCallback([]);
+                  } else if (status == "error") {
+                    androidIos.errorwife();
+                    successCallback([]);
+                  }
                 }
-              },
-              complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-                if (status == 'timeout') { //超时,status还有success,error等值的情况
-                  androidIos.second("当前状况下网络状态差，请检查网络！");
-                  successCallback([]);
-                } else if (status == "error") {
-                  androidIos.errorwife();
-                  successCallback([]);
-                }
-              }
-            });
+              });
+            }else{
+              successCallback([]);
+            }
+
           },100)
         }
       },

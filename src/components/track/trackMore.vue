@@ -5,7 +5,7 @@
       <img src="../../images/carloading.gif" style="width:4rem;position: absolute;top:50%;left:50%;margin-left: -2rem;margin-top: -4rem">
       <p style="font-size: 0.4rem;top:50%;text-align: center;line-height: 1rem;color:#3399FF;width:100%;position: absolute">正在加载中...</p>
     </div>
-    <div id="mescroll" class="mescroll" :class="type==0 || (peopleType == 2 && type !=1 ) || (type==8 && endtype == '0' && actFlag != 'Y')?'meBottom':''">
+    <div id="mescroll" class="mescroll" :class="type==10 || (peopleType == 2 && type !=1  && type !=0) || (type==8 && endtype == '0' && actFlag != 'Y')?'meBottom':''">
       <ul id="dataList" class="data-list">
         <li v-for="item in pdlist">
           <div class="top">
@@ -175,7 +175,7 @@
         <button v-else-if="type==9 && pdlist[0].exp_sign == 0" @click="uploadbill(0)">上传单据</button>
       </div>
       <div class="go"  v-else>
-        <button v-if="type==1" @click="genghuan()">更换车辆</button>
+        <button v-if="type==1 || type == 0" @click="genghuan()">更换车辆</button>
       </div>
     </div>
     <div id="errorAbnormalBox" v-if="errorAbnormalBox">
@@ -334,7 +334,7 @@
           self.pdlist = self.pdlist.concat(curPageData);
           self.pick = true;
           self.logisticsOk = false;
-          self.type = curPageData[0].orderType == '10'?1:curPageData[0].orderType == '20'?2:curPageData[0].orderType == '31'?3:curPageData[0].orderType == '32'?4:curPageData[0].orderType == '33'?5:curPageData[0].orderType == '41'?6:curPageData[0].orderType == '42'?7:curPageData[0].orderType == '43'?8:curPageData[0].orderType == '50'?9:0;
+          self.type = curPageData[0].orderType == '0'?0:curPageData[0].orderType == '20'?2:curPageData[0].orderType == '31'?3:curPageData[0].orderType == '32'?4:curPageData[0].orderType == '33'?5:curPageData[0].orderType == '41'?6:curPageData[0].orderType == '42'?7:curPageData[0].orderType == '43'?8:curPageData[0].orderType == '50'?9:0;
           self.mescroll.endSuccess(curPageData.length);
           sessionStorage.setItem("orderPk",self.$route.query.pk);
           sessionStorage.setItem("dispatchPK",self.$route.query.pk);
@@ -1022,8 +1022,8 @@
                 for(var i =0;i<loadSegmentDetail.invPackDao.length;i++){
                   var weight = loadSegmentDetail.invPackDao[i].weigthUnit==3?loadSegmentDetail.invPackDao[i].weight*1000:loadSegmentDetail.invPackDao[i].weight*1;
                   var listJson = {
-                    goodsCode:loadSegmentDetail.invPackDao[i].goodsCode+"-"+loadSegmentDetail.invPackDao[i].goodsType,
-                    goods:loadSegmentDetail.invPackDao[i].goodsName+"-"+loadSegmentDetail.invPackDao[i].goodsTypeName,
+                    goodsCode:loadSegmentDetail.invPackDao[i].goodsCode,
+                    goods:loadSegmentDetail.invPackDao[i].goodsName,
                     number:loadSegmentDetail.invPackDao[i].num,
                     weight: weight/1000 - 1 <0 ? weight + "千克" : weight/1000 + "吨",
                     volume:loadSegmentDetail.invPackDao[i].volume*1 - 1 < 0 ? loadSegmentDetail.invPackDao[i].volume*1000 + "升" : loadSegmentDetail.invPackDao[i].volume*1 + "立方米",

@@ -46,6 +46,7 @@ import setup from '@/components/myBox/setup'
 import suggestion from '@/components/myBox/suggestion'
 import changePassword from '@/components/myBox/changePassword'
 import statusNow from '@/components/myBox/statusNow'
+import  trackMore2 from '@/components/track/trackMore2'
 Vue.use(Router);
 
 Vue.directive('title', {
@@ -54,6 +55,20 @@ Vue.directive('title', {
     document.getElementById('title').innerText = document.title
   }
 });
+Vue.filter('nameCheck',function (value) {
+  var list = value.split("");
+  var name = "";
+  for(var i = 0 ; i < list.length;i++){
+    if(list[i] != ""){
+      if(i == 0){
+        name += list[i];
+      }else{
+        name += "*";
+      }
+    }
+  }
+  return name;
+})
 Vue.filter('companyTypeName', function(value) {
   value = value*1;
   var valueTypeName  ="";
@@ -242,6 +257,7 @@ export default new Router({
       component: track,
       children: [
         {path: 'trackMore', component: trackF},
+        {path: 'trackMore2', component: trackMore2},
         {path: 'map', component: trackS}
       ]
     },
