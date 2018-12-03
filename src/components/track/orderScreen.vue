@@ -55,6 +55,7 @@
         addressType:"",
         total:100,
         settime:null,
+        ajax1:null,
         yuyin:false,
         iflyRecognition:null,
       }
