@@ -583,7 +583,7 @@ var androidIos = {
      }
      catch (e){
        paddingBottom = 0 + "px";
-       paddingTop = 0 + "px";
+       paddingTop = 10 + "px";
      }
      var docuId = document.getElementById(id);
      if(docuId == null){

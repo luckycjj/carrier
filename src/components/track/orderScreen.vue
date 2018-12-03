@@ -4,7 +4,11 @@
     <div id="carTitleBox"   @click="event($event)">
       <div class="carTitleBox">
         <div class="carTitleback" @click="goback()"></div>
-        <input @keyup="inputKeyup()" type="text" placeholder="请输入订单号"  id="carNumber" v-model="address"  @focus="aaa()">
+        <div class="InputDiv">
+          <input type="text" placeholder="请输入订单号/货物名称"  id="carNumber" v-model="address"  @focus="aaa()">
+          <div class="yuyinhuatong" @click="yuyin = true"></div>
+          <!--<img src="../../images/huatong-3.png">-->
+        </div>
         <p @click="sousuo()" id="sousuo">搜索</p>
       </div>
     </div>
@@ -22,6 +26,13 @@
         </li>
       </ul>
     </div>
+    <transition name="slide-fade">
+      <div id="yuyinBox" v-if="yuyin" @click.stop="yuyinFlase($event)">
+        <div id="yuyin"  @touchstart="liTouchstart()" @touchmove="liTouchmove()"  @touchend="liTouchend()">
+          <p>按住识别</p>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -43,6 +54,9 @@
         manage:false,
         addressType:"",
         total:100,
+        settime:null,
+        yuyin:false,
+        iflyRecognition:null,
       }
     },
     mounted:function () {
@@ -50,9 +64,67 @@
       androidIos.judgeIphoneX("orderScreen",2);
       androidIos.judgeIphoneX("mescroll",2);
       _this.addressType = _this.$route.query.type;
+      try{
+        _this.iflyRecognition = api.require('iflyRecognition');
+        _this.iflyRecognition.createUtility({
+          android_appid: '5c04a475'
+        }, function(ret, err) {
+          if (ret.status) {
+            console.log("创建成功");
+          } else {
+            console.log("创建失败");
+          }
+        });
+      }
+      catch (e){
+        _this.iflyRecognition = null;
+      }
       androidIos.bridge(_this);
     },
     methods:{
+      liTouchstart:function () {
+        var _this = this;
+        if(_this.iflyRecognition != null){
+          _this.iflyRecognition.record({
+            vadbos: 5000,
+            vadeos: 5000,
+            rate: 16000,
+            asrptt: 1,
+            audioPath: 'fs://speechRecogniser/speech.pcm'
+          }, function(ret, err) {
+            if (ret.status) {
+              console.log(ret.wordStr);
+              _this.address = ret.wordStr.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'').toUpperCase();
+            } else {
+              console.log(err.msg);
+            }
+          });
+        }else{
+          androidIos.second("暂不支持语音搜索")
+        }
+      },
+      liTouchmove:function () {
+        var _this = this;
+        if(_this.iflyRecognition != null){
+        }else{
+          androidIos.second("暂不支持语音搜索")
+        }
+      },
+      liTouchend:function () {
+        var _this = this;
+        if(_this.iflyRecognition != null){
+          _this.iflyRecognition.stopRecord();
+          _this.yuyin = false;
+        }else{
+          androidIos.second("暂不支持语音搜索")
+        }
+      },
+      yuyinFlase:function (e) {
+        var _this = this;
+        if(e.target.id == "yuyinBox"){
+          _this.yuyin = false;
+        }
+      },
       go:function () {
         var self = this;
         thisthatsecond = self;
@@ -134,44 +206,62 @@
         androidIos.addPageList();
         _this.$router.push({ path: '/track/trackMore',query:{pk:pk,pt:2}});
       },
+    },
+    beforeDestroy:function () {
+      var _this = this;
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
+      }
+    },
+    destroy:function () {
+      var _this = this;
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
+      }
     }
   }
   function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
     //延时一秒,模拟联网
-    setTimeout(function () {
-      $.ajax({
-        type: "POST",
-        url: androidIos.ajaxHttp() + "/order/loadEntrust",
-        data:JSON.stringify({
-          page:pageNum,
-          size:pageSize,
-          type:0,
-          state:0,
-          userCode:sessionStorage.getItem("token"),
-          source:sessionStorage.getItem("source"),
-          keyword:thisthatsecond.address == "" ? "HDSDDD" : thisthatsecond.address,
-        }),
-        contentType: "application/json;charset=utf-8",
-        dataType: "json",
-        timeout: 30000,
-        success: function (loadEntrust) {
-          if (loadEntrust.success == "1") {
-            successCallback(loadEntrust.list);
-          }else{
-            androidIos.second(loadEntrust.message);
-            successCallback([]);
+    thisthatsecond.settime = setTimeout(function () {
+      if( thisthatsecond.address != "") {
+        thisthatsecond.ajax1 = $.ajax({
+          type: "POST",
+          url: androidIos.ajaxHttp() + "/order/loadEntrust",
+          data: JSON.stringify({
+            page: pageNum,
+            size: pageSize,
+            type: 0,
+            state: 0,
+            userCode: sessionStorage.getItem("token"),
+            source: sessionStorage.getItem("source"),
+            keyword: thisthatsecond.address == "" ? "HDSDDD" : thisthatsecond.address,
+          }),
+          contentType: "application/json;charset=utf-8",
+          dataType: "json",
+          timeout: 30000,
+          success: function (loadEntrust) {
+            if (loadEntrust.success == "1") {
+              successCallback(loadEntrust.list);
+            } else {
+              androidIos.second(loadEntrust.message);
+              successCallback([]);
+            }
+          },
+          complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+            if (status == 'timeout') { //超时,status还有success,error等值的情况
+              androidIos.second("当前状况下网络状态差，请检查网络！");
+              successCallback([]);
+            } else if (status == "error") {
+              androidIos.errorwife();
+              successCallback([]);
+            }
           }
-        },
-        complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-          if (status == 'timeout') { //超时,status还有success,error等值的情况
-            androidIos.second("当前状况下网络状态差，请检查网络！");
-            successCallback([]);
-          } else if (status == "error") {
-            androidIos.errorwife();
-            successCallback([]);
-          }
-        }
-      });
+        });
+      }else{
+        successCallback([]);
+      }
     },500)
   }
 </script>
@@ -204,7 +294,7 @@
     left:0;
     bottom:0;
     right:0;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0);
     width:auto;
     height: auto;
     z-index:0;
@@ -218,19 +308,37 @@
     margin-right: 2%;
     font-size: 0.35rem;
   }
-  #orderScreen .carTitleBox input{
+  .InputDiv{
     display: block;
-    width:50%;
+    width:60%;
     background-color: #f2f2f2;
     border:1px solid #eaeaea;
-    color:#333;
     padding: 0.15rem 0;
     margin-top:0.225rem;
     margin-left:2rem;
-    font-size: 0.36rem;
     border-radius: 0.45rem;
+    position: relative;
+  }
+  .InputDiv .yuyinhuatong{
+    position: absolute;
+    width:15%;
+    right:0;
+    top:0;
+    bottom:0;
+    height: 100%;
+    background-image: url("../../images/huatong-3.png");
+    background-size: 0.3rem;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+  }
+  #orderScreen .carTitleBox input{
+    display: block;
+    width:70%;
+    color:#333;
+    background-color: transparent;
+    font-size: 0.36rem;
     text-align: left;
-    padding-left: 10%;
+    padding-left: 15%;
     background-image: url("../../images/sousuo.png");
     background-position: 6% 50%;
     background-repeat: no-repeat;
@@ -366,5 +474,47 @@
     color:#999;
     font-size:0.35rem ;
     margin-top: 0.1rem;
+  }
+  /* 可以设置不同的进入和离开动画 */
+  /* 设置持续时间和动画函数 */
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateY(0.13rem);
+    opacity: 0;
+  }
+  #yuyinBox{
+    position: fixed;
+    top:0;
+    bottom:0;
+    width:100%;
+    height: auto;
+    background: rgba(0,0,0,0);
+  }
+  #yuyin{
+    width:2rem;
+    height: 2rem;
+    background-color:rgba(0,0,0,0.5);
+    background-image: url("../../images/huatong-2.png");
+    background-repeat: no-repeat;
+    background-position: 50% 30%;
+    border-radius: 0.2rem;
+    background-size: 0.5rem;
+    position: absolute;
+    top:50%;
+    margin-top: -1rem;
+    left:50%;
+    margin-left: -1rem;
+  }
+  #yuyin p {
+    font-size: 0.35rem;
+    color:white;
+    text-align: center;
+    margin-top: 1.3rem;
   }
 </style>
