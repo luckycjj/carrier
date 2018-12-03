@@ -169,7 +169,9 @@
         closedOrderReason:"",
         httpurl:"",
         orderNowoperation:"2",
-        errorlogo: 'this.src="' + require('../../images/carpeople.png') + '"'
+        errorlogo: 'this.src="' + require('../../images/carpeople.png') + '"',
+        settime:null,
+        ajax1:null,
       }
     },
     mounted:function () {
@@ -666,11 +668,26 @@
         }
         return false;
       },
+    },
+    beforeDestroy:function () {
+      var _this = this;
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
+      }
+    },
+    destroy:function () {
+      var _this = this;
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
+      }
+
     }
   }
   function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
     //延时一秒,模拟联网
-    setTimeout(function () {
+    thisThat.settime = setTimeout(function () {
       var type = thisThat.$route.query.type;
       var ajax;
       if(type == "1" || type == "2" || type == "3"){
@@ -679,7 +696,7 @@
         ajax = "/order/loadEntrustDetail";
       }
       if(thisThat.$route.query.pk != undefined){
-        $.ajax({
+        thisThat.ajax1 = $.ajax({
           type: "POST",
           url: androidIos.ajaxHttp()+ajax,
           data:JSON.stringify({pk:thisThat.$route.query.pk,userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),

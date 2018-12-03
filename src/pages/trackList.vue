@@ -79,6 +79,8 @@
                prolist:[]
              }],
             tabShow:0,
+            ajax1:null,
+            settime:null,
           }
        },
        mounted:function () {
@@ -186,13 +188,13 @@
              }
              function getListDataFromNet(curNavIndex,pageNum,pageSize,successCallback,errorCallback) {
                //延时一秒,模拟联网
-               setTimeout(function () {
+               _this.settime = setTimeout(function () {
                  if(pageNum == 1){
                    _this.$refs.footcomponent.go();
                  }
                  if(JSON.parse(sessionStorage.getItem("carrierMessage")).status == 2){
                    if(curNavIndex == 1){
-                     $.ajax({
+                     _this.ajax1 = $.ajax({
                        type: "POST",
                        url: androidIos.ajaxHttp() + "/order/loadSchedule",
                        data: JSON.stringify({
@@ -223,7 +225,7 @@
                        }
                      })
                    }else{
-                     $.ajax({
+                     _this.ajax1 = $.ajax({
                        type: "POST",
                        url: androidIos.ajaxHttp() + "/order/loadEntrust",
                        data:JSON.stringify({
@@ -315,6 +317,10 @@
         if(listDom != null){
           body.removeChild(listDom);
         }
+        clearTimeout(_this.settime);
+        if(_this.ajax1 != null){
+          _this.ajax1.abort();
+        }
       },
       destroy:function () {
         var _this = this;
@@ -322,6 +328,10 @@
         var listDom=document.getElementsByClassName("mescroll-totop")[0];
         if(listDom != null){
           body.removeChild(listDom);
+        }
+        clearTimeout(_this.settime);
+        if(_this.ajax1 != null){
+          _this.ajax1.abort();
         }
       }
     }

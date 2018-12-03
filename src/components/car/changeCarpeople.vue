@@ -62,7 +62,9 @@
         size:"",
         number:"",
         manage:false,
-        errorlogo: 'this.src="' + require('../../images/carpeople.png') + '"'
+        errorlogo: 'this.src="' + require('../../images/carpeople.png') + '"',
+        ajax1:null,
+        settime:null,
       }
     },
     mounted:function () {
@@ -285,12 +287,27 @@
         androidIos.addPageList();
         _this.$router.push({ path: '/car/newdriver'});
       }
+    },
+    beforeDestroy:function () {
+      var _this = this;
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
+      }
+    },
+    destroy:function () {
+      var _this = this;
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
+      }
+
     }
   }
   function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
     //延时一秒,模拟联网
-    setTimeout(function () {
-      $.ajax({
+    thisThat.settime = setTimeout(function () {
+      thisThat.ajax1 =  $.ajax({
         type: "POST",
         url: androidIos.ajaxHttp() + "/driver/getDriverPage",
         data: JSON.stringify({
@@ -343,7 +360,7 @@
           }
         }
       })
-    },500)
+    },300)
   }
 </script>
 

@@ -32,7 +32,9 @@
           pdlist:[],
           number:"",
           size:"",
-          refuseResule:""
+          refuseResule:"",
+          ajax1:null,
+          settime:null,
         }
       },
       mounted: function () {
@@ -200,12 +202,27 @@
           androidIos.addPageList();
           _this.$router.push({ path: '/agreeToRefuse/agreeMore',query:{"ph":item.mobile,"pk":item.pkDriver}});
         }
+      },
+    beforeDestroy:function () {
+      var _this = this;
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
       }
+    },
+    destroy:function () {
+      var _this = this;
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
+      }
+
+    }
     }
         function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
           //延时一秒,模拟联网
-          setTimeout(function () {
-            $.ajax({
+          thisThat.settime = setTimeout(function () {
+            thisThat.ajax1 = $.ajax({
               type: "POST",
               url: androidIos.ajaxHttp() + "/carrier/getDriverApplication",
               data: JSON.stringify({
@@ -235,7 +252,7 @@
               }
             })
             //成功回调
-          },500)
+          },200)
         }
 </script>
 

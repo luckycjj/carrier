@@ -112,6 +112,8 @@
         show:false,
         pdType:0,
         maxHeight:"",
+        ajax1:null,
+        settime:null,
       }
     },
     watch:{
@@ -522,10 +524,10 @@
         }
         function getListDataFromNet(pdType,pageNum,pageSize,successCallback,errorCallback) {
           //延时一秒,模拟联网
-          setTimeout(function () {
+          _this.settime = setTimeout(function () {
             var listData=[];
             if(!(_this.orderPk != '' && pdType == 0)){
-              $.ajax({
+              _this.ajax1 = $.ajax({
                 type: "POST",
                 url: androidIos.ajaxHttp()+"/carrier/getCarList",
                 data:JSON.stringify({
@@ -996,6 +998,20 @@
           _this.mescroll.resetUpScroll();
         }
         _this.jiaobiaoAjax();
+      }
+    },
+    beforeDestroy:function () {
+      var _this = this;
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
+      }
+    },
+    destroy:function () {
+      var _this = this;
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
       }
     }
   }
