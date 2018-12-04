@@ -16,11 +16,11 @@
       <div class="carrierDriver"  v-for="car in carList">
         <div class="carrierDriverBox">
           <h2 v-html="car.length < 1 ? car.length * 1000 + '米' : car.length + '公里'"></h2>
-          <h3 v-html="type == 1 || type == 2 ? '距提货点' : '距目的地'"></h3>
+          <h3 v-html="type == 0 || type == 1 || type == 2 ? '距提货点' : '距目的地'"></h3>
         </div>
         <div class="carrierDriverBox">
           <h2>明日到达</h2>
-          <h3 v-html="type == 1 || type == 2 ? '预计提货时间' : '预计到货时间'"></h3>
+          <h3 v-html="type == 0 || type == 1 || type == 2 ? '预计到货时间' : '预计到货时间'"></h3>
         </div>
         <div class="clearBoth"></div>
       </div>
@@ -1061,6 +1061,19 @@
                   _this.pick = true;
                   _this.logisticsOk = false;
                   _this.type = listData[0].orderType == '0'? 0 :listData[0].orderType == '10'?1:listData[0].orderType == '20'?2:listData[0].orderType == '31'?3:listData[0].orderType == '32'?4:listData[0].orderType == '33'?5:listData[0].orderType == '41'?6:listData[0].orderType == '42'?7:listData[0].orderType == '43'?8:listData[0].orderType == '50'?9:10;
+                  _this.tabList = _this.type ==  0  || _this.type == 1 ? [{
+                    icon:require("../../images/telTrackMore.png"),
+                    name:"联系客服",
+                    value:0,
+                  }] : [{
+                    icon:require("../../images/telTrackMore.png"),
+                    name:"联系客服",
+                    value:0,
+                  },{
+                    icon:require("../../images/lookImgTrackMore.png"),
+                    name:"查看图片",
+                    value:1,
+                  }];
                   sessionStorage.setItem("orderPk",_this.$route.query.pk);
                   sessionStorage.setItem("dispatchPK",_this.$route.query.pk);
                   _this.$nextTick(function () {
