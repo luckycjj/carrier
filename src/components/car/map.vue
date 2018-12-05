@@ -42,112 +42,38 @@
       },
       init: function () {
         var _this = this;
-        $.ajax({
-          type: "POST",
-          url: androidIos.ajaxHttp()+"/order/getLocation",
-          data:JSON.stringify(_this.json),
-          dataType: "json",
-          contentType: "application/json;charset=utf-8",
-          async:false,
-          timeout: 30000,
-          success: function (getLocation) {
-            if(getLocation.success == "1"){
-              _this.peopleJ = getLocation.errorCode == "" ? "12" : getLocation.errorCode.split(",")[0];
-              _this.peopleW = getLocation.errorCode == "" ? "3" : getLocation.errorCode.split(",")[1];
-            }else{
-              androidIos.second(getLocation.message);
-            }
-          },
-          complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-            _this.cancelReasonBox = false;
-            if(status=='timeout'){//超时,status还有success,error等值的情况
-              androidIos.second("网络请求超时");
-            }else if(status=='error'){
-              androidIos.errorwife();
-            }
-          }
-        });
-        if(_this.startJ!=""&&_this.startW!=""&&_this.peopleJ!=""&&_this.peopleW!=""){
-          var map = new AMap.Map("container", {
-            resizeEnable: true,
-            center: [_this.startJ, _this.startW],//地图中心点
-            zoom: 13 //地图显示的缩放级别
-          });
-          AMap.plugin(['AMap.Scale'],
-            function(){
-              map.addControl(new AMap.Scale());
-            });
+        if(_this.startJ!=""&&_this.startW!=""){
+          var map  = new AMap.Map("container", {});
           //构造路线导航类
-          var driving = new AMap.Driving({
-            map: map,
-            panel: "panel"
-          });
-          var marker;
-          driving.search([_this.peopleJ, _this.peopleW],[_this.startJ, _this.startW], function(status, result) {
-            var lnglat = new AMap.LngLat(_this.peopleJ, _this.peopleW);
-            _this.lnglat(lnglat);
-            $("#carMessageBox .km").text("司机距离起点  "+_this.lnglat(lnglat));
-            var sss = setInterval(function () {
-              if($(".amap-lib-marker-to").length>0){
-                clearInterval(sss);
-                $(".amap-lib-marker-to").addClass("amaplibmarkertos");
-                $(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
-              }
-            },100)
-
-          });
-          var http = window.location.href;
-          if(http.indexOf("/car/map")!=-1){
-            _this.navShow = true;
-            $("#carBox .amap-zoomcontrol").show();
-          }
-          _this.setTimeSS = setInterval(function () {
-            $.ajax({
-              type: "POST",
-              url: androidIos.ajaxHttp()+"/order/getLocation",
-              data:JSON.stringify(_this.json),
-              dataType: "json",
-              contentType: "application/json;charset=utf-8",
-              async:false,
-              timeout: 30000,
-              success: function (getLocation) {
-                if(getLocation.success == "1"){
-                  _this.peopleJ = getLocation.errorCode == "" ? "12" : getLocation.errorCode.split(",")[0];
-                  _this.peopleW = getLocation.errorCode == "" ? "3" : getLocation.errorCode.split(",")[1];
-                }else{
-                  androidIos.second(getLocation.message);
-                }
-              },
-              complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-                _this.cancelReasonBox = false;
-                if(status=='timeout'){//超时,status还有success,error等值的情况
-                  androidIos.second("网络请求超时");
-                }else if(status=='error'){
-                  androidIos.errorwife();
-                }
-              }
+          var truckOptions = {
+            map:map,
+            policy:0,
+            size:1,
+            city:'beijing',
+            panel:'panel',
+            province:"",
+            number:""
+          };
+          //构造路线导航类
+          var driving = new AMap.TruckDriving(truckOptions);
+          var path = [];
+          path.push({lnglat:[_this.startJ, _this.startW]});//起点
+          path.push({lnglat:[_this.endJ,_this.endW]});//途径
+          driving.search(path, function(status, result) {
+            var marker;
+            marker = new AMap.Marker({
+              icon:require('../../images/end1.png'),
+              position: [_this.startJ, _this.startW],
             });
-              driving.search([_this.peopleJ,_this.peopleW],[_this.startJ, _this.startW], function(status, result) {
-                var lnglat = new AMap.LngLat(_this.peopleJ, _this.peopleW);
-                _this.lnglat(lnglat);
-                $("#carMessageBox .km").text("司机距离起点  "+_this.lnglat(lnglat));
-                var sss = setInterval(function () {
-                  if($(".amap-lib-marker-to").length>0){
-                    clearInterval(sss);
-                    $(".amap-lib-marker-to").addClass("amaplibmarkertos");
-                    $(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
-                  }
-                },100)
-              });
-          },30000)
+            marker.setMap(map);
+            var marker1;
+            marker1 = new AMap.Marker({
+              icon:require('../../images/end.png'),
+              position: [_this.endJ,_this.endW],
+            });
+            marker1.setMap(map);
+          });
         }
-      },
-      lnglat:function(lnglat){
-        var _this = this;
-        var myDistance = lnglat.distance([_this.startJ, _this.startW]);//这里测量距离
-        myDistance = (myDistance/1000).toFixed(3);
-        myDistance = myDistance-1 > 0 ? myDistance+'千米':myDistance*1000+'米';
-        return myDistance
       },
     },
     updated:function () {

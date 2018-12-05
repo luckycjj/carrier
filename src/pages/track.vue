@@ -91,35 +91,5 @@
   #track .amap-icon{
     width:19px;
   }
-  @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi){
-    #track .amap-lib-marker-to{
-      background-image: none;
-    }
-    #track .amap-lib-marker-from {
-      background-image:none;
-    }
-  }
-  #track .amap-lib-marker-from {
-    background-image:none;
-  }
-  #track .amap-lib-marker-to{
-    background-image: none;
-  }
-  #track .amaplibmarkerto{
-    background-image: url("../images/end.png")!important;
-    background-size:cover!important;
-  }
-  #track .amaplibmarkerfrom{
-    background-image: url("../images/start.png")!important;
-    background-size:cover!important;
-  }
-  #track .amaplibmarkertos{
-    background-image: url("../images/end1.png")!important;
-    background-size:cover!important;
-  }
-  #track .amaplibmarkerfroms{
-    background-image: url("../images/start1.png")!important;
-    background-size:cover!important;
-  }
 
 </style>
