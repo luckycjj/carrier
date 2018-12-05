@@ -20,7 +20,7 @@
         </div>
         <div class="carrierDriverBox">
           <h2>明日到达</h2>
-          <h3 v-html="type == 0 || type == 1 || type == 2 ? '预计到货时间' : '预计到货时间'"></h3>
+          <h3 v-html="type == 0 || type == 1 || type == 2 ? '预计提货时间' : '预计到货时间'"></h3>
         </div>
         <div class="clearBoth"></div>
       </div>
