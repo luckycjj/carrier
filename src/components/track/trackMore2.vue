@@ -1711,6 +1711,7 @@
     background-size: 0.375rem;
     margin-bottom: 0.3rem;
     line-height: 0.4rem;
+    word-wrap:break-word;
   }
   .proStatus ul li span{
     color:#666;
