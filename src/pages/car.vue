@@ -89,6 +89,31 @@
   #carBox .amap-zoomcontrol{
     display: none;
   }
+  #carBox .amap-icon{
+    width:19px;
+  }
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi){
+    .amap-lib-marker-to{
+      background-image: none;
+    }
+    .amap-lib-marker-from {
+      background-image:none;
+    }
+  }
+  .amap-lib-marker-from {
+    background-image:none;
+  }
+  .amap-lib-marker-to{
+    background-image: none;
+  }
+  .amaplibmarkertos{
+    background-image: url("../images/end1.png")!important;
+    background-size:cover!important;
+  }
+  .amaplibmarkerfroms{
+    background-image: url("../images/start1.png")!important;
+    background-size:cover!important;
+  }
 
 
 </style>
