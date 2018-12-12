@@ -184,6 +184,9 @@
             _this.$router.push({ path: url});
           }else{
            _this.shareListTrue = true;
+            _this.$nextTick(function () {
+              androidIos.judgeIphoneX("shareBody",1);
+            })
           }
         },
         shareYes:function (type) {
