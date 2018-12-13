@@ -5,7 +5,9 @@
       <div class="wrapper" id="trackTab">
         <div class="scroller">
           <ul class="clearfix">
-            <li v-for="(item,index) in list" :i="index"><a href="javascript:void(0)">{{item.name}}<span v-if="item.number*1 > 0">{{item.number}}</span></a></li>
+            <li v-for="(item,index) in list" :i="index">
+              <p>{{item.name}}<span v-if="item.number*1 > 0">{{item.number}}</span></p>
+            </li>
           </ul>
         </div>
       </div>
@@ -420,17 +422,21 @@
     text-align: center;
     width:2rem;
   }
-  .wrapper .scroller li a{
+  .wrapper .scroller li p{
     color:#373737;
     display:block;
     font-size: 0.35rem;
-    margin:0 0.1rem;
+    margin:0 auto;
+    width: fit-content;
+    text-align: center;
+    white-space: pre;
+    padding: 0 0.1rem;
   }
-  .wrapper .scroller li a span{
+  .wrapper .scroller li p span{
     color:#2c9cff;
     font-size: 0.3125rem;
   }
-  .wrapper .scroller li.cur a{
+  .wrapper .scroller li.cur p{
     color:#2c9cff;
     border-bottom: 1px solid #2c9cff;
   }

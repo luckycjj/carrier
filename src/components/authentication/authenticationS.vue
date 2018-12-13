@@ -115,7 +115,7 @@
           <div class="clearBoth"></div>
         </div>
       </div>
-      <h5 class="calltel">有问题请联系客服</h5>
+      <h5 class="calltel" @click="telCall()">有问题请联系客服</h5>
       <button @click="goNext()" v-html="nowStep == 1 ? '下一步': '提交'"></button>
       <div v-if="baiduhuotiBox" id="baiduhuotiBox">
         <div id="baiduhuoti">
@@ -301,6 +301,9 @@
         androidIos.bridge(_this);
       },
        methods:{
+         telCall:function () {
+           androidIos.telCall("021-50929122");
+         },
          video:function (e) {
            var _this = this;
            var file =   e.target.files[0];
