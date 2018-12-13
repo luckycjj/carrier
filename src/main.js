@@ -25,4 +25,7 @@ const  renderApp = () => {
     components: { App }
   })
 }
+/*window.apiready = function () {
+  renderApp();
+}*/
 renderApp();

@@ -86,7 +86,8 @@
     beforeUpdate:function () {
       var _this = this;
       _this.title = document.title;
-      _this.html = location.href;
+      _this.html = location.href.split("#")[1];
+      console.log(_this.html)
       if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1){
         $("#appBox").hide();
       }else{
@@ -99,13 +100,12 @@
       }
       if(_this.html.indexOf("chooseSite") != -1 || _this.html.indexOf("/car/changeCarpeople") != -1){
         _this.doNow = 1;
-      }/*else if(_this.html.indexOf("robbingMore") != -1){
-        _this.doNow = 2;
-      }*/else if(_this.html.indexOf("/site/car") != -1){
+      }else if(_this.html.indexOf("/site/car") != -1){
         _this.doNow = 3;
       }else if( _this.html.indexOf("/track/trackMore") != -1){
         _this.doNow = 4;
       }else if( _this.html.indexOf("/user") != -1){
+        console.log(1)
         _this.doNow = 5;
       }else if( _this.html.indexOf("/trackList") != -1){
         _this.doNow = 6;
@@ -118,7 +118,8 @@
     updated: function () {
       var _this = this;
       _this.title = document.title;
-      _this.html = location.href;
+      _this.html = location.href.split("#")[1];
+      console.log(_this.html)
       if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1){
         $("#appBox").hide();
       }else{
@@ -131,13 +132,12 @@
       }
       if(_this.html.indexOf("chooseSite") != -1 || _this.html.indexOf("/car/changeCarpeople") != -1){
         _this.doNow = 1;
-      }/*else if(_this.html.indexOf("robbingMore") != -1){
-        _this.doNow = 2;
-      }*/else if(_this.html.indexOf("/site/car") != -1){
+      }else if(_this.html.indexOf("/site/car") != -1){
         _this.doNow = 3;
       }else if( _this.html.indexOf("/track/trackMore") != -1){
         _this.doNow = 4;
       }else if( _this.html.indexOf("/user") != -1){
+        console.log(1)
         _this.doNow = 5;
       }else if( _this.html.indexOf("/trackList") != -1){
         _this.doNow = 6;
