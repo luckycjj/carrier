@@ -326,7 +326,7 @@
                   userCode:sessionStorage.getItem("token"),
                   source:sessionStorage.getItem("source"),
                   checkStatus:_this.orderPk == "" ? "" : 2,
-                  weight: ''
+                  weight:"",
                 }),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
@@ -494,7 +494,7 @@
             userCode:sessionStorage.getItem("token"),
             source:sessionStorage.getItem("source"),
             type:_this.orderPk == "" ? 0 : 1,//0 所有 1 已审核
-            weight:sessionStorage.getItem("weh") == null ? '' : sessionStorage.getItem("weh"),
+            weight:"",
           }),
           contentType: "application/json;charset=utf-8",
           dataType: "json",
