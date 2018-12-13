@@ -463,7 +463,7 @@
                     userCode:sessionStorage.getItem("token"),
                     source:sessionStorage.getItem("source"),
                     checkStatus:_this.orderPk == "" ? "" : 2,
-                    weight:sessionStorage.getItem("weh") == null ? '' : sessionStorage.getItem("weh"),
+                    weight:"",
                   }),
                   contentType: "application/json;charset=utf-8",
                   dataType: "json",
