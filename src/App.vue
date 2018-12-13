@@ -87,7 +87,6 @@
       var _this = this;
       _this.title = document.title;
       _this.html = location.href.split("#")[1];
-      console.log(_this.html)
       if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1){
         $("#appBox").hide();
       }else{
@@ -105,7 +104,6 @@
       }else if( _this.html.indexOf("/track/trackMore") != -1){
         _this.doNow = 4;
       }else if( _this.html.indexOf("/user") != -1){
-        console.log(1)
         _this.doNow = 5;
       }else if( _this.html.indexOf("/trackList") != -1){
         _this.doNow = 6;
@@ -119,7 +117,6 @@
       var _this = this;
       _this.title = document.title;
       _this.html = location.href.split("#")[1];
-      console.log(_this.html)
       if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1){
         $("#appBox").hide();
       }else{
@@ -137,7 +134,6 @@
       }else if( _this.html.indexOf("/track/trackMore") != -1){
         _this.doNow = 4;
       }else if( _this.html.indexOf("/user") != -1){
-        console.log(1)
         _this.doNow = 5;
       }else if( _this.html.indexOf("/trackList") != -1){
         _this.doNow = 6;
