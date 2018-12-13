@@ -15,7 +15,7 @@
     <div id="mescroll" class="mescroll" style="top:1.3rem;">
       <ul id="dataList" class="data-list">
         <li v-for="(items,indexs) in pdlist" @click="lookTrackMore(items.pkInvoice)">
-          <h3 v-html="items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '装货完毕': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': ''"></h3>
+          <h3 v-html="items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '装货完毕': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': items.status == 55 ? '已回单': items.status == 60 ? '已拒绝': ''"></h3>
           <h6 class="deliDateTime">{{items.deliDate}}</h6>
           <h6 class="arriDateTime">{{items.arriDate}}</h6>
           <div class="proBox">
