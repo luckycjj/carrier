@@ -29,10 +29,10 @@
           <div id="shareBody">
             <div id="shareBodyTab">
               <p>分享至...</p>
-              <label @click="shareType(index)" :style="{width:100 / shareList.length + '%'}" v-for="(item,index) in shareList">
+              <a @click="shareType(index)" :style="{width:100 / shareList.length + '%'}" v-for="(item,index) in shareList">
                 <img :src="item.icon" >
                 <h6>{{item.name}}</h6>
-              </label>
+              </a>
               <div class="clearBoth"></div>
             </div>
             <button @click="shareYes(false)">取消</button>
@@ -195,12 +195,12 @@
         },
         shareType:function (index) {
           var _this = this;
-          if(index == 0){
+          if(index == 0 || index == 1){
             try{
               var wx = api.require('wx');
               wx.isInstalled(function(ret, err) {
                 if (ret.installed) {
-                  androidIos.second("当前设备已安装微信客户端");
+                  androidIos.second('功能尚在开发');
                 } else {
                   androidIos.second('当前设备未安装微信客户端');
                 }
@@ -574,14 +574,14 @@
   color:#333;
   line-height: 1rem;
 }
-#shareBodyTab label{
+#shareBodyTab a{
   float: left;
 }
-#shareBodyTab label img{
+#shareBodyTab a img{
    width:30%;
   margin: 0.3rem auto 0.15rem auto;
 }
-#shareBodyTab label h6{
+#shareBodyTab a h6{
    font-size: 0.3125rem;
   color:#333;
   text-align: center;
