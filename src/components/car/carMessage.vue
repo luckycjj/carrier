@@ -129,7 +129,7 @@
         self.carType = self.$route.query.carType;
         self.pkCar = self.$route.query.pkCar;
         self.nowCartype = self.$route.query.nowCartype;
-        self.nowCartype = 0;
+        /*self.nowCartype = 0;*/
         self.orderPk = sessionStorage.getItem("dispatchPK") == undefined?"":sessionStorage.getItem("dispatchPK");
         self.mescroll = new MeScroll("mescroll", { //请至少在vue的mounted生命周期初始化mescroll,以确保您配置的id能够被找到
           up: {
