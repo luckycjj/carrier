@@ -1244,7 +1244,7 @@
     font-size: 0.3125rem;
     color:#999;
   }
-  #car  .secondBox h2, #car secondBox span{
+  #car  .secondBox h2, #car .secondBox span{
     font-size: 0.3125rem;
     color:#999;
     line-height: 0.5rem;

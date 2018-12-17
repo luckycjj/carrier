@@ -24,7 +24,7 @@
             </div>
              <div class="peoplemessage">
                <p>{{item.carMessage.carPeople.name}}</p>
-               <h1>驾龄：{{item.carMessage.carPeople.year}}年</h1>
+               <h1>驾龄：<span style="font-size: 0.3125rem;color: #999;" v-html="item.carMessage.carPeople.year * 1 < 1 ? '不到一年' : item.carMessage.carPeople.year + '年' "></span></h1>
              </div>
             <div class="tel replace" v-if="item.carType == 1 && carType == 0 && nowCartype == 0" @click="changeCarpeople(item.carMessage.carPeople.carPeoplePk,0)">
               <img src="../../images/replace.png">
