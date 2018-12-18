@@ -26,7 +26,7 @@
                <p>{{item.carMessage.carPeople.name}}</p>
                <h1>驾龄：<span style="font-size: 0.3125rem;color: #999;" v-html="item.carMessage.carPeople.year * 1 < 1 ? '不到一年' : item.carMessage.carPeople.year + '年' "></span></h1>
              </div>
-            <div class="tel replace" v-if="item.carType == 1 && carType == 0 && nowCartype == 0" @click="changeCarpeople(item.carMessage.carPeople.carPeoplePk,0)">
+            <div class="tel replace" v-if="item.carType == 1 && carType == 0" @click="changeCarpeople(item.carMessage.carPeople.carPeoplePk,0)">
               <img src="../../images/replace.png">
             </div>
             <div class="tel" @click="tel(item.carMessage.carPeople.tel)">
@@ -50,7 +50,7 @@
             </div>
             <div class="clearBoth"></div>
           </div>
-          <div id="peopleSecond" v-if="type==1 && nowCartype == 0 && item.carMessage.carPeopleFu.carPeoplePk =='' && orderPk != ''"  @click="changeCarpeople('',1)"><p>添加后备司机</p></div>
+          <div id="peopleSecond" v-if="type==1  && item.carMessage.carPeopleFu.carPeoplePk =='' && orderPk != ''"  @click="changeCarpeople('',1)"><p>添加后备司机</p></div>
           <div id="productList" v-if="item.list.length>0 && orderPk!=''">
             <h6>已派订单</h6>
             <ul>
@@ -176,6 +176,11 @@
                     carPeoplePk:findDriverInfoByCarno.pkDriver
                   }
                   self.type = 1 ;
+                  var changeCarpeople = sessionStorage.getItem("changeCarpeople");
+                  if(changeCarpeople!=undefined){
+                    changeCarpeople = JSON.parse(changeCarpeople);
+                    self.pdlist[0].carMessage.carPeople = changeCarpeople;
+                  }
                 }else{
                   androidIos.second(findDriverInfoByCarno.message)
                 }
@@ -189,12 +194,12 @@
               }
             })
           }else if(self.nowCartype == 0){
-            self.pdlist[0].carMessage.carPeople = curPageData[0].carYmessage
-          }
-          var changeCarpeople = sessionStorage.getItem("changeCarpeople");
-          if(changeCarpeople!=undefined){
-            changeCarpeople = JSON.parse(changeCarpeople);
-            self.pdlist[0].carMessage.carPeople = changeCarpeople;
+            self.pdlist[0].carMessage.carPeople = curPageData[0].carYmessage;
+            var changeCarpeople = sessionStorage.getItem("changeCarpeople");
+            if(changeCarpeople!=undefined){
+              changeCarpeople = JSON.parse(changeCarpeople);
+              self.pdlist[0].carMessage.carPeople = changeCarpeople;
+            }
           }
           var changeCarFupeople = sessionStorage.getItem("changeCarFupeople");
           if(changeCarFupeople!=undefined){
