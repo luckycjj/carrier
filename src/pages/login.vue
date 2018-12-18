@@ -43,8 +43,6 @@
       mounted:function () {
           var _this = this;
           sessionStorage.removeItem("token");
-          androidIos.delCookie("MESSAGECARRIER");
-          androidIos.delCookie("BAIDUTOKEN");
           sessionStorage.removeItem("carrierMessage");
           sessionStorage.removeItem("robbingTap");
           sessionStorage.removeItem("trackTap");
@@ -106,6 +104,7 @@
                 androidIos.setcookie("MESSAGECARRIER",JSON.stringify({
                    token:login.data.userCode,
                 }),80);
+                androidIos.jianting(login.data.userCode);
                 $.ajax({
                   type: "POST",
                   url: androidIos.ajaxHttp() + "/getUserInfo",
