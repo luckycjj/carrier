@@ -100,7 +100,7 @@
               </ul>
               <div class="address">
                 <h1><h6 >提货地址：</h6><h6 style="width:7rem;">{{item.pickMessage.address}}</h6><div class="clearBoth"></div></h1>
-                <h1><h6>发货地址：</h6><h6 style="width:7rem;">{{item.endMessage.address}}</h6><div class="clearBoth"></div></h1>
+                <h1><h6>收货地址：</h6><h6 style="width:7rem;">{{item.endMessage.address}}</h6><div class="clearBoth"></div></h1>
               </div>
             </div>
             <div class="proStatus">
