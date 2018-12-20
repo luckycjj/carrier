@@ -1246,10 +1246,16 @@
         }
       },
     },
-    destroyed:function () {
+    beforeDestroy:function () {
       var _this = this;
+      clearInterval(_this.setTimeGoF);
       clearInterval(_this.setTime);
-    }
+    },
+    destroy:function () {
+      var _this = this;
+      clearInterval(_this.setTimeGoF);
+      clearInterval(_this.setTime);
+    },
   }
 </script>
 <style scoped>
