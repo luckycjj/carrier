@@ -70,7 +70,7 @@
     font-size: 0.375rem;
     color:#666;
     resize:none;
-    min-height: 3rem;
+    height: 4.1rem;
     padding: 3%;
     width:94%;
   }
