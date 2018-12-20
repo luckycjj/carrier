@@ -51,7 +51,7 @@
             <h6 v-if="message.first.idCardF.bendi == ''">点击拍照</h6>
           </div>
           <div class="SFZFLook">
-            <img src="../../images/SFZF.png"    @click="lookImg($event,require('../../images/SFZZ.png'))">
+            <img src="../../images/SFZF.png"    @click="lookImg($event,require('../../images/SFZF.png'))">
             <span>样例</span>
           </div>
           <div class="clearBoth"></div>
