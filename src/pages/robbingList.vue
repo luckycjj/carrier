@@ -249,6 +249,38 @@
       }
       _this.normalAddressList.sort(_this.compare("PinyinFirst"));
       _this.unique1(_this.normalAddressList);
+      $.ajax({
+        type: "POST",
+        url: androidIos.ajaxHttp() + "/getUserInfo",
+        data:JSON.stringify({
+          userCode:sessionStorage.getItem("token"),
+          source:sessionStorage.getItem("source")
+        }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        timeout: 30000,
+        async:false,
+        success: function (getUserInfo) {
+          if (getUserInfo.success == "1") {
+            sessionStorage.setItem("carrierMessage",JSON.stringify({
+              licType: getUserInfo.licType,
+              name:  getUserInfo.name,
+              photo:  getUserInfo.photo,
+              status:  getUserInfo.status,
+              corpName:  getUserInfo.corpName,
+            }));
+          }else{
+            androidIos.second(getUserInfo.message);
+          }
+        },
+        complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+          if (status == 'timeout') { //超时,status还有success,error等值的情况
+            androidIos.second("当前状况下网络状态差，请检查网络！");
+          } else if (status == "error") {
+            androidIos.errorwife();
+          }
+        }
+      });
       androidIos.bridge(_this);
     },
     methods:{
@@ -409,87 +441,78 @@
       },
       checkAddress:function (type) {
         var _this = this;
-        var cookie = androidIos.getcookie("MESSAGECARRIER");
-        if(cookie == ""){
-          androidIos.first("尚未登录,请登录!");
-          $(".tanBox-yes").unbind('click').click(function(){
-            $(".tanBox-bigBox").remove();
-            _this.$router.push({ path: '/login'});
-          });
-        }else{
-          _this.screenAddressTrue = true;
-          _this.addtype = type;
-          _this.normalCityList = [];
-          for(var i =0 ; i < _this.hotAddressList.length;i++){
-            _this.hotAddressList[i].checked = false;
-          }
-          for(var i =0 ; i < _this.normalCityList.length;i++){
-            _this.normalCityList[i].checked = false;
-          }
-          if(type == 0){
-            _this.searchStartPro =  _this.searchList.searchStartPro;
-            if(_this.searchList.startAdd != "" && _this.searchList.searchStartPro == ""){
-              for(var i = 0; i < _this.hotAddressList.length;i++){
-                _this.hotAddressList[i].checked = false;
-                if(_this.hotAddressList[i].region == _this.searchList.startAdd){
-                  _this.hotAddressList[i].checked = true;
-                }
-              }
-            }else if( _this.searchList.searchStartPro != ""){
-              for(var i = 0 ; i < _this.normalAddressList.length ; i++){
-                if(_this.searchList.searchStartPro == _this.normalAddressList[i].region){
-                  _this.normalCityList = _this.normalAddressList[i].child;
-                  for(var i = 0 ; i < _this.normalCityList.length ;i++){
-                    _this.normalCityList[i].PinyinFirst = ConvertPinyin(_this.normalCityList[i].region).substring(0,1).toUpperCase();
-                  }
-                  _this.normalCityList.sort(_this.compare("PinyinFirst"));
-                  _this.unique1(_this.normalCityList);
-                  _this.$nextTick(function () {
-                     var scrolltopGo = localStorage.getItem("getPageScroll0");
-                     scrolltopGo = scrolltopGo == null ? 0 : scrolltopGo;
-                     $("#selectcityUl").animate({scrollTop: scrolltopGo}, 0);
-                  });
-                  break;
-                }
-              }
-              for(var i = 0 ; i < _this.normalCityList.length ; i++){
-                _this.normalCityList[i].checked = false;
-                if(_this.searchList.startAdd == _this.normalCityList[i].region){
-                  _this.normalCityList[i].checked = true;
-                }
+        _this.screenAddressTrue = true;
+        _this.addtype = type;
+        _this.normalCityList = [];
+        for(var i =0 ; i < _this.hotAddressList.length;i++){
+          _this.hotAddressList[i].checked = false;
+        }
+        for(var i =0 ; i < _this.normalCityList.length;i++){
+          _this.normalCityList[i].checked = false;
+        }
+        if(type == 0){
+          _this.searchStartPro =  _this.searchList.searchStartPro;
+          if(_this.searchList.startAdd != "" && _this.searchList.searchStartPro == ""){
+            for(var i = 0; i < _this.hotAddressList.length;i++){
+              _this.hotAddressList[i].checked = false;
+              if(_this.hotAddressList[i].region == _this.searchList.startAdd){
+                _this.hotAddressList[i].checked = true;
               }
             }
-          }else if(type == 1){
-            _this.searchEndPro =  _this.searchList.searchEndPro;
-            if(_this.searchList.endAdd != "" && _this.searchList.searchEndPro == ""){
-              for(var i = 0; i < _this.hotAddressList.length;i++){
-                _this.hotAddressList[i].checked = false;
-                if(_this.hotAddressList[i].region == _this.searchList.endAdd){
-                  _this.hotAddressList[i].checked = true;
+          }else if( _this.searchList.searchStartPro != ""){
+            for(var i = 0 ; i < _this.normalAddressList.length ; i++){
+              if(_this.searchList.searchStartPro == _this.normalAddressList[i].region){
+                _this.normalCityList = _this.normalAddressList[i].child;
+                for(var i = 0 ; i < _this.normalCityList.length ;i++){
+                  _this.normalCityList[i].PinyinFirst = ConvertPinyin(_this.normalCityList[i].region).substring(0,1).toUpperCase();
                 }
+                _this.normalCityList.sort(_this.compare("PinyinFirst"));
+                _this.unique1(_this.normalCityList);
+                _this.$nextTick(function () {
+                   var scrolltopGo = localStorage.getItem("getPageScroll0");
+                   scrolltopGo = scrolltopGo == null ? 0 : scrolltopGo;
+                   $("#selectcityUl").animate({scrollTop: scrolltopGo}, 0);
+                });
+                break;
               }
-            }else if( _this.searchList.searchEndPro != ""){
-              for(var i = 0 ; i < _this.normalAddressList.length ; i++){
-                if(_this.searchList.searchEndPro == _this.normalAddressList[i].region){
-                  _this.normalCityList = _this.normalAddressList[i].child;
-                  for(var i = 0 ; i < _this.normalCityList.length ;i++){
-                    _this.normalCityList[i].PinyinFirst = ConvertPinyin(_this.normalCityList[i].region).substring(0,1).toUpperCase();
-                  }
-                  _this.normalCityList.sort(_this.compare("PinyinFirst"));
-                  _this.unique1(_this.normalCityList);
-                  _this.$nextTick(function () {
-                    var scrolltopGo = localStorage.getItem("getPageScroll1");
-                    scrolltopGo = scrolltopGo == null ? 0 : scrolltopGo;
-                    $("#selectcityUl").animate({scrollTop: scrolltopGo}, 0);
-                  });
-                  break;
-                }
+            }
+            for(var i = 0 ; i < _this.normalCityList.length ; i++){
+              _this.normalCityList[i].checked = false;
+              if(_this.searchList.startAdd == _this.normalCityList[i].region){
+                _this.normalCityList[i].checked = true;
               }
-              for(var i = 0 ; i < _this.normalCityList.length ; i++){
-                _this.normalCityList[i].checked = false;
-                if(_this.searchList.endAdd == _this.normalCityList[i].region){
-                  _this.normalCityList[i].checked = true;
+            }
+          }
+        }else if(type == 1){
+          _this.searchEndPro =  _this.searchList.searchEndPro;
+          if(_this.searchList.endAdd != "" && _this.searchList.searchEndPro == ""){
+            for(var i = 0; i < _this.hotAddressList.length;i++){
+              _this.hotAddressList[i].checked = false;
+              if(_this.hotAddressList[i].region == _this.searchList.endAdd){
+                _this.hotAddressList[i].checked = true;
+              }
+            }
+          }else if( _this.searchList.searchEndPro != ""){
+            for(var i = 0 ; i < _this.normalAddressList.length ; i++){
+              if(_this.searchList.searchEndPro == _this.normalAddressList[i].region){
+                _this.normalCityList = _this.normalAddressList[i].child;
+                for(var i = 0 ; i < _this.normalCityList.length ;i++){
+                  _this.normalCityList[i].PinyinFirst = ConvertPinyin(_this.normalCityList[i].region).substring(0,1).toUpperCase();
                 }
+                _this.normalCityList.sort(_this.compare("PinyinFirst"));
+                _this.unique1(_this.normalCityList);
+                _this.$nextTick(function () {
+                  var scrolltopGo = localStorage.getItem("getPageScroll1");
+                  scrolltopGo = scrolltopGo == null ? 0 : scrolltopGo;
+                  $("#selectcityUl").animate({scrollTop: scrolltopGo}, 0);
+                });
+                break;
+              }
+            }
+            for(var i = 0 ; i < _this.normalCityList.length ; i++){
+              _this.normalCityList[i].checked = false;
+              if(_this.searchList.endAdd == _this.normalCityList[i].region){
+                _this.normalCityList[i].checked = true;
               }
             }
           }
@@ -622,29 +645,20 @@
       },
       lookTrackMore:function (item) {
         var _this = this;
-        var cookie = androidIos.getcookie("MESSAGECARRIER");
         var carrierMessage = sessionStorage.getItem("carrierMessage");
-        if(cookie == ""){
-          androidIos.first("尚未登录,请登录!");
-          $(".tanBox-yes").unbind('click').click(function(){
-            $(".tanBox-bigBox").remove();
-            _this.$router.push({ path: '/login'});
-          });
-        }else{
-          if(carrierMessage != null){
-            var status = JSON.parse(carrierMessage);
-            if(status.status == 1){
-              androidIos.second("正在审核中，请耐心等待！");
-            }else if(status.status == 0){
-              androidIos.second("尚未认证，请认证上传资料！");
-            }else if(status.status == 3){
-              androidIos.second("资料已驳回，请重新上传资料！");
-            }else if(status.status == 4){
-              androidIos.second("账户已禁用！");
-            }else if(status.status == 2){
-              androidIos.addPageList();
-              _this.$router.push({ path: '/robbing/robbingMore',query:{pk:item.pkSegment,type:_this.tabShow == 0 ? 1 : 2}});
-            }
+        if(carrierMessage != null){
+          var status = JSON.parse(carrierMessage);
+          if(status.status == 1){
+            androidIos.second("正在审核中，请耐心等待！");
+          }else if(status.status == 0){
+            androidIos.second("尚未认证，请认证上传资料！");
+          }else if(status.status == 3){
+            androidIos.second("资料已驳回，请重新上传资料！");
+          }else if(status.status == 4){
+            androidIos.second("账户已禁用！");
+          }else if(status.status == 2){
+            androidIos.addPageList();
+            _this.$router.push({ path: '/robbing/robbingMore',query:{pk:item.pkSegment,type:_this.tabShow == 0 ? 1 : 2}});
           }
         }
       },

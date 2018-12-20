@@ -42,6 +42,7 @@
       },
       mounted:function () {
           var _this = this;
+          localStorage.removeItem("MESSAGECARRIER");
           sessionStorage.removeItem("token");
           sessionStorage.removeItem("carrierMessage");
           sessionStorage.removeItem("robbingTap");
@@ -59,7 +60,7 @@
          go:function () {
            var _this = this;
            if( sessionStorage.getItem("tokenBefore") != null){
-             _this.mobile = sessionStorage.getItem("tokenBefore");
+             _this.message.mobile = sessionStorage.getItem("tokenBefore");
            }
            document.getElementById("appBox").style.display = "none";
            document.getElementsByTagName("html")[0].style.backgroundColor = "white";

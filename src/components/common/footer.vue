@@ -110,7 +110,7 @@
           },
         rout:function (item) {
           var _this = this;
-          var cookie = androidIos.getcookie("MESSAGECARRIER");
+          var cookie = 11111;
           if(cookie == ""){
             androidIos.first("尚未登录,请登录!");
             $(".tanBox-yes").unbind('click').click(function(){
