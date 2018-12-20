@@ -321,7 +321,7 @@
                 '<div class="clearBoth"></div></div>';
             if(pd.driverPk != ""){
               str +='<div class="bottom">'
-                    +'<div class="firstBox"><img src="'+pd.driverphoto+'" onerror=src="' + require("../../images/carpeople.png") + '" ></div><div class="secondBox"><p>'+pd.driver+'</p><h2>驾龄<span>'+pd.driverAge+'</span></h2></div><div class="thirdBox"></div><div class="clearBoth"></div></div>';
+                    +'<div class="firstBox"><img src="'+pd.driverphoto+'" onerror=src="' + require("../../images/carpeople.png") + '" ></div><div class="secondBox"><p>'+pd.driver+'</p><h2>驾龄<span>'+pd.driverAge+'</span></h2></div><div class="thirdBox" data-phone="'+pd.tel+'"></div><div class="clearBoth"></div></div>';
             }
             var liDom=document.createElement("li");
             liDom.classList.add("liDom");
@@ -371,6 +371,10 @@
                 }
               }
             })
+            $("#car #dataList0 li .thirdBox").unbind("click").click(function () {
+              var tel = $(this).attr("data-phone");
+              androidIos.telCall(tel);
+            });
             $(".reaseImg").unbind("click").click(function (event) {
               event.stopPropagation();
               var that = $(this).parents("li");
@@ -676,7 +680,7 @@
                 '<div class="clearBoth"></div></div>';
               if(pd.driverPk != ""){
                 str +='<div class="bottom">'
-                  +'<div class="firstBox"><img src="'+pd.driverphoto+'" onerror=src="' + require("../../images/carpeople.png") + '" ></div><div class="secondBox"><p>'+pd.driver+'</p><h2>驾龄<span>'+pd.driverAge+'</span></h2></div><div class="thirdBox"></div><div class="clearBoth"></div></div>';
+                  +'<div class="firstBox"><img src="'+pd.driverphoto+'" onerror=src="' + require("../../images/carpeople.png") + '" ></div><div class="secondBox"><p>'+pd.driver+'</p><h2>驾龄<span>'+pd.driverAge+'</span></h2></div><div class="thirdBox" data-phone="'+pd.tel+'"></div><div class="clearBoth"></div></div>';
               }
               var liDom=document.createElement("li");
               liDom.classList.add("liDom");
@@ -756,6 +760,10 @@
                   }
                 }
               })
+              $("#car #dataList" + Zongtype + " li .thirdBox").unbind("click").click(function () {
+                var tel = $(this).attr("data-phone");
+                androidIos.telCall(tel);
+              });
             }
           }
           function getListDataFromNet(pdType,pageNum,pageSize,successCallback,errorCallback) {
