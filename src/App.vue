@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="bigbigtest appBox">
-    <div id="appBox">
+    <div id="appBox" v-if="!showImg">
       <div id="carTitleBox">
         <div class="carTitleBox">
           <div class="carTitleback" @click="goback()" ></div>
@@ -16,6 +16,7 @@
         <div id="table"></div>
       </div>
     </div>
+    <img src="./images/carrierPng.png" id="PNG" v-if="showImg">
     <router-view/>
   </div>
 </template>
@@ -35,6 +36,7 @@
         title:"",
         doNow:"",
         nouser:false,
+        showImg:true,
       }
     },
     mounted:function () {
@@ -48,16 +50,19 @@
         }, function(ret, err) {
           var name = ret.value;
           if(name == ""){
-            _this.$router.push({ path: '/login'});
+            _this.showImg = false;
+            _this.$router.push({path: '/login'});
           }else{
             var cookie = JSON.parse(name).user;
             if(date.getTime() > JSON.parse(name).expiryDate){
+              _this.showImg = false;
               _this.$router.push({ path: '/login'});
             }else{
               cookie = JSON.parse(cookie);
               androidIos.jianting(cookie.token);
               sessionStorage.setItem("token",cookie.token);
               sessionStorage.setItem("tokenBefore",cookie.token);
+              _this.showImg = false;
               _this.$router.push({ path: '/robbingList'});
             }
           }
@@ -71,8 +76,10 @@
           androidIos.jianting(cookie.token);
           sessionStorage.setItem("token",cookie.token);
           sessionStorage.setItem("tokenBefore",cookie.token);
+          _this.showImg = false;
           _this.$router.push({ path: '/robbingList'});
         }else if(cookie == ""){
+          _this.showImg = false;
           _this.$router.push({ path: '/login'});
         }
         androidIos.bridge(_this);
@@ -485,5 +492,15 @@
     background-position: 100% 50%;
     background-size: 0.4rem;
     background-repeat: no-repeat;
+  }
+  #PNG{
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    width:100%;
+    height: 100%;
+    z-index: 10;
   }
 </style>
