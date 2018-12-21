@@ -93,7 +93,8 @@
             url: androidIos.ajaxHttp() + "/login",
             data:JSON.stringify({
                 loginId : _this.message.mobile,
-                userPassword : _this.message.password
+                userPassword : _this.message.password,
+                source:sessionStorage.getItem("source")
             }),
             contentType: "application/json;charset=utf-8",
             dataType: "json",
