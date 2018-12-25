@@ -17,6 +17,7 @@
       </div>
     </div>
     <img src="./images/carrierPng.png" id="PNG" v-if="showImg">
+    <carouselComponent :show="showCarousel"></carouselComponent>
     <router-view/>
   </div>
 </template>
@@ -37,12 +38,49 @@
         doNow:"",
         nouser:false,
         showImg:true,
+        showCarousel:false,
       }
     },
     mounted:function () {
       var _this = this;
       _this.title = document.title;
       sessionStorage.setItem("source",2);
+      try{
+        var date = new Date();
+        api.getPrefs({
+          key: "carouselCarrier"
+        }, function(ret, err) {
+          var name = ret.value;
+          if(name == ""){
+            _this.showCarousel = true;
+            androidIos.setcookie("carouselCarrier",true,100);
+          }else{
+            var cookie = JSON.parse(name).user;
+            if(cookie != "" && sessionStorage.getItem("addPageList")*1 == 0) {
+              if (date.getTime() > JSON.parse(name).expiryDate) {
+                _this.showCarousel = true;
+                androidIos.setcookie("carouselCarrier",true,100);
+              } else {
+                _this.showCarousel = false;
+              }
+            }else{
+              _this.showCarousel = false;
+            }
+          }
+          androidIos.bridge(_this);
+        });
+      }
+      catch(e){
+        var cookie = androidIos.getcookie("carouselCarrier");
+        if(cookie != "" && sessionStorage.getItem("addPageList")*1 == 0){
+          _this.showCarousel = false;
+        }else if(cookie == ""){
+          _this.showCarousel = true;
+          androidIos.setcookie("carouselCarrier",true,100);
+        }else{
+          _this.showCarousel = false;
+        }
+      }
       try{
         var date = new Date();
         api.getPrefs({
@@ -220,6 +258,9 @@
       go:function () {
         var _this = this;
         androidIos.judgeIphoneX("carTitleBox",0);
+      },
+      showBox:function () {
+        this.showCarousel = false;
       },
       goback:function () {
         var _this = this;
