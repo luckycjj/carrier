@@ -294,6 +294,7 @@
     padding: 0 3%;
     border-bottom:1px solid #dadada;
     position: relative;
+    height: 1rem;
   }
   .name input{
     width:48%;
@@ -305,7 +306,7 @@
   }
   .inputUp input{
     width:90%;
-    padding: 0.325rem 0;
+    padding: 0.325rem 0 0 0;
     font-size: 0.3125rem;
     color:#333;
   }
