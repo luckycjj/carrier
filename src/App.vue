@@ -198,7 +198,7 @@
       var _this = this;
       _this.title = document.title;
       _this.html = location.href.split("#")[1];
-      if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1){
+      if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/register") != -1  || _this.html.indexOf("/robbingList") != -1){
         $("#appBox").hide();
       }else{
         $("#appBox").show();
@@ -228,7 +228,7 @@
       var _this = this;
       _this.title = document.title;
       _this.html = location.href.split("#")[1];
-      if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1){
+      if(_this.html.indexOf("/login") != -1  || _this.html.indexOf("/register") != -1 || _this.html.indexOf("/robbingList") != -1){
         $("#appBox").hide();
       }else{
         $("#appBox").show();

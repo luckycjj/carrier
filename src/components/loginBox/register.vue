@@ -202,7 +202,7 @@
     top:0rem;
     bottom:0;
     background: white;
-    height: auto;
+    height: 100%;
     width:100%;
   }
   #top{
@@ -299,6 +299,11 @@
     bottom:0.58rem;
     left:50%;
     margin-left: -2.2rem;
+  }
+  @media (max-height: 400px) {
+    　.checkBox {
+       display: none;
+    }
   }
   .checked{
     width:0.34rem;
